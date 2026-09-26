@@ -1,0 +1,10 @@
+{
+  "name": "guidegen",
+  "version": "0.1.0",
+  "description": "Generate a branded end-user manual (Word + HTML) for your web or Windows desktop app: the agent reads the code, runs and explores the app, captures redacted screenshots and writes step-by-step guides.",
+  "author": { "name": "GuideGen contributors" },
+  "homepage": "https://github.com/guidegen/guidegen",
+  "repository": "https://github.com/guidegen/guidegen",
+  "license": "MIT",
+  "keywords": ["documentation", "user-manual", "screenshots", "playwright", "wpf", "winforms", "docx"]
+}

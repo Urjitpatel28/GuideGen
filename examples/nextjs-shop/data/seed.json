@@ -1,0 +1,20 @@
+{
+  "settings": { "storeName": "Acme Shop", "currency": "USD", "lowStockThreshold": 5, "emailNotifications": true },
+  "products": [
+    { "id": "p1", "name": "Espresso Beans 1kg", "sku": "COF-001", "price": 24.5, "stock": 42, "category": "Coffee" },
+    { "id": "p2", "name": "Ceramic Mug", "sku": "MUG-010", "price": 9.0, "stock": 3, "category": "Kitchen" },
+    { "id": "p3", "name": "Pour-over Kettle", "sku": "KET-200", "price": 59.99, "stock": 12, "category": "Kitchen" },
+    { "id": "p4", "name": "Paper Filters (100)", "sku": "FIL-100", "price": 4.25, "stock": 120, "category": "Coffee" },
+    { "id": "p5", "name": "Hand Grinder", "sku": "GRD-050", "price": 79.0, "stock": 0, "category": "Equipment" }
+  ],
+  "customers": [
+    { "id": "c1", "name": "Northwind Cafe", "email": "orders@northwind.example", "phone": "555-0101", "city": "Seattle" },
+    { "id": "c2", "name": "Contoso Bakery", "email": "hello@contoso.example", "phone": "555-0102", "city": "Portland" },
+    { "id": "c3", "name": "Fabrikam Office", "email": "facilities@fabrikam.example", "phone": "555-0103", "city": "Denver" }
+  ],
+  "orders": [
+    { "id": "o1001", "customerId": "c1", "items": [{ "productId": "p1", "quantity": 4 }], "status": "Shipped", "createdAt": "2026-09-01" },
+    { "id": "o1002", "customerId": "c2", "items": [{ "productId": "p2", "quantity": 12 }, { "productId": "p4", "quantity": 2 }], "status": "Open", "createdAt": "2026-09-10" },
+    { "id": "o1003", "customerId": "c3", "items": [{ "productId": "p3", "quantity": 1 }], "status": "Open", "createdAt": "2026-09-18" }
+  ]
+}

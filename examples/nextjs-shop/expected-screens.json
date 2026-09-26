@@ -1,0 +1,18 @@
+{
+  "comment": "Hand-written list of every user-facing screen in the code. GuideGen's inventory must cover 100% of these.",
+  "screens": [
+    { "id": "login", "route": "/login", "source": "app/login/page.js" },
+    { "id": "dashboard", "route": "/", "source": "app/page.js" },
+    { "id": "products", "route": "/products", "source": "app/products/page.js" },
+    { "id": "new-product", "route": "/products/new", "source": "app/products/new/page.js" },
+    { "id": "product-detail", "route": "/products/[id]", "source": "app/products/[id]/page.js" },
+    { "id": "orders", "route": "/orders", "source": "app/orders/page.js" },
+    { "id": "new-order", "route": "/orders/new", "source": "app/orders/new/page.js" },
+    { "id": "order-detail", "route": "/orders/[id]", "source": "app/orders/[id]/page.js" },
+    { "id": "customers", "route": "/customers", "source": "app/customers/page.js" },
+    { "id": "new-customer", "route": "/customers/new", "source": "app/customers/new/page.js" },
+    { "id": "settings", "route": "/settings", "source": "app/settings/page.js" }
+  ],
+  "minTasks": 8,
+  "minTroubleshooting": 5
+}

@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="GuideGen">
+<title>Stockroom Inventory User Manual</title>
+<style>
+:root { --primary: #2E5E4E; --accent: #E07A1F; --accent-fg: #000000; }
+/* GuideGen manual. --primary / --accent are injected from the brand config. */
+:root {
+  --bg: #ffffff; --fg: #1d2330; --muted: #5b6475; --line: #e3e7ee; --soft: #f5f7fa;
+  --link: var(--primary); --sidebar-w: 280px; --topbar-h: 56px;
+  --font: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #14171d; --fg: #e6e9ef; --muted: #a3acbb; --line: #2b313c; --soft: #1c2028; --link: #8fb8ff; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--topbar-h) + 12px); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; font: 16px/1.6 var(--font); color: var(--fg); background: var(--bg); }
+a { color: var(--link); }
+a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -999px; top: 8px; background: var(--bg); padding: 8px 12px; z-index: 100; }
+.skip:focus { left: 8px; }
+
+.topbar { position: sticky; top: 0; z-index: 20; height: var(--topbar-h); display: flex; align-items: center; gap: 16px;
+  padding: 0 20px; background: var(--bg); border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--fg); text-decoration: none; white-space: nowrap; }
+.brand-logo { height: 28px; width: auto; }
+.menu-toggle { display: none; background: none; border: 0; color: var(--fg); padding: 6px; cursor: pointer; }
+.search { position: relative; margin-left: auto; width: min(420px, 50vw); }
+.search input { width: 100%; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; font: inherit; background: var(--soft); color: var(--fg); }
+#results { position: absolute; top: 42px; left: 0; right: 0; margin: 0; padding: 6px; list-style: none; background: var(--bg);
+  border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); max-height: 60vh; overflow: auto; }
+#results li a { display: block; padding: 8px 10px; border-radius: 6px; text-decoration: none; color: var(--fg); }
+#results li a small { display: block; color: var(--muted); }
+#results li[aria-selected="true"] a, #results li a:hover { background: var(--soft); }
+
+.shell { display: flex; }
+.sidebar { position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); width: var(--sidebar-w); flex: none;
+  overflow: auto; padding: 20px 12px 40px 20px; border-right: 1px solid var(--line); font-size: 14.5px; }
+.sidebar ul { list-style: none; margin: 0; padding: 0; }
+.sidebar > ul > li { margin-bottom: 14px; }
+.sidebar > ul > li > a { font-weight: 600; color: var(--fg); }
+.sidebar ul ul { margin-top: 6px; padding-left: 10px; border-left: 2px solid var(--line); }
+.sidebar ul ul a { display: block; padding: 3px 8px; color: var(--muted); text-decoration: none; border-radius: 4px; }
+.sidebar a[aria-current="true"] { color: var(--link); background: var(--soft); }
+
+main { flex: 1; min-width: 0; max-width: 980px; padding: 32px 48px 80px; }
+h1, h2, h3, h4 { color: var(--primary); line-height: 1.25; }
+@media (prefers-color-scheme: dark) { h1, h2, h3, h4 { color: var(--fg); } }
+h2 { font-size: 1.9rem; margin-top: 56px; padding-top: 8px; border-top: 1px solid var(--line); }
+h3 { font-size: 1.35rem; margin-top: 36px; }
+h4 { font-size: 1.15rem; margin-top: 28px; }
+.cover h1 { font-size: 2.4rem; margin: 8px 0; }
+.cover-logo { height: 72px; width: auto; }
+.meta { color: var(--muted); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin: 28px 0; }
+.card { display: block; padding: 16px; border: 1px solid var(--line); border-radius: 10px; text-decoration: none; color: var(--fg); background: var(--soft); }
+.card strong { display: block; color: var(--link); margin-bottom: 4px; }
+.card span { color: var(--muted); font-size: 14px; }
+.card:hover { border-color: var(--primary); }
+
+.task-list { columns: 2; padding-left: 20px; }
+.steps { list-style: none; padding: 0; margin: 16px 0; }
+.step { display: flex; gap: 14px; margin: 0 0 22px; }
+.badge { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: var(--accent-fg); font-weight: 700;
+  display: grid; place-items: center; font-size: 15px; margin-top: 2px; }
+.step-body { min-width: 0; flex: 1; }
+.step-text p { margin: 2px 0 10px; }
+.step-screen, .xref { font-size: 14px; color: var(--muted); }
+.kind { font-size: 12px; font-weight: 600; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; vertical-align: middle; }
+
+figure { margin: 8px 0 18px; }
+figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; }
+figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.zoomable { padding: 0; border: 0; background: none; cursor: zoom-in; display: block; max-width: 100%; }
+dialog#zoom { max-width: 96vw; max-height: 94vh; padding: 0; border: 0; border-radius: 10px; background: var(--bg); }
+dialog#zoom::backdrop { background: rgba(0,0,0,.7); }
+dialog#zoom img { display: block; max-width: 96vw; max-height: 90vh; }
+.zoom-close { position: absolute; right: 8px; top: 6px; font-size: 26px; background: var(--bg); color: var(--fg); border: 0; border-radius: 50%; width: 38px; height: 38px; cursor: pointer; }
+
+.table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th { text-align: left; background: var(--primary); color: #fff; font-weight: 600; }
+th, td { padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td p { margin: 0; }
+tr:last-child td { border-bottom: 0; }
+.page-footer { margin-top: 64px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 900px) {
+  .menu-toggle { display: block; }
+  .sidebar { position: fixed; left: 0; top: var(--topbar-h); z-index: 15; background: var(--bg); transform: translateX(-100%);
+    transition: transform .2s; box-shadow: 4px 0 20px rgba(0,0,0,.15); }
+  .sidebar.open { transform: none; }
+  main { padding: 20px 18px 60px; }
+  .task-list { columns: 1; }
+  .brand span { display: none; }
+  .search { width: auto; flex: 1; }
+}
+@media print {
+  .topbar, .sidebar, dialog { display: none !important; }
+  main { max-width: none; padding: 0; }
+}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button class="menu-toggle" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Show navigation">
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <a class="brand" href="#top">
+<img src="images/brand-logo.png" alt="" class="brand-logo">    <span>Stockroom Inventory</span>
+  </a>
+  <div class="search" role="search">
+    <label for="q" class="visually-hidden">Search the manual</label>
+    <input id="q" type="search" placeholder="Search the manual…" autocomplete="off" aria-controls="results" aria-expanded="false">
+    <ul id="results" role="listbox" aria-label="Search results" hidden></ul>
+  </div>
+</header>
+<div class="shell">
+<nav id="sidebar" class="sidebar" aria-label="Manual contents">
+  <ul>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#tasks">How-To Tasks</a>
+      <ul><li><a href="#task-sign-in">Sign in</a></li><li><a href="#task-add-item">Add a new item</a></li><li><a href="#task-receive-delivery">Record a delivery</a></li><li><a href="#task-edit-item">Change an item&#39;s details</a></li><li><a href="#task-find-item">Find an item</a></li><li><a href="#task-check-low-stock">See what needs reordering</a></li><li><a href="#task-change-threshold">Change the low-stock level</a></li><li><a href="#task-add-category">Add a category</a></li><li><a href="#task-view-suppliers">Look up a supplier</a></li><li><a href="#task-delete-item">Delete an item</a></li></ul>
+    </li>
+    <li><a href="#reference">Screen Reference</a>
+      <ul><li><a href="#screen-login-window">Sign in</a></li><li><a href="#screen-items">Items tab</a></li><li><a href="#screen-suppliers">Suppliers tab</a></li><li><a href="#screen-reports">Reports tab</a></li><li><a href="#screen-new-item">New item window</a></li><li><a href="#screen-receive-stock">Receive stock window</a></li><li><a href="#screen-categories">Categories window</a></li><li><a href="#screen-settings">Settings window</a></li><li><a href="#screen-about">About window</a></li></ul>
+    </li>
+    <li><a href="#troubleshooting">Troubleshooting</a></li>
+  </ul>
+</nav><main id="main" tabindex="-1">
+  <section class="cover" id="top" aria-labelledby="cover-title">
+<img src="images/brand-logo.png" alt="Stockroom Inventory logo" class="cover-logo">    <h1 id="cover-title">Stockroom Inventory User Manual</h1>
+    <p class="meta">Version 2.3.0 · September 24, 2026 · Acme Ltd</p>
+    <div class="cards">
+        <a class="card" href="#getting-started">
+          <strong>Getting Started</strong>
+          <span>Install, launch and first steps</span>
+        </a>
+        <a class="card" href="#tasks">
+          <strong>How-To Tasks</strong>
+          <span>10 step-by-step guides</span>
+        </a>
+        <a class="card" href="#reference">
+          <strong>Screen Reference</strong>
+          <span>9 screens explained</span>
+        </a>
+        <a class="card" href="#troubleshooting">
+          <strong>Troubleshooting</strong>
+          <span>10 messages and fixes</span>
+        </a>
+    </div>
+  </section>
+
+  <section id="getting-started" class="chapter" aria-labelledby="h-gs">
+    <h2 id="h-gs">Getting Started</h2>
+<p>Stockroom Inventory keeps track of what is on your shelves - items, quantities, prices and suppliers. This manual walks you through everyday jobs and explains every window.</p><h3>Before you begin</h3><ul><li>A Windows 10 or Windows 11 PC with Stockroom Inventory installed.</li><li>The user name and password your administrator gave you.</li></ul><h3>Starting the application</h3><p>Open the <strong>Start</strong> menu and click <strong>Stockroom Inventory</strong>. The <strong>Sign in</strong> window appears.</p><h3>Signing in</h3><p>Type your <strong>User name</strong> and <strong>Password</strong>, then click <strong>Sign in</strong>.</p><h3>A quick tour</h3><p>The main window has three tabs. <strong>Items</strong> lists everything in stock, <strong>Suppliers</strong> lists who you buy from and <strong>Reports</strong> sums up your stock. Use the <strong>File</strong>, <strong>Items</strong> and <strong>Help</strong> menus at the top for everything else.</p>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: The Items tab screen">
+    <img src="images/items.png" alt="Items tab overview" width="1266" height="793" loading="lazy">
+  </button>
+<figcaption>The Items tab screen</figcaption></figure>  </section>
+  <section id="tasks" class="chapter" aria-labelledby="h-tasks">
+    <h2 id="h-tasks">How-To Tasks</h2>
+    <ul class="task-list">
+<li><a href="#task-sign-in">Sign in</a></li><li><a href="#task-add-item">Add a new item</a></li><li><a href="#task-receive-delivery">Record a delivery</a></li><li><a href="#task-edit-item">Change an item&#39;s details</a></li><li><a href="#task-find-item">Find an item</a></li><li><a href="#task-check-low-stock">See what needs reordering</a></li><li><a href="#task-change-threshold">Change the low-stock level</a></li><li><a href="#task-add-category">Add a category</a></li><li><a href="#task-view-suppliers">Look up a supplier</a></li><li><a href="#task-delete-item">Delete an item</a></li>    </ul>
+<article class="task" id="task-sign-in" aria-labelledby="task-sign-in-h">
+  <h3 id="task-sign-in-h">Sign in</h3>
+<div class="goal"><p>Open Stockroom Inventory with your user name and password.</p></div>  <ol class="steps">
+<li class="step" id="task-sign-in-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>User name</strong>, type your user name.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: In User name, type your user name.">
+    <img src="images/sign-in-s1.png" alt="Sign in, step 1: In User name, type your user name." width="386" height="325" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-login-window">Sign in</a></p>  </div>
+</li><li class="step" id="task-sign-in-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>Password</strong>, type your password.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: In Password, type your password.">
+    <img src="images/sign-in-s2.png" alt="Sign in, step 2: In Password, type your password." width="386" height="325" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-login-window">Sign in</a></p>  </div>
+</li><li class="step" id="task-sign-in-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Sign in</strong>. The main window opens.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: Click Sign in. The main window opens.">
+    <img src="images/sign-in-s3.png" alt="Sign in, step 3: Click Sign in. The main window opens." width="386" height="325" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-login-window">Sign in</a>, <a href="#screen-items">Items tab</a>  </p>
+</article><article class="task" id="task-add-item" aria-labelledby="task-add-item-h">
+  <h3 id="task-add-item-h">Add a new item</h3>
+<div class="goal"><p>Start tracking something new in the stockroom.</p></div>  <ol class="steps">
+<li class="step" id="task-add-item-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>On the <strong>Items</strong> tab, click <strong>New item</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: On the Items tab, click New item.">
+    <img src="images/add-item-s1.png" alt="Add a new item, step 1: On the Items tab, click New item." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li><li class="step" id="task-add-item-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type a unique <strong>SKU</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Type a unique SKU.">
+    <img src="images/add-item-s2.png" alt="Add a new item, step 2: Type a unique SKU." width="446" height="458" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-item">New item window</a></p>  </div>
+</li><li class="step" id="task-add-item-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type the item <strong>Name</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: Type the item Name.">
+    <img src="images/add-item-s3.png" alt="Add a new item, step 3: Type the item Name." width="446" height="458" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-item">New item window</a></p>  </div>
+</li><li class="step" id="task-add-item-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type the <strong>Quantity</strong> you have.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Type the Quantity you have.">
+    <img src="images/add-item-s4.png" alt="Add a new item, step 4: Type the Quantity you have." width="446" height="458" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-item">New item window</a></p>  </div>
+</li><li class="step" id="task-add-item-s5">
+  <span class="badge" aria-hidden="true">5</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type the <strong>Unit price</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 5: Type the Unit price.">
+    <img src="images/add-item-s5.png" alt="Add a new item, step 5: Type the Unit price." width="446" height="458" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-item">New item window</a></p>  </div>
+</li><li class="step" id="task-add-item-s6">
+  <span class="badge" aria-hidden="true">6</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type the shelf <strong>Location</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 6: Type the shelf Location.">
+    <img src="images/add-item-s6.png" alt="Add a new item, step 6: Type the shelf Location." width="446" height="458" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-item">New item window</a></p>  </div>
+</li><li class="step" id="task-add-item-s7">
+  <span class="badge" aria-hidden="true">7</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Save</strong>. The item appears in the list.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 7: Click Save. The item appears in the list.">
+    <img src="images/add-item-s7.png" alt="Add a new item, step 7: Click Save. The item appears in the list." width="446" height="458" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-items">Items tab</a>, <a href="#screen-new-item">New item window</a>  </p>
+</article><article class="task" id="task-receive-delivery" aria-labelledby="task-receive-delivery-h">
+  <h3 id="task-receive-delivery-h">Record a delivery</h3>
+<div class="goal"><p>Add newly delivered stock to an item's quantity.</p></div>  <ol class="steps">
+<li class="step" id="task-receive-delivery-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>On the <strong>Items</strong> tab, click the item that was delivered.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: On the Items tab, click the item that was delivered.">
+    <img src="images/receive-delivery-s1.png" alt="Record a delivery, step 1: On the Items tab, click the item that was delivered." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li><li class="step" id="task-receive-delivery-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Receive stock</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click Receive stock.">
+    <img src="images/receive-delivery-s2.png" alt="Record a delivery, step 2: Click Receive stock." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li><li class="step" id="task-receive-delivery-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>Quantity received</strong>, type how many arrived.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: In Quantity received, type how many arrived.">
+    <img src="images/receive-delivery-s3.png" alt="Record a delivery, step 3: In Quantity received, type how many arrived." width="366" height="194" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-receive-stock">Receive stock window</a></p>  </div>
+</li><li class="step" id="task-receive-delivery-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Add to stock</strong>. The new quantity shows in the list.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Click Add to stock. The new quantity shows in the list.">
+    <img src="images/receive-delivery-s4.png" alt="Record a delivery, step 4: Click Add to stock. The new quantity shows in the list." width="366" height="194" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-items">Items tab</a>, <a href="#screen-receive-stock">Receive stock window</a>  </p>
+</article><article class="task" id="task-edit-item" aria-labelledby="task-edit-item-h">
+  <h3 id="task-edit-item-h">Change an item&#39;s details</h3>
+<div class="goal"><p>Correct a price, name or location.</p></div>  <ol class="steps">
+<li class="step" id="task-edit-item-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click the item in the list.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: Click the item in the list.">
+    <img src="images/edit-item-s1.png" alt="Change an item&#39;s details, step 1: Click the item in the list." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li><li class="step" id="task-edit-item-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Edit</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click Edit.">
+    <img src="images/edit-item-s2.png" alt="Change an item&#39;s details, step 2: Click Edit." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li><li class="step" id="task-edit-item-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>Change the details, for example the <strong>Unit price</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: Change the details, for example the Unit price.">
+    <img src="images/edit-item-s3.png" alt="Change an item&#39;s details, step 3: Change the details, for example the Unit price." width="446" height="458" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-item">New item window</a></p>  </div>
+</li><li class="step" id="task-edit-item-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Save</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Click Save.">
+    <img src="images/edit-item-s4.png" alt="Change an item&#39;s details, step 4: Click Save." width="446" height="458" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-items">Items tab</a>, <a href="#screen-new-item">New item window</a>  </p>
+</article><article class="task" id="task-find-item" aria-labelledby="task-find-item-h">
+  <h3 id="task-find-item-h">Find an item</h3>
+<div class="goal"><p>Quickly find an item by name or SKU.</p></div>  <ol class="steps">
+<li class="step" id="task-find-item-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>On the <strong>Items</strong> tab, type part of the name or SKU in <strong>Search</strong>. The list shows only matching items.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: On the Items tab, type part of the name or SKU in Search. The list shows only matching items.">
+    <img src="images/find-item-s1.png" alt="Find an item, step 1: On the Items tab, type part of the name or SKU in Search. The list shows only matching items." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-items">Items tab</a>  </p>
+</article><article class="task" id="task-check-low-stock" aria-labelledby="task-check-low-stock-h">
+  <h3 id="task-check-low-stock-h">See what needs reordering</h3>
+<div class="goal"><p>Find items that are running low.</p></div>  <ol class="steps">
+<li class="step" id="task-check-low-stock-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click the <strong>Reports</strong> tab. Items that need reordering are listed under <strong>Low stock</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: Click the Reports tab. Items that need reordering are listed under Low stock.">
+    <img src="images/check-low-stock-s1.png" alt="See what needs reordering, step 1: Click the Reports tab. Items that need reordering are listed under Low stock." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-reports">Reports tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-reports">Reports tab</a>  </p>
+</article><article class="task" id="task-change-threshold" aria-labelledby="task-change-threshold-h">
+  <h3 id="task-change-threshold-h">Change the low-stock level</h3>
+<div class="goal"><p>Decide at what quantity an item counts as low.</p></div>  <ol class="steps">
+<li class="step" id="task-change-threshold-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click the <strong>File</strong> menu.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: Click the File menu.">
+    <img src="images/change-threshold-s1.png" alt="Change the low-stock level, step 1: Click the File menu." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li><li class="step" id="task-change-threshold-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Settings...</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click Settings....">
+    <img src="images/change-threshold-s2.png" alt="Change the low-stock level, step 2: Click Settings...." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li><li class="step" id="task-change-threshold-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>Low-stock threshold</strong>, type the new level.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: In Low-stock threshold, type the new level.">
+    <img src="images/change-threshold-s3.png" alt="Change the low-stock level, step 3: In Low-stock threshold, type the new level." width="406" height="299" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-settings">Settings window</a></p>  </div>
+</li><li class="step" id="task-change-threshold-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>OK</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Click OK.">
+    <img src="images/change-threshold-s4.png" alt="Change the low-stock level, step 4: Click OK." width="406" height="299" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-items">Items tab</a>, <a href="#screen-settings">Settings window</a>  </p>
+</article><article class="task" id="task-add-category" aria-labelledby="task-add-category-h">
+  <h3 id="task-add-category-h">Add a category</h3>
+<div class="goal"><p>Create a new category to group items.</p></div>  <ol class="steps">
+<li class="step" id="task-add-category-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click the <strong>Items</strong> menu.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: Click the Items menu.">
+    <img src="images/add-category-s1.png" alt="Add a category, step 1: Click the Items menu." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li><li class="step" id="task-add-category-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Categories...</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click Categories....">
+    <img src="images/add-category-s2.png" alt="Add a category, step 2: Click Categories...." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li><li class="step" id="task-add-category-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>New category</strong>, type the name.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: In New category, type the name.">
+    <img src="images/add-category-s3.png" alt="Add a category, step 3: In New category, type the name." width="366" height="413" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-categories">Categories window</a></p>  </div>
+</li><li class="step" id="task-add-category-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Add</strong>. The category appears in the list.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Click Add. The category appears in the list.">
+    <img src="images/add-category-s4.png" alt="Add a category, step 4: Click Add. The category appears in the list." width="366" height="413" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-categories">Categories window</a></p>  </div>
+</li><li class="step" id="task-add-category-s5">
+  <span class="badge" aria-hidden="true">5</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Close</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 5: Click Close.">
+    <img src="images/add-category-s5.png" alt="Add a category, step 5: Click Close." width="366" height="413" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-items">Items tab</a>, <a href="#screen-categories">Categories window</a>  </p>
+</article><article class="task" id="task-view-suppliers" aria-labelledby="task-view-suppliers-h">
+  <h3 id="task-view-suppliers-h">Look up a supplier</h3>
+<div class="goal"><p>Find a supplier's contact details and delivery time.</p></div>  <ol class="steps">
+<li class="step" id="task-view-suppliers-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click the <strong>Suppliers</strong> tab.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: Click the Suppliers tab.">
+    <img src="images/view-suppliers-s1.png" alt="Look up a supplier, step 1: Click the Suppliers tab." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-suppliers">Suppliers tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-suppliers">Suppliers tab</a>  </p>
+</article><article class="task" id="task-delete-item" aria-labelledby="task-delete-item-h">
+  <h3 id="task-delete-item-h">Delete an item</h3>
+<div class="goal"><p>Remove an item you no longer stock.</p></div>  <ol class="steps">
+<li class="step" id="task-delete-item-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click the item in the list.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: Click the item in the list.">
+    <img src="images/delete-item-s1.png" alt="Delete an item, step 1: Click the item in the list." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li><li class="step" id="task-delete-item-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Delete</strong>, then click <strong>Yes</strong> to confirm. This cannot be undone.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click Delete, then click Yes to confirm. This cannot be undone.">
+    <img src="images/delete-item-s2.png" alt="Delete an item, step 2: Click Delete, then click Yes to confirm. This cannot be undone." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-items">Items tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-items">Items tab</a>  </p>
+</article>  </section>
+  <section id="reference" class="chapter" aria-labelledby="h-ref">
+    <h2 id="h-ref">Screen Reference</h2>
+<article class="screen" id="screen-login-window" aria-labelledby="screen-login-window-h">
+  <h3 id="screen-login-window-h">Sign in</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Sign in">
+    <img src="images/login-window.png" alt="Sign in screen" width="386" height="325" loading="lazy">
+  </button>
+<figcaption>Sign in</figcaption></figure><p>Appears when you start Stockroom Inventory.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Sign in fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>User name</strong></td><td>text box</td><td><p>Your Stockroom Inventory user name.</p></td></tr><tr><td><strong>Password</strong></td><td>text box</td><td><p>Your password. It is hidden as you type.</p></td></tr><tr><td><strong>Sign in</strong></td><td>button</td><td><p>Opens the main window.</p></td></tr><tr><td><strong>Cancel</strong></td><td>button</td><td><p>Closes Stockroom Inventory.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-sign-in">Sign in</a>  </p>
+</article><article class="screen" id="screen-items" aria-labelledby="screen-items-h">
+  <h3 id="screen-items-h">Items tab</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Items tab">
+    <img src="images/items.png" alt="Items tab screen" width="1266" height="793" loading="lazy">
+  </button>
+<figcaption>Items tab</figcaption></figure><p>The main window opens on this tab. It lists everything you keep in stock.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Items tab fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Search</strong></td><td>text box</td><td><p>Type part of a name or SKU to filter the list.</p></td></tr><tr><td><strong>New item</strong></td><td>button</td><td><p>Opens the <strong>New item</strong> window.</p></td></tr><tr><td><strong>Edit</strong></td><td>button</td><td><p>Opens the selected item for editing.</p></td></tr><tr><td><strong>Receive stock</strong></td><td>button</td><td><p>Adds a delivery to the selected item's quantity.</p></td></tr><tr><td><strong>Delete</strong></td><td>button</td><td><p>Removes the selected item after you confirm.</p></td></tr><tr><td><strong>Items</strong></td><td>table</td><td><p>Every item with its SKU, category, quantity, price, supplier and shelf location.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-sign-in">Sign in</a>, <a href="#task-add-item">Add a new item</a>, <a href="#task-receive-delivery">Record a delivery</a>, <a href="#task-edit-item">Change an item&#39;s details</a>, <a href="#task-find-item">Find an item</a>, <a href="#task-change-threshold">Change the low-stock level</a>, <a href="#task-add-category">Add a category</a>, <a href="#task-delete-item">Delete an item</a>  </p>
+</article><article class="screen" id="screen-suppliers" aria-labelledby="screen-suppliers-h">
+  <h3 id="screen-suppliers-h">Suppliers tab</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Suppliers tab">
+    <img src="images/suppliers.png" alt="Suppliers tab screen" width="1266" height="793" loading="lazy">
+  </button>
+<figcaption>Suppliers tab</figcaption></figure><p>Lists your suppliers and how to reach them.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Suppliers tab fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Supplier</strong></td><td>column</td><td><p>The company you buy from.</p></td></tr><tr><td><strong>Contact email</strong></td><td>column</td><td><p>Where to send orders.</p></td></tr><tr><td><strong>Lead time (days)</strong></td><td>column</td><td><p>How long deliveries usually take.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-view-suppliers">Look up a supplier</a>  </p>
+</article><article class="screen" id="screen-reports" aria-labelledby="screen-reports-h">
+  <h3 id="screen-reports-h">Reports tab</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Reports tab">
+    <img src="images/reports.png" alt="Reports tab screen" width="1266" height="793" loading="lazy">
+  </button>
+<figcaption>Reports tab</figcaption></figure><p>A summary of your stock and a list of items that need reordering.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Reports tab fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Items</strong></td><td>figure</td><td><p>How many different items you stock.</p></td></tr><tr><td><strong>Units in stock</strong></td><td>figure</td><td><p>The total count of everything on your shelves.</p></td></tr><tr><td><strong>Stock value</strong></td><td>figure</td><td><p>Quantity times unit price for all items.</p></td></tr><tr><td><strong>Low stock</strong></td><td>list</td><td><p>Items at or below the low-stock threshold set in <strong>Settings</strong>.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-check-low-stock">See what needs reordering</a>  </p>
+</article><article class="screen" id="screen-new-item" aria-labelledby="screen-new-item-h">
+  <h3 id="screen-new-item-h">New item window <span class="kind">dialog</span></h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: New item window">
+    <img src="images/new-item.png" alt="New item window screen" width="446" height="458" loading="lazy">
+  </button>
+<figcaption>New item window</figcaption></figure><p>Used to add a new item. The same window, titled <strong>Edit item</strong>, opens when you edit an item.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="New item window fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>SKU</strong></td><td>text box</td><td><p>Your stock code, for example HW-1003. Must be unique.</p></td></tr><tr><td><strong>Name</strong></td><td>text box</td><td><p>What the item is called.</p></td></tr><tr><td><strong>Category</strong></td><td>list</td><td><p>Pick a category. Add new ones under <strong>Items &gt; Categories</strong>.</p></td></tr><tr><td><strong>Quantity</strong></td><td>text box</td><td><p>How many you have. Cannot be negative.</p></td></tr><tr><td><strong>Unit price</strong></td><td>text box</td><td><p>Price of one unit. Must be greater than 0.</p></td></tr><tr><td><strong>Supplier</strong></td><td>list</td><td><p>Who you buy it from.</p></td></tr><tr><td><strong>Location</strong></td><td>text box</td><td><p>Shelf or bin, for example A-03.</p></td></tr><tr><td><strong>Save</strong></td><td>button</td><td><p>Saves the item. If something is wrong, a red message appears under the field.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-add-item">Add a new item</a>, <a href="#task-edit-item">Change an item&#39;s details</a>  </p>
+</article><article class="screen" id="screen-receive-stock" aria-labelledby="screen-receive-stock-h">
+  <h3 id="screen-receive-stock-h">Receive stock window <span class="kind">dialog</span></h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Receive stock window">
+    <img src="images/receive-stock.png" alt="Receive stock window screen" width="366" height="194" loading="lazy">
+  </button>
+<figcaption>Receive stock window</figcaption></figure><p>Used when a delivery arrives. Shows the item and how many you have now.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Receive stock window fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Quantity received</strong></td><td>text box</td><td><p>How many arrived in the delivery.</p></td></tr><tr><td><strong>Add to stock</strong></td><td>button</td><td><p>Adds the quantity to the item.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-receive-delivery">Record a delivery</a>  </p>
+</article><article class="screen" id="screen-categories" aria-labelledby="screen-categories-h">
+  <h3 id="screen-categories-h">Categories window <span class="kind">dialog</span></h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Categories window">
+    <img src="images/categories.png" alt="Categories window screen" width="366" height="413" loading="lazy">
+  </button>
+<figcaption>Categories window</figcaption></figure><p>Manage the categories used to group items.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Categories window fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Categories</strong></td><td>list</td><td><p>The categories you can choose for items.</p></td></tr><tr><td><strong>New category</strong></td><td>text box</td><td><p>Name of a category to add.</p></td></tr><tr><td><strong>Add</strong></td><td>button</td><td><p>Adds the category to the list.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-add-category">Add a category</a>  </p>
+</article><article class="screen" id="screen-settings" aria-labelledby="screen-settings-h">
+  <h3 id="screen-settings-h">Settings window <span class="kind">dialog</span></h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Settings window">
+    <img src="images/settings.png" alt="Settings window screen" width="406" height="299" loading="lazy">
+  </button>
+<figcaption>Settings window</figcaption></figure><p>Preferences that apply to the whole application.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Settings window fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Low-stock threshold</strong></td><td>text box</td><td><p>Items at or below this quantity appear under <strong>Low stock</strong>. From 0 to 1000.</p></td></tr><tr><td><strong>Default category for new items</strong></td><td>list</td><td><p>Pre-selected in the <strong>New item</strong> window.</p></td></tr><tr><td><strong>Send stock reports to</strong></td><td>text box</td><td><p>Email address for stock reports.</p></td></tr><tr><td><strong>Ask before deleting items</strong></td><td>check box</td><td><p>Asks you to confirm every delete.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-change-threshold">Change the low-stock level</a>  </p>
+</article><article class="screen" id="screen-about" aria-labelledby="screen-about-h">
+  <h3 id="screen-about-h">About window <span class="kind">dialog</span></h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: About window">
+    <img src="images/about.png" alt="About window screen" width="346" height="271" loading="lazy">
+  </button>
+<figcaption>About window</figcaption></figure><p>Shows the version number, useful when you contact support.</p></article>  </section>
+<section id="troubleshooting" class="chapter" aria-labelledby="h-trouble">
+  <h2 id="h-trouble">Troubleshooting</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Error messages and fixes">
+    <table class="trouble">
+      <thead><tr><th scope="col">Message</th><th scope="col">Why it happens</th><th scope="col">How to fix it</th></tr></thead>
+      <tbody>
+        <tr id="trouble-1"><td><q>Invalid user name or password.</q></td><td><p>The user name or password is wrong.</p></td><td><p>Check both and that <strong>Caps Lock</strong> is off. Ask your administrator to reset your password if needed.</p></td></tr>
+        <tr id="trouble-2"><td><q>SKU is required.</q></td><td><p>The <strong>SKU</strong> box is empty.</p></td><td><p>Type a stock code, for example <strong>HW-1003</strong>.</p></td></tr>
+        <tr id="trouble-3"><td><q>Another item already uses this SKU.</q></td><td><p>SKUs must be unique.</p></td><td><p>Use a different SKU, or edit the existing item instead.</p></td></tr>
+        <tr id="trouble-4"><td><q>Name is required.</q></td><td><p>The name box is empty.</p></td><td><p>Type a name.</p></td></tr>
+        <tr id="trouble-5"><td><q>Quantity cannot be negative.</q></td><td><p>The quantity is below zero.</p></td><td><p>Type <strong>0</strong> or more.</p></td></tr>
+        <tr id="trouble-6"><td><q>Quantity must be a whole number.</q></td><td><p>The quantity has letters or decimals.</p></td><td><p>Type a whole number such as <strong>12</strong>.</p></td></tr>
+        <tr id="trouble-7"><td><q>Unit price must be greater than 0.</q></td><td><p>The price is empty or zero.</p></td><td><p>Type a price such as <strong>4.50</strong>.</p></td></tr>
+        <tr id="trouble-8"><td><q>Select an item in the list first.</q></td><td><p>You clicked <strong>Edit</strong>, <strong>Receive stock</strong> or <strong>Delete</strong> without choosing an item.</p></td><td><p>Click an item in the list first.</p></td></tr>
+        <tr id="trouble-9"><td><q>That category already exists.</q></td><td><p>A category with the same name is already in the list.</p></td><td><p>Choose a different name.</p></td></tr>
+        <tr id="trouble-10"><td><q>Low-stock threshold must be between 0 and 1000.</q></td><td><p>The number is outside the allowed range.</p></td><td><p>Type a whole number from <strong>0</strong> to <strong>1000</strong>.</p></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>  <footer class="page-footer">Stockroom Inventory 2.3.0 · Generated September 24, 2026</footer>
+</main>
+</div>
+<dialog id="zoom" aria-label="Enlarged screenshot">
+  <form method="dialog"><button class="zoom-close" aria-label="Close">×</button></form>
+  <img alt="">
+</dialog>
+<script id="search-index" type="application/json">[{"t": "Getting Started", "u": "#getting-started", "s": "Getting Started", "x": "- A Windows 10 or Windows 11 PC with Stockroom Inventory installed.\n- The user name and password your administrator gave you.\n Open the Start menu and click Stockroom Inventory. The Sign in window appears. Type your User name and Password, then click Sign in. The main window has three tabs. Items lists everything in stock, Suppliers lists who you buy from and Reports sums up your stock. Use the Fi"}, {"t": "Sign in", "u": "#task-sign-in", "s": "How-To Tasks", "x": "Open Stockroom Inventory with your user name and password. In User name, type your user name. In Password, type your password. Click Sign in. The main window opens."}, {"t": "Add a new item", "u": "#task-add-item", "s": "How-To Tasks", "x": "Start tracking something new in the stockroom. On the Items tab, click New item. Type a unique SKU. Type the item Name. Type the Quantity you have. Type the Unit price. Type the shelf Location. Click Save. The item appears in the list."}, {"t": "Record a delivery", "u": "#task-receive-delivery", "s": "How-To Tasks", "x": "Add newly delivered stock to an item's quantity. On the Items tab, click the item that was delivered. Click Receive stock. In Quantity received, type how many arrived. Click Add to stock. The new quantity shows in the list."}, {"t": "Change an item's details", "u": "#task-edit-item", "s": "How-To Tasks", "x": "Correct a price, name or location. Click the item in the list. Click Edit. Change the details, for example the Unit price. Click Save."}, {"t": "Find an item", "u": "#task-find-item", "s": "How-To Tasks", "x": "Quickly find an item by name or SKU. On the Items tab, type part of the name or SKU in Search. The list shows only matching items."}, {"t": "See what needs reordering", "u": "#task-check-low-stock", "s": "How-To Tasks", "x": "Find items that are running low. Click the Reports tab. Items that need reordering are listed under Low stock."}, {"t": "Change the low-stock level", "u": "#task-change-threshold", "s": "How-To Tasks", "x": "Decide at what quantity an item counts as low. Click the File menu. Click Settings.... In Low-stock threshold, type the new level. Click OK."}, {"t": "Add a category", "u": "#task-add-category", "s": "How-To Tasks", "x": "Create a new category to group items. Click the Items menu. Click Categories.... In New category, type the name. Click Add. The category appears in the list. Click Close."}, {"t": "Look up a supplier", "u": "#task-view-suppliers", "s": "How-To Tasks", "x": "Find a supplier's contact details and delivery time. Click the Suppliers tab."}, {"t": "Delete an item", "u": "#task-delete-item", "s": "How-To Tasks", "x": "Remove an item you no longer stock. Click the item in the list. Click Delete, then click Yes to confirm. This cannot be undone."}, {"t": "Sign in", "u": "#screen-login-window", "s": "Screen Reference", "x": "Appears when you start Stockroom Inventory. User name Your Stockroom Inventory user name. Password Your password. It is hidden as you type. Sign in Opens the main window. Cancel Closes Stockroom Inventory."}, {"t": "Items tab", "u": "#screen-items", "s": "Screen Reference", "x": "The main window opens on this tab. It lists everything you keep in stock. Search Type part of a name or SKU to filter the list. New item Opens the New item window. Edit Opens the selected item for editing. Receive stock Adds a delivery to the selected item's quantity. Delete Removes the selected item after you confirm. Items Every item with its SKU, category, quantity, price, supplier and shelf location."}, {"t": "Suppliers tab", "u": "#screen-suppliers", "s": "Screen Reference", "x": "Lists your suppliers and how to reach them. Supplier The company you buy from. Contact email Where to send orders. Lead time (days) How long deliveries usually take."}, {"t": "Reports tab", "u": "#screen-reports", "s": "Screen Reference", "x": "A summary of your stock and a list of items that need reordering. Items How many different items you stock. Units in stock The total count of everything on your shelves. Stock value Quantity times unit price for all items. Low stock Items at or below the low-stock threshold set in Settings."}, {"t": "New item window", "u": "#screen-new-item", "s": "Screen Reference", "x": "Used to add a new item. The same window, titled Edit item, opens when you edit an item. SKU Your stock code, for example HW-1003. Must be unique. Name What the item is called. Category Pick a category. Add new ones under Items > Categories. Quantity How many you have. Cannot be negative. Unit price Price of one unit. Must be greater than 0. Supplier Who you buy it from. Location Shelf or bin, for example A-03. Save Saves the item. If something is wrong, a red message appears under the field."}, {"t": "Receive stock window", "u": "#screen-receive-stock", "s": "Screen Reference", "x": "Used when a delivery arrives. Shows the item and how many you have now. Quantity received How many arrived in the delivery. Add to stock Adds the quantity to the item."}, {"t": "Categories window", "u": "#screen-categories", "s": "Screen Reference", "x": "Manage the categories used to group items. Categories The categories you can choose for items. New category Name of a category to add. Add Adds the category to the list."}, {"t": "Settings window", "u": "#screen-settings", "s": "Screen Reference", "x": "Preferences that apply to the whole application. Low-stock threshold Items at or below this quantity appear under Low stock. From 0 to 1000. Default category for new items Pre-selected in the New item window. Send stock reports to Email address for stock reports. Ask before deleting items Asks you to confirm every delete."}, {"t": "About window", "u": "#screen-about", "s": "Screen Reference", "x": "Shows the version number, useful when you contact support."}, {"t": "Invalid user name or password.", "u": "#trouble-1", "s": "Troubleshooting", "x": "The user name or password is wrong. Check both and that Caps Lock is off. Ask your administrator to reset your password if needed."}, {"t": "SKU is required.", "u": "#trouble-2", "s": "Troubleshooting", "x": "The SKU box is empty. Type a stock code, for example HW-1003."}, {"t": "Another item already uses this SKU.", "u": "#trouble-3", "s": "Troubleshooting", "x": "SKUs must be unique. Use a different SKU, or edit the existing item instead."}, {"t": "Name is required.", "u": "#trouble-4", "s": "Troubleshooting", "x": "The name box is empty. Type a name."}, {"t": "Quantity cannot be negative.", "u": "#trouble-5", "s": "Troubleshooting", "x": "The quantity is below zero. Type 0 or more."}, {"t": "Quantity must be a whole number.", "u": "#trouble-6", "s": "Troubleshooting", "x": "The quantity has letters or decimals. Type a whole number such as 12."}, {"t": "Unit price must be greater than 0.", "u": "#trouble-7", "s": "Troubleshooting", "x": "The price is empty or zero. Type a price such as 4.50."}, {"t": "Select an item in the list first.", "u": "#trouble-8", "s": "Troubleshooting", "x": "You clicked Edit, Receive stock or Delete without choosing an item. Click an item in the list first."}, {"t": "That category already exists.", "u": "#trouble-9", "s": "Troubleshooting", "x": "A category with the same name is already in the list. Choose a different name."}, {"t": "Low-stock threshold must be between 0 and 1000.", "u": "#trouble-10", "s": "Troubleshooting", "x": "The number is outside the allowed range. Type a whole number from 0 to 1000."}]</script>
+<script>
+// GuideGen manual: client-side search over an embedded index, click-to-zoom, mobile sidebar, active section.
+(function () {
+  "use strict";
+  var index = JSON.parse(document.getElementById("search-index").textContent || "[]");
+  var q = document.getElementById("q");
+  var results = document.getElementById("results");
+  var active = -1;
+
+  function norm(s) { return (s || "").toLowerCase(); }
+  function score(entry, terms) {
+    var t = norm(entry.t), x = norm(entry.x), s = 0;
+    for (var i = 0; i < terms.length; i++) {
+      var term = terms[i];
+      if (t.indexOf(term) >= 0) s += 10; else if (x.indexOf(term) >= 0) s += 2; else return 0;
+    }
+    return s;
+  }
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function close() { results.hidden = true; q.setAttribute("aria-expanded", "false"); active = -1; }
+  function select(i) {
+    var items = results.querySelectorAll("li");
+    items.forEach(function (li, j) { li.setAttribute("aria-selected", j === i ? "true" : "false"); });
+    active = i;
+  }
+  function search() {
+    var terms = norm(q.value).split(/\s+/).filter(Boolean);
+    if (!terms.length) { close(); return; }
+    var hits = index.map(function (e) { return { e: e, s: score(e, terms) }; })
+      .filter(function (h) { return h.s > 0; }).sort(function (a, b) { return b.s - a.s; }).slice(0, 12);
+    results.innerHTML = hits.length ? hits.map(function (h, i) {
+      return '<li role="option" id="r' + i + '" aria-selected="false"><a href="' + h.e.u + '">' + esc(h.e.t) + "<small>" + esc(h.e.s) + "</small></a></li>";
+    }).join("") : '<li role="option" aria-disabled="true"><a>No results</a></li>';
+    results.hidden = false;
+    q.setAttribute("aria-expanded", "true");
+    active = -1;
+  }
+  q.addEventListener("input", search);
+  q.addEventListener("keydown", function (ev) {
+    var items = results.querySelectorAll("li a[href]");
+    if (ev.key === "ArrowDown" && items.length) { ev.preventDefault(); select(Math.min(active + 1, items.length - 1)); }
+    else if (ev.key === "ArrowUp" && items.length) { ev.preventDefault(); select(Math.max(active - 1, 0)); }
+    else if (ev.key === "Enter" && items.length) { ev.preventDefault(); (items[active >= 0 ? active : 0]).click(); close(); }
+    else if (ev.key === "Escape") { close(); }
+  });
+  results.addEventListener("click", function () { close(); });
+  document.addEventListener("click", function (ev) { if (!ev.target.closest(".search")) close(); });
+
+  // click-to-zoom
+  var dlg = document.getElementById("zoom");
+  document.querySelectorAll(".zoomable").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var img = btn.querySelector("img");
+      var big = dlg.querySelector("img");
+      big.src = img.src; big.alt = img.alt;
+      if (dlg.showModal) dlg.showModal(); else window.open(img.src);
+    });
+  });
+  dlg.addEventListener("click", function (ev) { if (ev.target === dlg) dlg.close(); });
+
+  // mobile sidebar
+  var toggle = document.querySelector(".menu-toggle");
+  var sidebar = document.getElementById("sidebar");
+  toggle.addEventListener("click", function () {
+    var open = sidebar.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  sidebar.addEventListener("click", function (ev) {
+    if (ev.target.tagName === "A" && window.matchMedia("(max-width: 900px)").matches) {
+      sidebar.classList.remove("open"); toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // highlight the current section in the sidebar
+  if ("IntersectionObserver" in window) {
+    var links = {};
+    sidebar.querySelectorAll("a[href^='#']").forEach(function (a) { links[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting && links[en.target.id]) {
+          Object.keys(links).forEach(function (k) { links[k].removeAttribute("aria-current"); });
+          links[en.target.id].setAttribute("aria-current", "true");
+        }
+      });
+    }, { rootMargin: "-20% 0px -70% 0px" });
+    document.querySelectorAll("article[id], section[id]").forEach(function (el) { obs.observe(el); });
+  }
+})();
+
+</script>
+</body>
+</html>

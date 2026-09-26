@@ -1,0 +1,23 @@
+{
+  "name": "nextjs-shop",
+  "productName": "Acme Shop",
+  "version": "1.4.0",
+  "private": true,
+  "author": "Acme Ltd",
+  "description": "GuideGen example: a small shop back-office (fake data only).",
+  "scripts": {
+    "dev": "next dev -p 3210",
+    "build": "next build",
+    "start": "next start -p 3210",
+    "seed": "node scripts/seed.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "next": "15.5.26",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.0"
+  }
+}

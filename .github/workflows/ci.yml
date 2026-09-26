@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: skills/guidegen/engine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --locked
+      - run: uv run ruff check src tests
+
+  engine-unit:
+    name: Engine unit tests (${{ matrix.os }}, Python ${{ matrix.python }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        # the lowest supported version and the newest one
+        python: ["3.11", "3.14"]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      UV_PYTHON: ${{ matrix.python }}
+    defaults:
+      run:
+        working-directory: skills/guidegen/engine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --locked
+      - run: uv run pytest -q
+      - name: Schemas are up to date
+        shell: bash
+        run: |
+          uv run guidegen schema --json
+          # --porcelain also catches new, untracked schema files that git diff would miss
+          test -z "$(git status --porcelain -- ../schema)" || { git status --porcelain -- ../schema; git diff -- ../schema; exit 1; }
+
+  web-example-e2e:
+    name: Web example end-to-end
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: examples/nextjs-shop/package-lock.json
+      - working-directory: skills/guidegen/engine
+        run: |
+          uv sync --locked
+          uv run guidegen doctor --json
+      - working-directory: skills/guidegen/engine
+        run: uv run pytest -m e2e -q -k "nextjs"
+      - name: Example's own Playwright tests (the evidence GuideGen reads)
+        working-directory: examples/nextjs-shop
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          npx playwright test
+
+  desktop-examples-e2e:
+    name: Desktop examples end-to-end (Windows)
+    runs-on: windows-latest
+    timeout-minutes: 45
+    # slow: runs on main, and on a pull request once it has the "desktop-e2e" label
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'desktop-e2e')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - working-directory: skills/guidegen/engine
+        run: |
+          uv sync --locked
+          uv run pytest -m e2e -q -k "wpf or winforms"
+      - name: Example's own FlaUI tests (the evidence GuideGen reads)
+        run: dotnet test examples/wpf-inventory/WpfInventory.sln

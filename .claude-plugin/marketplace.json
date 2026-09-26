@@ -1,0 +1,14 @@
+{
+  "name": "guidegen",
+  "owner": { "name": "GuideGen contributors" },
+  "metadata": { "description": "GuideGen: end-user manuals generated from your app." },
+  "plugins": [
+    {
+      "name": "guidegen",
+      "source": "./",
+      "description": "Type /guidegen to get a complete, branded user manual (Word + HTML) for your web or Windows desktop app.",
+      "version": "0.1.0",
+      "license": "MIT"
+    }
+  ]
+}

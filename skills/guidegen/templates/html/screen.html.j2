@@ -1,0 +1,21 @@
+<article class="screen" id="{{ s.anchor }}" aria-labelledby="{{ s.anchor }}-h">
+  {% set hl = "h4" if grouped else "h3" %}
+  <{{ hl }} id="{{ s.anchor }}-h">{{ s.title }}{% if s.kind == "dialog" %} <span class="kind">dialog</span>{% endif %}</{{ hl }}>
+  {% if s.figure %}{% with figure = s.figure %}{% include "figure.html.j2" %}{% endwith %}{% endif %}
+  {% if s.summary %}{{ s.summary|md }}{% endif %}
+  {% if s.elements %}
+  <div class="table-wrap" tabindex="0" role="region" aria-label="{{ s.title }} fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+      {% for e in s.elements %}<tr><td><strong>{{ e.name }}</strong></td><td>{{ e.type }}</td><td>{{ e.description|md }}</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  {% if s.used_in %}
+  <p class="xref"><strong>Used in:</strong>
+    {% for ta, ttitle in s.used_in %}<a href="#{{ ta }}">{{ ttitle }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+  </p>
+  {% endif %}
+</article>

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://raw.githubusercontent.com/guidegen/guidegen/main/skills/guidegen/schema/config.schema.json",
+  "app": {
+    "kind": "web",
+    "workingDir": ".",
+    "build": "npm ci",
+    "start": "npm run dev",
+    "url": "http://localhost:3210",
+    "readyWhen": {
+      "url": "http://localhost:3210",
+      "timeoutSec": 180
+    }
+  },
+  "auth": {
+    "required": true,
+    "usernameEnv": "GUIDEGEN_USER",
+    "passwordEnv": "GUIDEGEN_PASSWORD",
+    "loginSteps": [
+      {
+        "action": "goto",
+        "value": "/login"
+      },
+      {
+        "action": "type",
+        "target": {
+          "by": "label",
+          "value": "Email"
+        },
+        "value": "${GUIDEGEN_USER}"
+      },
+      {
+        "action": "type",
+        "target": {
+          "by": "label",
+          "value": "Password"
+        },
+        "value": "${GUIDEGEN_PASSWORD}"
+      },
+      {
+        "action": "click",
+        "target": {
+          "by": "role",
+          "value": "button",
+          "name": "Sign in"
+        }
+      }
+    ]
+  },
+  "seed": {
+    "command": "npm run seed",
+    "enabled": true
+  },
+  "safety": {
+    "allowRemoteBackends": false,
+    "allowDestructive": [],
+    "redactPatterns": [
+      "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+    ],
+    "redactSelectors": []
+  },
+  "budget": {
+    "maxScreens": 60,
+    "maxTasks": 15
+  },
+  "brand": {
+    "logo": "public/logo.svg",
+    "productName": "Acme Shop",
+    "companyName": "Acme Ltd",
+    "version": "1.4.0",
+    "primaryColor": "#1F4E79",
+    "accentColor": "#F29F05"
+  },
+  "graphify": {
+    "use": "auto"
+  }
+}

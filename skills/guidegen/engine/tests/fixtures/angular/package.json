@@ -1,0 +1,1 @@
+{ "name": "ng-admin", "scripts": { "start": "ng serve" }, "dependencies": { "@angular/core": "^18.0.0" } }

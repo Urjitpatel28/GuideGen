@@ -1,0 +1,991 @@
+{
+  "$defs": {
+    "Action": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "goto",
+            "click",
+            "double_click",
+            "type",
+            "select",
+            "press",
+            "hover",
+            "wait",
+            "screenshot",
+            "close"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Target"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "redact": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Redact",
+          "type": "array"
+        },
+        "timeoutMs": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timeoutms"
+        }
+      },
+      "required": [
+        "action"
+      ],
+      "title": "Action",
+      "type": "object"
+    },
+    "BriefGap": {
+      "additionalProperties": false,
+      "description": "An item from the developer's brief (old manual task, outline entry) that the live app does not have.",
+      "properties": {
+        "item": {
+          "title": "Item",
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "item"
+      ],
+      "title": "BriefGap",
+      "type": "object"
+    },
+    "Chapter": {
+      "additionalProperties": false,
+      "description": "Built-in chapters (getting-started, tasks, reference, troubleshooting) render generated content.\nAny other id is a custom text chapter (glossary, about this manual, FAQ...) rendered from `body`.",
+      "properties": {
+        "id": {
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Title"
+        },
+        "body": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Body"
+        },
+        "override": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Override"
+        },
+        "exclude": {
+          "default": false,
+          "title": "Exclude",
+          "type": "boolean"
+        },
+        "locked": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Locked",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "Chapter",
+      "type": "object"
+    },
+    "Element": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "override": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Override"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "title": "Element",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "ref": {
+          "title": "Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "ref"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "GettingStarted": {
+      "additionalProperties": false,
+      "properties": {
+        "requirements": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Requirements"
+        },
+        "launch": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Launch"
+        },
+        "signIn": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Signin"
+        },
+        "tour": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tour"
+        },
+        "tourScreen": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tourscreen"
+        },
+        "override": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Override"
+        }
+      },
+      "title": "GettingStarted",
+      "type": "object"
+    },
+    "Meta": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "default": "User Manual",
+          "title": "Title",
+          "type": "string"
+        },
+        "audience": {
+          "default": "end users",
+          "title": "Audience",
+          "type": "string"
+        },
+        "generatedAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generatedat"
+        },
+        "intro": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Intro"
+        }
+      },
+      "title": "Meta",
+      "type": "object"
+    },
+    "Screen": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "kind": {
+          "default": "page",
+          "enum": [
+            "page",
+            "window",
+            "dialog",
+            "tab"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "group": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Group"
+        },
+        "source": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Source",
+          "type": "array"
+        },
+        "sourceHash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sourcehash"
+        },
+        "status": {
+          "default": "pending",
+          "enum": [
+            "pending",
+            "captured",
+            "unreachable",
+            "excluded",
+            "budget-cut"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "unreachableReason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unreachablereason"
+        },
+        "exclude": {
+          "default": false,
+          "title": "Exclude",
+          "type": "boolean"
+        },
+        "locked": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Locked",
+          "type": "array"
+        },
+        "navigate": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Navigate",
+          "type": "array"
+        },
+        "elements": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Element"
+          },
+          "title": "Elements",
+          "type": "array"
+        },
+        "text": {
+          "$ref": "#/$defs/ScreenText",
+          "default": {
+            "summary": null,
+            "override": null
+          }
+        },
+        "image": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image"
+        },
+        "noUia": {
+          "default": false,
+          "title": "Nouia",
+          "type": "boolean"
+        },
+        "beforeLogin": {
+          "default": false,
+          "title": "Beforelogin",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "title"
+      ],
+      "title": "Screen",
+      "type": "object"
+    },
+    "ScreenText": {
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Summary"
+        },
+        "override": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Override"
+        }
+      },
+      "title": "ScreenText",
+      "type": "object"
+    },
+    "Step": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "screen": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Screen"
+        },
+        "action": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Action"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "override": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Override"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image"
+        },
+        "highlight": {
+          "default": true,
+          "title": "Highlight",
+          "type": "boolean"
+        },
+        "crop": {
+          "default": false,
+          "title": "Crop",
+          "type": "boolean"
+        },
+        "status": {
+          "default": "pending",
+          "enum": [
+            "pending",
+            "captured",
+            "refused",
+            "failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        },
+        "locked": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Locked",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "Step",
+      "type": "object"
+    },
+    "Target": {
+      "additionalProperties": false,
+      "properties": {
+        "by": {
+          "enum": [
+            "role",
+            "label",
+            "text",
+            "testid",
+            "css",
+            "automation_id",
+            "name",
+            "control_type",
+            "path"
+          ],
+          "title": "By",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        }
+      },
+      "required": [
+        "by",
+        "value"
+      ],
+      "title": "Target",
+      "type": "object"
+    },
+    "Task": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "group": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Group"
+        },
+        "goal": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Goal"
+        },
+        "rank": {
+          "default": 99,
+          "title": "Rank",
+          "type": "integer"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "exclude": {
+          "default": false,
+          "title": "Exclude",
+          "type": "boolean"
+        },
+        "locked": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Locked",
+          "type": "array"
+        },
+        "status": {
+          "default": "pending",
+          "enum": [
+            "pending",
+            "captured",
+            "partial",
+            "budget-cut",
+            "excluded"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "steps": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Step"
+          },
+          "title": "Steps",
+          "type": "array"
+        },
+        "override": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Override"
+        },
+        "beforeLogin": {
+          "default": false,
+          "title": "Beforelogin",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "title"
+      ],
+      "title": "Task",
+      "type": "object"
+    },
+    "Troubleshooting": {
+      "additionalProperties": false,
+      "properties": {
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "cause": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cause"
+        },
+        "fix": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fix"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "override": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Override"
+        },
+        "exclude": {
+          "default": false,
+          "title": "Exclude",
+          "type": "boolean"
+        },
+        "locked": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Locked",
+          "type": "array"
+        }
+      },
+      "required": [
+        "message"
+      ],
+      "title": "Troubleshooting",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "default": 1,
+      "title": "Version",
+      "type": "integer"
+    },
+    "meta": {
+      "$ref": "#/$defs/Meta",
+      "default": {
+        "title": "User Manual",
+        "audience": "end users",
+        "generatedAt": null,
+        "intro": null
+      }
+    },
+    "chapters": {
+      "default": [
+        {
+          "id": "getting-started",
+          "title": null,
+          "body": null,
+          "override": null,
+          "exclude": false,
+          "locked": []
+        },
+        {
+          "id": "tasks",
+          "title": null,
+          "body": null,
+          "override": null,
+          "exclude": false,
+          "locked": []
+        },
+        {
+          "id": "reference",
+          "title": null,
+          "body": null,
+          "override": null,
+          "exclude": false,
+          "locked": []
+        },
+        {
+          "id": "troubleshooting",
+          "title": null,
+          "body": null,
+          "override": null,
+          "exclude": false,
+          "locked": []
+        }
+      ],
+      "items": {
+        "$ref": "#/$defs/Chapter"
+      },
+      "title": "Chapters",
+      "type": "array"
+    },
+    "gettingStarted": {
+      "$ref": "#/$defs/GettingStarted",
+      "default": {
+        "requirements": null,
+        "launch": null,
+        "signIn": null,
+        "tour": null,
+        "tourScreen": null,
+        "override": null
+      }
+    },
+    "screens": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Screen"
+      },
+      "title": "Screens",
+      "type": "array"
+    },
+    "tasks": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Task"
+      },
+      "title": "Tasks",
+      "type": "array"
+    },
+    "troubleshooting": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Troubleshooting"
+      },
+      "title": "Troubleshooting",
+      "type": "array"
+    },
+    "briefGaps": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/BriefGap"
+      },
+      "title": "Briefgaps",
+      "type": "array"
+    }
+  },
+  "title": "Manual",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

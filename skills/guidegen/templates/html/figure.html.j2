@@ -1,0 +1,6 @@
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: {{ figure.caption }}">
+    <img src="{{ src(figure.path) }}" alt="{{ figure.alt }}" width="{{ figure.width }}" height="{{ figure.height }}" loading="lazy">
+  </button>
+  {% if not hide_caption %}<figcaption>{{ figure.caption }}</figcaption>{% endif %}
+</figure>

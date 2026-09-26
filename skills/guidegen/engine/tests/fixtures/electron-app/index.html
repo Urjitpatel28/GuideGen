@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Electron Notes</title>
+<style>
+  body { font-family: "Segoe UI", sans-serif; margin: 0; display: flex; height: 100vh; }
+  nav { width: 200px; background: #3b3f8f; padding: 16px; }
+  nav a { display: block; color: #fff; padding: 8px 0; text-decoration: none; }
+  main { padding: 24px; flex: 1; }
+  .note { border: 1px solid #ddd; border-radius: 6px; padding: 10px; margin: 8px 0; }
+</style>
+</head>
+<body>
+<nav aria-label="Main">
+  <a href="#/notes" data-testid="nav-notes">Notes</a>
+  <a href="#/new" data-testid="nav-new">New note</a>
+</nav>
+<main id="view"></main>
+<script>
+  const notes = [{ title: "Welcome", body: "Contact owner@notes.example for access." }];
+  function render() {
+    const v = document.getElementById("view");
+    if (location.hash === "#/new") {
+      v.innerHTML = '<h1>New note</h1><label for="t">Title</label><br><input id="t" data-testid="note-title"><br><br>' +
+        '<button data-testid="save-note">Save note</button>';
+      v.querySelector("button").onclick = () => { notes.push({ title: document.getElementById("t").value, body: "" }); location.hash = "#/notes"; };
+    } else {
+      v.innerHTML = "<h1>Notes</h1>" + notes.map(n => `<div class="note"><strong>${n.title}</strong><p>${n.body}</p></div>`).join("");
+    }
+  }
+  window.addEventListener("hashchange", render);
+  render();
+</script>
+</body>
+</html>

@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="GuideGen">
+<title>Acme Shop User Manual</title>
+<style>
+:root { --primary: #1F4E79; --accent: #F29F05; --accent-fg: #000000; }
+/* GuideGen manual. --primary / --accent are injected from the brand config. */
+:root {
+  --bg: #ffffff; --fg: #1d2330; --muted: #5b6475; --line: #e3e7ee; --soft: #f5f7fa;
+  --link: var(--primary); --sidebar-w: 280px; --topbar-h: 56px;
+  --font: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #14171d; --fg: #e6e9ef; --muted: #a3acbb; --line: #2b313c; --soft: #1c2028; --link: #8fb8ff; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--topbar-h) + 12px); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; font: 16px/1.6 var(--font); color: var(--fg); background: var(--bg); }
+a { color: var(--link); }
+a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -999px; top: 8px; background: var(--bg); padding: 8px 12px; z-index: 100; }
+.skip:focus { left: 8px; }
+
+.topbar { position: sticky; top: 0; z-index: 20; height: var(--topbar-h); display: flex; align-items: center; gap: 16px;
+  padding: 0 20px; background: var(--bg); border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--fg); text-decoration: none; white-space: nowrap; }
+.brand-logo { height: 28px; width: auto; }
+.menu-toggle { display: none; background: none; border: 0; color: var(--fg); padding: 6px; cursor: pointer; }
+.search { position: relative; margin-left: auto; width: min(420px, 50vw); }
+.search input { width: 100%; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; font: inherit; background: var(--soft); color: var(--fg); }
+#results { position: absolute; top: 42px; left: 0; right: 0; margin: 0; padding: 6px; list-style: none; background: var(--bg);
+  border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); max-height: 60vh; overflow: auto; }
+#results li a { display: block; padding: 8px 10px; border-radius: 6px; text-decoration: none; color: var(--fg); }
+#results li a small { display: block; color: var(--muted); }
+#results li[aria-selected="true"] a, #results li a:hover { background: var(--soft); }
+
+.shell { display: flex; }
+.sidebar { position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); width: var(--sidebar-w); flex: none;
+  overflow: auto; padding: 20px 12px 40px 20px; border-right: 1px solid var(--line); font-size: 14.5px; }
+.sidebar ul { list-style: none; margin: 0; padding: 0; }
+.sidebar > ul > li { margin-bottom: 14px; }
+.sidebar > ul > li > a { font-weight: 600; color: var(--fg); }
+.sidebar ul ul { margin-top: 6px; padding-left: 10px; border-left: 2px solid var(--line); }
+.sidebar ul ul a { display: block; padding: 3px 8px; color: var(--muted); text-decoration: none; border-radius: 4px; }
+.sidebar a[aria-current="true"] { color: var(--link); background: var(--soft); }
+
+main { flex: 1; min-width: 0; max-width: 980px; padding: 32px 48px 80px; }
+h1, h2, h3, h4 { color: var(--primary); line-height: 1.25; }
+@media (prefers-color-scheme: dark) { h1, h2, h3, h4 { color: var(--fg); } }
+h2 { font-size: 1.9rem; margin-top: 56px; padding-top: 8px; border-top: 1px solid var(--line); }
+h3 { font-size: 1.35rem; margin-top: 36px; }
+h4 { font-size: 1.15rem; margin-top: 28px; }
+.cover h1 { font-size: 2.4rem; margin: 8px 0; }
+.cover-logo { height: 72px; width: auto; }
+.meta { color: var(--muted); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin: 28px 0; }
+.card { display: block; padding: 16px; border: 1px solid var(--line); border-radius: 10px; text-decoration: none; color: var(--fg); background: var(--soft); }
+.card strong { display: block; color: var(--link); margin-bottom: 4px; }
+.card span { color: var(--muted); font-size: 14px; }
+.card:hover { border-color: var(--primary); }
+
+.task-list { columns: 2; padding-left: 20px; }
+.steps { list-style: none; padding: 0; margin: 16px 0; }
+.step { display: flex; gap: 14px; margin: 0 0 22px; }
+.badge { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: var(--accent-fg); font-weight: 700;
+  display: grid; place-items: center; font-size: 15px; margin-top: 2px; }
+.step-body { min-width: 0; flex: 1; }
+.step-text p { margin: 2px 0 10px; }
+.step-screen, .xref { font-size: 14px; color: var(--muted); }
+.kind { font-size: 12px; font-weight: 600; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; vertical-align: middle; }
+
+figure { margin: 8px 0 18px; }
+figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; }
+figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.zoomable { padding: 0; border: 0; background: none; cursor: zoom-in; display: block; max-width: 100%; }
+dialog#zoom { max-width: 96vw; max-height: 94vh; padding: 0; border: 0; border-radius: 10px; background: var(--bg); }
+dialog#zoom::backdrop { background: rgba(0,0,0,.7); }
+dialog#zoom img { display: block; max-width: 96vw; max-height: 90vh; }
+.zoom-close { position: absolute; right: 8px; top: 6px; font-size: 26px; background: var(--bg); color: var(--fg); border: 0; border-radius: 50%; width: 38px; height: 38px; cursor: pointer; }
+
+.table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th { text-align: left; background: var(--primary); color: #fff; font-weight: 600; }
+th, td { padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td p { margin: 0; }
+tr:last-child td { border-bottom: 0; }
+.page-footer { margin-top: 64px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 900px) {
+  .menu-toggle { display: block; }
+  .sidebar { position: fixed; left: 0; top: var(--topbar-h); z-index: 15; background: var(--bg); transform: translateX(-100%);
+    transition: transform .2s; box-shadow: 4px 0 20px rgba(0,0,0,.15); }
+  .sidebar.open { transform: none; }
+  main { padding: 20px 18px 60px; }
+  .task-list { columns: 1; }
+  .brand span { display: none; }
+  .search { width: auto; flex: 1; }
+}
+@media print {
+  .topbar, .sidebar, dialog { display: none !important; }
+  main { max-width: none; padding: 0; }
+}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button class="menu-toggle" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Show navigation">
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <a class="brand" href="#top">
+<img src="images/brand-logo.png" alt="" class="brand-logo">    <span>Acme Shop</span>
+  </a>
+  <div class="search" role="search">
+    <label for="q" class="visually-hidden">Search the manual</label>
+    <input id="q" type="search" placeholder="Search the manual…" autocomplete="off" aria-controls="results" aria-expanded="false">
+    <ul id="results" role="listbox" aria-label="Search results" hidden></ul>
+  </div>
+</header>
+<div class="shell">
+<nav id="sidebar" class="sidebar" aria-label="Manual contents">
+  <ul>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#tasks">How-To Tasks</a>
+      <ul><li><a href="#task-sign-in">Sign in to Acme Shop</a></li><li><a href="#task-create-order">Create an order</a></li><li><a href="#task-add-customer">Add a customer</a></li><li><a href="#task-add-product">Add a product</a></li><li><a href="#task-adjust-stock">Correct the stock count</a></li><li><a href="#task-ship-order">Mark an order as shipped</a></li><li><a href="#task-send-invoice">Send an invoice</a></li><li><a href="#task-change-settings">Change store settings</a></li><li><a href="#task-check-low-stock">Find products that are running low</a></li><li><a href="#task-sign-out">Sign out</a></li></ul>
+    </li>
+    <li><a href="#reference">Screen Reference</a>
+      <ul><li><a href="#screen-login">Sign in</a></li><li><a href="#screen-dashboard">Dashboard</a></li><li><a href="#screen-products">Products</a></li><li><a href="#screen-new-product">New product</a></li><li><a href="#screen-product-detail">Product details</a></li><li><a href="#screen-orders">Orders</a></li><li><a href="#screen-new-order">New order</a></li><li><a href="#screen-order-detail">Order details</a></li><li><a href="#screen-customers">Customers</a></li><li><a href="#screen-new-customer">New customer</a></li><li><a href="#screen-settings">Settings</a></li></ul>
+    </li>
+    <li><a href="#troubleshooting">Troubleshooting</a></li>
+  </ul>
+</nav><main id="main" tabindex="-1">
+  <section class="cover" id="top" aria-labelledby="cover-title">
+<img src="images/brand-logo.png" alt="Acme Shop logo" class="cover-logo">    <h1 id="cover-title">Acme Shop User Manual</h1>
+    <p class="meta">Version 1.4.0 · September 24, 2026 · Acme Ltd</p>
+    <div class="cards">
+        <a class="card" href="#getting-started">
+          <strong>Getting Started</strong>
+          <span>Install, launch and first steps</span>
+        </a>
+        <a class="card" href="#tasks">
+          <strong>How-To Tasks</strong>
+          <span>10 step-by-step guides</span>
+        </a>
+        <a class="card" href="#reference">
+          <strong>Screen Reference</strong>
+          <span>11 screens explained</span>
+        </a>
+        <a class="card" href="#troubleshooting">
+          <strong>Troubleshooting</strong>
+          <span>8 messages and fixes</span>
+        </a>
+    </div>
+  </section>
+
+  <section id="getting-started" class="chapter" aria-labelledby="h-gs">
+    <h2 id="h-gs">Getting Started</h2>
+<p>Acme Shop is where you manage your products, customers and orders. This manual shows you how to do everyday jobs step by step, and explains every screen.</p><h3>Before you begin</h3><ul><li>A computer with an up-to-date web browser (Microsoft Edge, Google Chrome, Firefox or Safari).</li><li>The Acme Shop web address and the email and password your administrator gave you.</li></ul><h3>Starting the application</h3><p>Open your web browser and go to the Acme Shop address. The <strong>Sign in to Acme Shop</strong> page appears.</p><h3>Signing in</h3><p>Type your <strong>Email</strong> and <strong>Password</strong>, then click <strong>Sign in</strong>. If you see <em>Invalid email or password</em>, check both and try again.</p><h3>A quick tour</h3><p>After you sign in you see the <strong>Dashboard</strong>. The menu on the left takes you to <strong>Products</strong>, <strong>Orders</strong>, <strong>Customers</strong> and <strong>Settings</strong>. Click <strong>Sign out</strong> at the bottom of the menu when you are finished.</p>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: The Dashboard screen">
+    <img src="images/dashboard.png" alt="Dashboard overview" width="1440" height="900" loading="lazy">
+  </button>
+<figcaption>The Dashboard screen</figcaption></figure>  </section>
+  <section id="tasks" class="chapter" aria-labelledby="h-tasks">
+    <h2 id="h-tasks">How-To Tasks</h2>
+    <ul class="task-list">
+<li><a href="#task-sign-in">Sign in to Acme Shop</a></li><li><a href="#task-create-order">Create an order</a></li><li><a href="#task-add-customer">Add a customer</a></li><li><a href="#task-add-product">Add a product</a></li><li><a href="#task-adjust-stock">Correct the stock count</a></li><li><a href="#task-ship-order">Mark an order as shipped</a></li><li><a href="#task-send-invoice">Send an invoice</a></li><li><a href="#task-change-settings">Change store settings</a></li><li><a href="#task-check-low-stock">Find products that are running low</a></li><li><a href="#task-sign-out">Sign out</a></li>    </ul>
+<article class="task" id="task-sign-in" aria-labelledby="task-sign-in-h">
+  <h3 id="task-sign-in-h">Sign in to Acme Shop</h3>
+<div class="goal"><p>Get into Acme Shop with your email and password.</p></div>  <ol class="steps">
+<li class="step" id="task-sign-in-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>Open Acme Shop in your web browser. The <strong>Sign in to Acme Shop</strong> page appears.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: Open Acme Shop in your web browser. The Sign in to Acme Shop page appears.">
+    <img src="images/sign-in-s1.png" alt="Sign in to Acme Shop, step 1: Open Acme Shop in your web browser. The Sign in to Acme Shop page appears." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-login">Sign in</a></p>  </div>
+</li><li class="step" id="task-sign-in-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>Email</strong>, type your email address.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: In Email, type your email address.">
+    <img src="images/sign-in-s2.png" alt="Sign in to Acme Shop, step 2: In Email, type your email address." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-login">Sign in</a></p>  </div>
+</li><li class="step" id="task-sign-in-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>Password</strong>, type your password.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: In Password, type your password.">
+    <img src="images/sign-in-s3.png" alt="Sign in to Acme Shop, step 3: In Password, type your password." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-login">Sign in</a></p>  </div>
+</li><li class="step" id="task-sign-in-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Sign in</strong>. The <strong>Dashboard</strong> opens.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Click Sign in. The Dashboard opens.">
+    <img src="images/sign-in-s4.png" alt="Sign in to Acme Shop, step 4: Click Sign in. The Dashboard opens." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-dashboard">Dashboard</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-login">Sign in</a>, <a href="#screen-dashboard">Dashboard</a>  </p>
+</article><article class="task" id="task-create-order" aria-labelledby="task-create-order-h">
+  <h3 id="task-create-order-h">Create an order</h3>
+<div class="goal"><p>Record an order for a customer and take the items out of stock.</p></div>  <ol class="steps">
+<li class="step" id="task-create-order-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>In the menu, click <strong>Orders</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: In the menu, click Orders.">
+    <img src="images/create-order-s1.png" alt="Create an order, step 1: In the menu, click Orders." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-dashboard">Dashboard</a></p>  </div>
+</li><li class="step" id="task-create-order-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>New order</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click New order.">
+    <img src="images/create-order-s2.png" alt="Create an order, step 2: Click New order." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-orders">Orders</a></p>  </div>
+</li><li class="step" id="task-create-order-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>Customer</strong>, choose who the order is for.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: In Customer, choose who the order is for.">
+    <img src="images/create-order-s3.png" alt="Create an order, step 3: In Customer, choose who the order is for." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-order">New order</a></p>  </div>
+</li><li class="step" id="task-create-order-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>Product</strong>, choose what they are buying.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: In Product, choose what they are buying.">
+    <img src="images/create-order-s4.png" alt="Create an order, step 4: In Product, choose what they are buying." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-order">New order</a></p>  </div>
+</li><li class="step" id="task-create-order-s5">
+  <span class="badge" aria-hidden="true">5</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>Quantity</strong>, type how many.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 5: In Quantity, type how many.">
+    <img src="images/create-order-s5.png" alt="Create an order, step 5: In Quantity, type how many." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-order">New order</a></p>  </div>
+</li><li class="step" id="task-create-order-s6">
+  <span class="badge" aria-hidden="true">6</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Create order</strong>. The new order opens with the status <strong>Open</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 6: Click Create order. The new order opens with the status Open.">
+    <img src="images/create-order-s6.png" alt="Create an order, step 6: Click Create order. The new order opens with the status Open." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-order-detail">Order details</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-dashboard">Dashboard</a>, <a href="#screen-orders">Orders</a>, <a href="#screen-new-order">New order</a>, <a href="#screen-order-detail">Order details</a>  </p>
+</article><article class="task" id="task-add-customer" aria-labelledby="task-add-customer-h">
+  <h3 id="task-add-customer-h">Add a customer</h3>
+<div class="goal"><p>Add a person or business so you can create orders for them.</p></div>  <ol class="steps">
+<li class="step" id="task-add-customer-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>In the menu, click <strong>Customers</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: In the menu, click Customers.">
+    <img src="images/add-customer-s1.png" alt="Add a customer, step 1: In the menu, click Customers." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-dashboard">Dashboard</a></p>  </div>
+</li><li class="step" id="task-add-customer-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>New customer</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click New customer.">
+    <img src="images/add-customer-s2.png" alt="Add a customer, step 2: Click New customer." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers</a></p>  </div>
+</li><li class="step" id="task-add-customer-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>Name</strong>, type the customer's name.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: In Name, type the customer&#39;s name.">
+    <img src="images/add-customer-s3.png" alt="Add a customer, step 3: In Name, type the customer&#39;s name." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-customer">New customer</a></p>  </div>
+</li><li class="step" id="task-add-customer-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>Email</strong>, type the address where invoices should go.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: In Email, type the address where invoices should go.">
+    <img src="images/add-customer-s4.png" alt="Add a customer, step 4: In Email, type the address where invoices should go." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-customer">New customer</a></p>  </div>
+</li><li class="step" id="task-add-customer-s5">
+  <span class="badge" aria-hidden="true">5</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Save customer</strong>. The customer now appears in the <strong>Customers</strong> list.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 5: Click Save customer. The customer now appears in the Customers list.">
+    <img src="images/add-customer-s5.png" alt="Add a customer, step 5: Click Save customer. The customer now appears in the Customers list." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-dashboard">Dashboard</a>, <a href="#screen-customers">Customers</a>, <a href="#screen-new-customer">New customer</a>  </p>
+</article><article class="task" id="task-add-product" aria-labelledby="task-add-product-h">
+  <h3 id="task-add-product-h">Add a product</h3>
+<div class="goal"><p>Add a new product to your catalogue.</p></div>  <ol class="steps">
+<li class="step" id="task-add-product-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>In the menu, click <strong>Products</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: In the menu, click Products.">
+    <img src="images/add-product-s1.png" alt="Add a product, step 1: In the menu, click Products." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-dashboard">Dashboard</a></p>  </div>
+</li><li class="step" id="task-add-product-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>New product</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click New product.">
+    <img src="images/add-product-s2.png" alt="Add a product, step 2: Click New product." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-products">Products</a></p>  </div>
+</li><li class="step" id="task-add-product-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type the product <strong>Name</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: Type the product Name.">
+    <img src="images/add-product-s3.png" alt="Add a product, step 3: Type the product Name." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-product">New product</a></p>  </div>
+</li><li class="step" id="task-add-product-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type your stock code in <strong>SKU</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Type your stock code in SKU.">
+    <img src="images/add-product-s4.png" alt="Add a product, step 4: Type your stock code in SKU." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-product">New product</a></p>  </div>
+</li><li class="step" id="task-add-product-s5">
+  <span class="badge" aria-hidden="true">5</span>
+  <div class="step-body">
+    <div class="step-text"><p>Choose a <strong>Category</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 5: Choose a Category.">
+    <img src="images/add-product-s5.png" alt="Add a product, step 5: Choose a Category." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-product">New product</a></p>  </div>
+</li><li class="step" id="task-add-product-s6">
+  <span class="badge" aria-hidden="true">6</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type the <strong>Price</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 6: Type the Price.">
+    <img src="images/add-product-s6.png" alt="Add a product, step 6: Type the Price." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-product">New product</a></p>  </div>
+</li><li class="step" id="task-add-product-s7">
+  <span class="badge" aria-hidden="true">7</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type how many you have in <strong>Stock</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 7: Type how many you have in Stock.">
+    <img src="images/add-product-s7.png" alt="Add a product, step 7: Type how many you have in Stock." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-new-product">New product</a></p>  </div>
+</li><li class="step" id="task-add-product-s8">
+  <span class="badge" aria-hidden="true">8</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Save product</strong>. The product's page opens.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 8: Click Save product. The product&#39;s page opens.">
+    <img src="images/add-product-s8.png" alt="Add a product, step 8: Click Save product. The product&#39;s page opens." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-product-detail">Product details</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-dashboard">Dashboard</a>, <a href="#screen-products">Products</a>, <a href="#screen-new-product">New product</a>, <a href="#screen-product-detail">Product details</a>  </p>
+</article><article class="task" id="task-adjust-stock" aria-labelledby="task-adjust-stock-h">
+  <h3 id="task-adjust-stock-h">Correct the stock count</h3>
+<div class="goal"><p>Update how many of a product you have, for example after a stock take.</p></div>  <ol class="steps">
+<li class="step" id="task-adjust-stock-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>In the menu, click <strong>Products</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: In the menu, click Products.">
+    <img src="images/adjust-stock-s1.png" alt="Correct the stock count, step 1: In the menu, click Products." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-dashboard">Dashboard</a></p>  </div>
+</li><li class="step" id="task-adjust-stock-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click the product's name.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click the product&#39;s name.">
+    <img src="images/adjust-stock-s2.png" alt="Correct the stock count, step 2: Click the product&#39;s name." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-products">Products</a></p>  </div>
+</li><li class="step" id="task-adjust-stock-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>Adjust stock</strong>, type the new count.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: In Adjust stock, type the new count.">
+    <img src="images/adjust-stock-s3.png" alt="Correct the stock count, step 3: In Adjust stock, type the new count." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-product-detail">Product details</a></p>  </div>
+</li><li class="step" id="task-adjust-stock-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Update stock</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Click Update stock.">
+    <img src="images/adjust-stock-s4.png" alt="Correct the stock count, step 4: Click Update stock." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-product-detail">Product details</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-dashboard">Dashboard</a>, <a href="#screen-products">Products</a>, <a href="#screen-product-detail">Product details</a>  </p>
+</article><article class="task" id="task-ship-order" aria-labelledby="task-ship-order-h">
+  <h3 id="task-ship-order-h">Mark an order as shipped</h3>
+<div class="goal"><p>Record that an order has left the building.</p></div>  <ol class="steps">
+<li class="step" id="task-ship-order-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>In the menu, click <strong>Orders</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: In the menu, click Orders.">
+    <img src="images/ship-order-s1.png" alt="Mark an order as shipped, step 1: In the menu, click Orders." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-dashboard">Dashboard</a></p>  </div>
+</li><li class="step" id="task-ship-order-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click the order number.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click the order number.">
+    <img src="images/ship-order-s2.png" alt="Mark an order as shipped, step 2: Click the order number." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-orders">Orders</a></p>  </div>
+</li><li class="step" id="task-ship-order-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Mark as shipped</strong>. The status changes to <strong>Shipped</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: Click Mark as shipped. The status changes to Shipped.">
+    <img src="images/ship-order-s3.png" alt="Mark an order as shipped, step 3: Click Mark as shipped. The status changes to Shipped." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-order-detail">Order details</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-dashboard">Dashboard</a>, <a href="#screen-orders">Orders</a>, <a href="#screen-order-detail">Order details</a>  </p>
+</article><article class="task" id="task-send-invoice" aria-labelledby="task-send-invoice-h">
+  <h3 id="task-send-invoice-h">Send an invoice</h3>
+<div class="goal"><p>Email an invoice for an order to the customer.</p></div>  <ol class="steps">
+<li class="step" id="task-send-invoice-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>In the menu, click <strong>Orders</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: In the menu, click Orders.">
+    <img src="images/send-invoice-s1.png" alt="Send an invoice, step 1: In the menu, click Orders." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-dashboard">Dashboard</a></p>  </div>
+</li><li class="step" id="task-send-invoice-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click the order number.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click the order number.">
+    <img src="images/send-invoice-s2.png" alt="Send an invoice, step 2: Click the order number." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-orders">Orders</a></p>  </div>
+</li><li class="step" id="task-send-invoice-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>Check the invoice email address, then click <strong>Send invoice</strong>. The invoice is emailed to the customer.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: Check the invoice email address, then click Send invoice. The invoice is emailed to the customer.">
+    <img src="images/send-invoice-s3.png" alt="Send an invoice, step 3: Check the invoice email address, then click Send invoice. The invoice is emailed to the customer." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-order-detail">Order details</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-dashboard">Dashboard</a>, <a href="#screen-orders">Orders</a>, <a href="#screen-order-detail">Order details</a>  </p>
+</article><article class="task" id="task-change-settings" aria-labelledby="task-change-settings-h">
+  <h3 id="task-change-settings-h">Change store settings</h3>
+<div class="goal"><p>Change your store name, currency or low-stock level.</p></div>  <ol class="steps">
+<li class="step" id="task-change-settings-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>In the menu, click <strong>Settings</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: In the menu, click Settings.">
+    <img src="images/change-settings-s1.png" alt="Change store settings, step 1: In the menu, click Settings." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-dashboard">Dashboard</a></p>  </div>
+</li><li class="step" id="task-change-settings-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Change <strong>Low-stock threshold</strong> to the level you want warnings at.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Change Low-stock threshold to the level you want warnings at.">
+    <img src="images/change-settings-s2.png" alt="Change store settings, step 2: Change Low-stock threshold to the level you want warnings at." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-settings">Settings</a></p>  </div>
+</li><li class="step" id="task-change-settings-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>Choose a <strong>Currency</strong> if you need to.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: Choose a Currency if you need to.">
+    <img src="images/change-settings-s3.png" alt="Change store settings, step 3: Choose a Currency if you need to." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-settings">Settings</a></p>  </div>
+</li><li class="step" id="task-change-settings-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Save settings</strong>. <em>Settings saved.</em> appears.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Click Save settings. Settings saved. appears.">
+    <img src="images/change-settings-s4.png" alt="Change store settings, step 4: Click Save settings. Settings saved. appears." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-settings">Settings</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-dashboard">Dashboard</a>, <a href="#screen-settings">Settings</a>  </p>
+</article><article class="task" id="task-check-low-stock" aria-labelledby="task-check-low-stock-h">
+  <h3 id="task-check-low-stock-h">Find products that are running low</h3>
+<div class="goal"><p>See which products need restocking.</p></div>  <ol class="steps">
+<li class="step" id="task-check-low-stock-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>In the menu, click <strong>Dashboard</strong> and look at <strong>Low-stock products</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: In the menu, click Dashboard and look at Low-stock products.">
+    <img src="images/check-low-stock-s1.png" alt="Find products that are running low, step 1: In the menu, click Dashboard and look at Low-stock products." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-dashboard">Dashboard</a></p>  </div>
+</li><li class="step" id="task-check-low-stock-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Products</strong>. Stock counts shown in red are at or below your low-stock level.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click Products. Stock counts shown in red are at or below your low-stock level.">
+    <img src="images/check-low-stock-s2.png" alt="Find products that are running low, step 2: Click Products. Stock counts shown in red are at or below your low-stock level." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-products">Products</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-dashboard">Dashboard</a>, <a href="#screen-products">Products</a>  </p>
+</article><article class="task" id="task-sign-out" aria-labelledby="task-sign-out-h">
+  <h3 id="task-sign-out-h">Sign out</h3>
+<div class="goal"><p>Leave Acme Shop safely, for example on a shared computer.</p></div>  <ol class="steps">
+<li class="step" id="task-sign-out-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>At the bottom of the menu, click <strong>Sign out</strong>. The sign-in page appears.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: At the bottom of the menu, click Sign out. The sign-in page appears.">
+    <img src="images/sign-out-s1.png" alt="Sign out, step 1: At the bottom of the menu, click Sign out. The sign-in page appears." width="1440" height="900" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-dashboard">Dashboard</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-dashboard">Dashboard</a>  </p>
+</article>  </section>
+  <section id="reference" class="chapter" aria-labelledby="h-ref">
+    <h2 id="h-ref">Screen Reference</h2>
+<article class="screen" id="screen-login" aria-labelledby="screen-login-h">
+  <h3 id="screen-login-h">Sign in</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Sign in">
+    <img src="images/login.png" alt="Sign in screen" width="1440" height="900" loading="lazy">
+  </button>
+<figcaption>Sign in</figcaption></figure><p>The first page you see. Enter your email and password to get into Acme Shop.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Sign in fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Email</strong></td><td>text box</td><td><p>The email address of your Acme Shop account.</p></td></tr><tr><td><strong>Password</strong></td><td>text box</td><td><p>Your password. It is hidden as you type.</p></td></tr><tr><td><strong>Sign in</strong></td><td>button</td><td><p>Signs you in and opens the <strong>Dashboard</strong>.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-sign-in">Sign in to Acme Shop</a>  </p>
+</article><article class="screen" id="screen-dashboard" aria-labelledby="screen-dashboard-h">
+  <h3 id="screen-dashboard-h">Dashboard</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Dashboard">
+    <img src="images/dashboard.png" alt="Dashboard screen" width="1440" height="900" loading="lazy">
+  </button>
+<figcaption>Dashboard</figcaption></figure><p>Your home page. It sums up how the shop is doing and lists the most recent orders.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Dashboard fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Open orders</strong></td><td>summary tile</td><td><p>How many orders have not been shipped yet.</p></td></tr><tr><td><strong>Total sales</strong></td><td>summary tile</td><td><p>The value of all orders.</p></td></tr><tr><td><strong>Customers</strong></td><td>summary tile</td><td><p>How many customers you have.</p></td></tr><tr><td><strong>Low-stock products</strong></td><td>summary tile</td><td><p>Products at or below the low-stock level set in <strong>Settings</strong>. Shown in red when there are any.</p></td></tr><tr><td><strong>New order</strong></td><td>button</td><td><p>Opens the <strong>New order</strong> page.</p></td></tr><tr><td><strong>Recent orders</strong></td><td>table</td><td><p>The five newest orders. Click an order number to open it.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-sign-in">Sign in to Acme Shop</a>, <a href="#task-create-order">Create an order</a>, <a href="#task-add-customer">Add a customer</a>, <a href="#task-add-product">Add a product</a>, <a href="#task-adjust-stock">Correct the stock count</a>, <a href="#task-ship-order">Mark an order as shipped</a>, <a href="#task-send-invoice">Send an invoice</a>, <a href="#task-change-settings">Change store settings</a>, <a href="#task-check-low-stock">Find products that are running low</a>, <a href="#task-sign-out">Sign out</a>  </p>
+</article><article class="screen" id="screen-products" aria-labelledby="screen-products-h">
+  <h3 id="screen-products-h">Products</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Products">
+    <img src="images/products.png" alt="Products screen" width="1440" height="900" loading="lazy">
+  </button>
+<figcaption>Products</figcaption></figure><p>Lists everything you sell, with its stock code (SKU), category, price and stock on hand.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Products fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>New product</strong></td><td>button</td><td><p>Opens the <strong>New product</strong> page.</p></td></tr><tr><td><strong>Name</strong></td><td>link</td><td><p>Opens the product's page.</p></td></tr><tr><td><strong>Stock</strong></td><td>column</td><td><p>How many you have. Shown in red when stock is low.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-add-product">Add a product</a>, <a href="#task-adjust-stock">Correct the stock count</a>, <a href="#task-check-low-stock">Find products that are running low</a>  </p>
+</article><article class="screen" id="screen-new-product" aria-labelledby="screen-new-product-h">
+  <h3 id="screen-new-product-h">New product</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: New product">
+    <img src="images/new-product.png" alt="New product screen" width="1440" height="900" loading="lazy">
+  </button>
+<figcaption>New product</figcaption></figure><p>Use this page to add a product to your catalogue.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="New product fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Name</strong></td><td>text box</td><td><p>The product name customers see. Required.</p></td></tr><tr><td><strong>SKU</strong></td><td>text box</td><td><p>Your own stock code, for example COF-002. Required.</p></td></tr><tr><td><strong>Category</strong></td><td>list</td><td><p>Coffee, Kitchen, Equipment or Other.</p></td></tr><tr><td><strong>Price</strong></td><td>text box</td><td><p>Price per item. Must be greater than 0.</p></td></tr><tr><td><strong>Stock</strong></td><td>text box</td><td><p>How many you have now. Cannot be negative.</p></td></tr><tr><td><strong>Save product</strong></td><td>button</td><td><p>Saves the product and opens its page.</p></td></tr><tr><td><strong>Cancel</strong></td><td>button</td><td><p>Goes back to <strong>Products</strong> without saving.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-add-product">Add a product</a>  </p>
+</article><article class="screen" id="screen-product-detail" aria-labelledby="screen-product-detail-h">
+  <h3 id="screen-product-detail-h">Product details</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Product details">
+    <img src="images/product-detail.png" alt="Product details screen" width="1440" height="900" loading="lazy">
+  </button>
+<figcaption>Product details</figcaption></figure><p>Shows one product's price and stock. You can correct the stock count or delete the product here.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Product details fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Adjust stock</strong></td><td>text box</td><td><p>Type the new stock count.</p></td></tr><tr><td><strong>Update stock</strong></td><td>button</td><td><p>Saves the new stock count.</p></td></tr><tr><td><strong>Delete product</strong></td><td>button</td><td><p>Removes the product after you confirm. This cannot be undone.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-add-product">Add a product</a>, <a href="#task-adjust-stock">Correct the stock count</a>  </p>
+</article><article class="screen" id="screen-orders" aria-labelledby="screen-orders-h">
+  <h3 id="screen-orders-h">Orders</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Orders">
+    <img src="images/orders.png" alt="Orders screen" width="1440" height="900" loading="lazy">
+  </button>
+<figcaption>Orders</figcaption></figure><p>Lists all orders, newest first, with the customer, date, number of items, total and status.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Orders fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>New order</strong></td><td>button</td><td><p>Opens the <strong>New order</strong> page.</p></td></tr><tr><td><strong>Order</strong></td><td>link</td><td><p>Opens the order.</p></td></tr><tr><td><strong>Status</strong></td><td>column</td><td><p><strong>Open</strong> until you mark the order as shipped, then <strong>Shipped</strong>.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-create-order">Create an order</a>, <a href="#task-ship-order">Mark an order as shipped</a>, <a href="#task-send-invoice">Send an invoice</a>  </p>
+</article><article class="screen" id="screen-new-order" aria-labelledby="screen-new-order-h">
+  <h3 id="screen-new-order-h">New order</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: New order">
+    <img src="images/new-order.png" alt="New order screen" width="1440" height="900" loading="lazy">
+  </button>
+<figcaption>New order</figcaption></figure><p>Use this page to record a new order for an existing customer.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="New order fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Customer</strong></td><td>list</td><td><p>Who the order is for. The customer must already exist - add new customers on the <strong>Customers</strong> page first.</p></td></tr><tr><td><strong>Product</strong></td><td>list</td><td><p>What they are buying. The list shows how many are in stock.</p></td></tr><tr><td><strong>Quantity</strong></td><td>text box</td><td><p>How many. Must be greater than 0 and not more than the stock.</p></td></tr><tr><td><strong>Note</strong></td><td>text box</td><td><p>Optional note shown on the order.</p></td></tr><tr><td><strong>Create order</strong></td><td>button</td><td><p>Saves the order and takes the items out of stock.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-create-order">Create an order</a>  </p>
+</article><article class="screen" id="screen-order-detail" aria-labelledby="screen-order-detail-h">
+  <h3 id="screen-order-detail-h">Order details</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Order details">
+    <img src="images/order-detail.png" alt="Order details screen" width="1440" height="900" loading="lazy">
+  </button>
+<figcaption>Order details</figcaption></figure><p>Shows the items, quantities and total of one order, and who it was for.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Order details fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Mark as shipped</strong></td><td>button</td><td><p>Changes the status to <strong>Shipped</strong>. Only shown for open orders.</p></td></tr><tr><td><strong>Send invoice</strong></td><td>button</td><td><p>Emails an invoice to the customer's invoice email address.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-create-order">Create an order</a>, <a href="#task-ship-order">Mark an order as shipped</a>, <a href="#task-send-invoice">Send an invoice</a>  </p>
+</article><article class="screen" id="screen-customers" aria-labelledby="screen-customers-h">
+  <h3 id="screen-customers-h">Customers</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Customers">
+    <img src="images/customers.png" alt="Customers screen" width="1440" height="900" loading="lazy">
+  </button>
+<figcaption>Customers</figcaption></figure><p>Lists the people and businesses you sell to, with their contact details.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Customers fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>New customer</strong></td><td>button</td><td><p>Opens the <strong>New customer</strong> page.</p></td></tr><tr><td><strong>Orders</strong></td><td>column</td><td><p>How many orders the customer has placed.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-add-customer">Add a customer</a>  </p>
+</article><article class="screen" id="screen-new-customer" aria-labelledby="screen-new-customer-h">
+  <h3 id="screen-new-customer-h">New customer</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: New customer">
+    <img src="images/new-customer.png" alt="New customer screen" width="1440" height="900" loading="lazy">
+  </button>
+<figcaption>New customer</figcaption></figure><p>Use this page to add a customer. You need a customer before you can create an order for them.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="New customer fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Name</strong></td><td>text box</td><td><p>Person or business name. Required.</p></td></tr><tr><td><strong>Email</strong></td><td>text box</td><td><p>Where invoices are sent. Must be a valid email address.</p></td></tr><tr><td><strong>Phone</strong></td><td>text box</td><td><p>Optional.</p></td></tr><tr><td><strong>City</strong></td><td>text box</td><td><p>Optional.</p></td></tr><tr><td><strong>Save customer</strong></td><td>button</td><td><p>Saves the customer and returns to <strong>Customers</strong>.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-add-customer">Add a customer</a>  </p>
+</article><article class="screen" id="screen-settings" aria-labelledby="screen-settings-h">
+  <h3 id="screen-settings-h">Settings</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Settings">
+    <img src="images/settings.png" alt="Settings screen" width="1440" height="900" loading="lazy">
+  </button>
+<figcaption>Settings</figcaption></figure><p>Store-wide preferences that affect every user.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Settings fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Store name</strong></td><td>text box</td><td><p>Shown on the <strong>Dashboard</strong>.</p></td></tr><tr><td><strong>Currency</strong></td><td>list</td><td><p>Currency used for all prices and totals.</p></td></tr><tr><td><strong>Low-stock threshold</strong></td><td>text box</td><td><p>Products at or below this level are highlighted. Between 0 and 1000.</p></td></tr><tr><td><strong>Notify me about new orders</strong></td><td>check box</td><td><p>Turn email notifications for new orders on or off.</p></td></tr><tr><td><strong>Save settings</strong></td><td>button</td><td><p>Saves your changes.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-change-settings">Change store settings</a>  </p>
+</article>  </section>
+<section id="troubleshooting" class="chapter" aria-labelledby="h-trouble">
+  <h2 id="h-trouble">Troubleshooting</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Error messages and fixes">
+    <table class="trouble">
+      <thead><tr><th scope="col">Message</th><th scope="col">Why it happens</th><th scope="col">How to fix it</th></tr></thead>
+      <tbody>
+        <tr id="trouble-1"><td><q>Invalid email or password</q></td><td><p>The email or password does not match your account.</p></td><td><p>Check for typing mistakes and that <strong>Caps Lock</strong> is off, then try again. Ask your administrator if you have forgotten your password.</p></td></tr>
+        <tr id="trouble-2"><td><q>Price must be greater than 0</q></td><td><p>The <strong>Price</strong> box is empty, 0 or not a number.</p></td><td><p>Type a price such as <strong>9.99</strong>.</p></td></tr>
+        <tr id="trouble-3"><td><q>Stock cannot be negative</q></td><td><p>The stock count is below zero or not a number.</p></td><td><p>Type <strong>0</strong> or a positive whole number.</p></td></tr>
+        <tr id="trouble-4"><td><q>Select a customer</q></td><td><p>No customer was chosen in <strong>Customer</strong>.</p></td><td><p>Choose a customer. If they are not in the list, add them on the <strong>Customers</strong> page first.</p></td></tr>
+        <tr id="trouble-5"><td><q>Quantity must be greater than 0</q></td><td><p>The <strong>Quantity</strong> is 0, empty or not a number.</p></td><td><p>Type <strong>1</strong> or more.</p></td></tr>
+        <tr id="trouble-6"><td><q>Not enough stock for this quantity</q></td><td><p>You asked for more items than are in stock.</p></td><td><p>Lower the quantity, or correct the stock count on the product's page first.</p></td></tr>
+        <tr id="trouble-7"><td><q>Email is not valid</q></td><td><p>The email address is missing a part such as @ or the domain.</p></td><td><p>Type a full address, for example <strong>name@company.com</strong>.</p></td></tr>
+        <tr id="trouble-8"><td><q>Low-stock threshold must be between 0 and 1000</q></td><td><p>The number is outside the allowed range.</p></td><td><p>Type a whole number from <strong>0</strong> to <strong>1000</strong>.</p></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>  <footer class="page-footer">Acme Shop 1.4.0 · Generated September 24, 2026</footer>
+</main>
+</div>
+<dialog id="zoom" aria-label="Enlarged screenshot">
+  <form method="dialog"><button class="zoom-close" aria-label="Close">×</button></form>
+  <img alt="">
+</dialog>
+<script id="search-index" type="application/json">[{"t": "Getting Started", "u": "#getting-started", "s": "Getting Started", "x": "- A computer with an up-to-date web browser (Microsoft Edge, Google Chrome, Firefox or Safari).\n- The Acme Shop web address and the email and password your administrator gave you.\n Open your web browser and go to the Acme Shop address. The Sign in to Acme Shop page appears. Type your Email and Password, then click Sign in. If you see Invalid email or password, check both and try again. After you s"}, {"t": "Sign in to Acme Shop", "u": "#task-sign-in", "s": "How-To Tasks", "x": "Get into Acme Shop with your email and password. Open Acme Shop in your web browser. The Sign in to Acme Shop page appears. In Email, type your email address. In Password, type your password. Click Sign in. The Dashboard opens."}, {"t": "Create an order", "u": "#task-create-order", "s": "How-To Tasks", "x": "Record an order for a customer and take the items out of stock. In the menu, click Orders. Click New order. In Customer, choose who the order is for. In Product, choose what they are buying. In Quantity, type how many. Click Create order. The new order opens with the status Open."}, {"t": "Add a customer", "u": "#task-add-customer", "s": "How-To Tasks", "x": "Add a person or business so you can create orders for them. In the menu, click Customers. Click New customer. In Name, type the customer's name. In Email, type the address where invoices should go. Click Save customer. The customer now appears in the Customers list."}, {"t": "Add a product", "u": "#task-add-product", "s": "How-To Tasks", "x": "Add a new product to your catalogue. In the menu, click Products. Click New product. Type the product Name. Type your stock code in SKU. Choose a Category. Type the Price. Type how many you have in Stock. Click Save product. The product's page opens."}, {"t": "Correct the stock count", "u": "#task-adjust-stock", "s": "How-To Tasks", "x": "Update how many of a product you have, for example after a stock take. In the menu, click Products. Click the product's name. In Adjust stock, type the new count. Click Update stock."}, {"t": "Mark an order as shipped", "u": "#task-ship-order", "s": "How-To Tasks", "x": "Record that an order has left the building. In the menu, click Orders. Click the order number. Click Mark as shipped. The status changes to Shipped."}, {"t": "Send an invoice", "u": "#task-send-invoice", "s": "How-To Tasks", "x": "Email an invoice for an order to the customer. In the menu, click Orders. Click the order number. Check the invoice email address, then click Send invoice. The invoice is emailed to the customer."}, {"t": "Change store settings", "u": "#task-change-settings", "s": "How-To Tasks", "x": "Change your store name, currency or low-stock level. In the menu, click Settings. Change Low-stock threshold to the level you want warnings at. Choose a Currency if you need to. Click Save settings. Settings saved. appears."}, {"t": "Find products that are running low", "u": "#task-check-low-stock", "s": "How-To Tasks", "x": "See which products need restocking. In the menu, click Dashboard and look at Low-stock products. Click Products. Stock counts shown in red are at or below your low-stock level."}, {"t": "Sign out", "u": "#task-sign-out", "s": "How-To Tasks", "x": "Leave Acme Shop safely, for example on a shared computer. At the bottom of the menu, click Sign out. The sign-in page appears."}, {"t": "Sign in", "u": "#screen-login", "s": "Screen Reference", "x": "The first page you see. Enter your email and password to get into Acme Shop. Email The email address of your Acme Shop account. Password Your password. It is hidden as you type. Sign in Signs you in and opens the Dashboard."}, {"t": "Dashboard", "u": "#screen-dashboard", "s": "Screen Reference", "x": "Your home page. It sums up how the shop is doing and lists the most recent orders. Open orders How many orders have not been shipped yet. Total sales The value of all orders. Customers How many customers you have. Low-stock products Products at or below the low-stock level set in Settings. Shown in red when there are any. New order Opens the New order page. Recent orders The five newest orders. Click an order number to open it."}, {"t": "Products", "u": "#screen-products", "s": "Screen Reference", "x": "Lists everything you sell, with its stock code (SKU), category, price and stock on hand. New product Opens the New product page. Name Opens the product's page. Stock How many you have. Shown in red when stock is low."}, {"t": "New product", "u": "#screen-new-product", "s": "Screen Reference", "x": "Use this page to add a product to your catalogue. Name The product name customers see. Required. SKU Your own stock code, for example COF-002. Required. Category Coffee, Kitchen, Equipment or Other. Price Price per item. Must be greater than 0. Stock How many you have now. Cannot be negative. Save product Saves the product and opens its page. Cancel Goes back to Products without saving."}, {"t": "Product details", "u": "#screen-product-detail", "s": "Screen Reference", "x": "Shows one product's price and stock. You can correct the stock count or delete the product here. Adjust stock Type the new stock count. Update stock Saves the new stock count. Delete product Removes the product after you confirm. This cannot be undone."}, {"t": "Orders", "u": "#screen-orders", "s": "Screen Reference", "x": "Lists all orders, newest first, with the customer, date, number of items, total and status. New order Opens the New order page. Order Opens the order. Status Open until you mark the order as shipped, then Shipped."}, {"t": "New order", "u": "#screen-new-order", "s": "Screen Reference", "x": "Use this page to record a new order for an existing customer. Customer Who the order is for. The customer must already exist - add new customers on the Customers page first. Product What they are buying. The list shows how many are in stock. Quantity How many. Must be greater than 0 and not more than the stock. Note Optional note shown on the order. Create order Saves the order and takes the items out of stock."}, {"t": "Order details", "u": "#screen-order-detail", "s": "Screen Reference", "x": "Shows the items, quantities and total of one order, and who it was for. Mark as shipped Changes the status to Shipped. Only shown for open orders. Send invoice Emails an invoice to the customer's invoice email address."}, {"t": "Customers", "u": "#screen-customers", "s": "Screen Reference", "x": "Lists the people and businesses you sell to, with their contact details. New customer Opens the New customer page. Orders How many orders the customer has placed."}, {"t": "New customer", "u": "#screen-new-customer", "s": "Screen Reference", "x": "Use this page to add a customer. You need a customer before you can create an order for them. Name Person or business name. Required. Email Where invoices are sent. Must be a valid email address. Phone Optional. City Optional. Save customer Saves the customer and returns to Customers."}, {"t": "Settings", "u": "#screen-settings", "s": "Screen Reference", "x": "Store-wide preferences that affect every user. Store name Shown on the Dashboard. Currency Currency used for all prices and totals. Low-stock threshold Products at or below this level are highlighted. Between 0 and 1000. Notify me about new orders Turn email notifications for new orders on or off. Save settings Saves your changes."}, {"t": "Invalid email or password", "u": "#trouble-1", "s": "Troubleshooting", "x": "The email or password does not match your account. Check for typing mistakes and that Caps Lock is off, then try again. Ask your administrator if you have forgotten your password."}, {"t": "Price must be greater than 0", "u": "#trouble-2", "s": "Troubleshooting", "x": "The Price box is empty, 0 or not a number. Type a price such as 9.99."}, {"t": "Stock cannot be negative", "u": "#trouble-3", "s": "Troubleshooting", "x": "The stock count is below zero or not a number. Type 0 or a positive whole number."}, {"t": "Select a customer", "u": "#trouble-4", "s": "Troubleshooting", "x": "No customer was chosen in Customer. Choose a customer. If they are not in the list, add them on the Customers page first."}, {"t": "Quantity must be greater than 0", "u": "#trouble-5", "s": "Troubleshooting", "x": "The Quantity is 0, empty or not a number. Type 1 or more."}, {"t": "Not enough stock for this quantity", "u": "#trouble-6", "s": "Troubleshooting", "x": "You asked for more items than are in stock. Lower the quantity, or correct the stock count on the product's page first."}, {"t": "Email is not valid", "u": "#trouble-7", "s": "Troubleshooting", "x": "The email address is missing a part such as @ or the domain. Type a full address, for example name@company.com."}, {"t": "Low-stock threshold must be between 0 and 1000", "u": "#trouble-8", "s": "Troubleshooting", "x": "The number is outside the allowed range. Type a whole number from 0 to 1000."}]</script>
+<script>
+// GuideGen manual: client-side search over an embedded index, click-to-zoom, mobile sidebar, active section.
+(function () {
+  "use strict";
+  var index = JSON.parse(document.getElementById("search-index").textContent || "[]");
+  var q = document.getElementById("q");
+  var results = document.getElementById("results");
+  var active = -1;
+
+  function norm(s) { return (s || "").toLowerCase(); }
+  function score(entry, terms) {
+    var t = norm(entry.t), x = norm(entry.x), s = 0;
+    for (var i = 0; i < terms.length; i++) {
+      var term = terms[i];
+      if (t.indexOf(term) >= 0) s += 10; else if (x.indexOf(term) >= 0) s += 2; else return 0;
+    }
+    return s;
+  }
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function close() { results.hidden = true; q.setAttribute("aria-expanded", "false"); active = -1; }
+  function select(i) {
+    var items = results.querySelectorAll("li");
+    items.forEach(function (li, j) { li.setAttribute("aria-selected", j === i ? "true" : "false"); });
+    active = i;
+  }
+  function search() {
+    var terms = norm(q.value).split(/\s+/).filter(Boolean);
+    if (!terms.length) { close(); return; }
+    var hits = index.map(function (e) { return { e: e, s: score(e, terms) }; })
+      .filter(function (h) { return h.s > 0; }).sort(function (a, b) { return b.s - a.s; }).slice(0, 12);
+    results.innerHTML = hits.length ? hits.map(function (h, i) {
+      return '<li role="option" id="r' + i + '" aria-selected="false"><a href="' + h.e.u + '">' + esc(h.e.t) + "<small>" + esc(h.e.s) + "</small></a></li>";
+    }).join("") : '<li role="option" aria-disabled="true"><a>No results</a></li>';
+    results.hidden = false;
+    q.setAttribute("aria-expanded", "true");
+    active = -1;
+  }
+  q.addEventListener("input", search);
+  q.addEventListener("keydown", function (ev) {
+    var items = results.querySelectorAll("li a[href]");
+    if (ev.key === "ArrowDown" && items.length) { ev.preventDefault(); select(Math.min(active + 1, items.length - 1)); }
+    else if (ev.key === "ArrowUp" && items.length) { ev.preventDefault(); select(Math.max(active - 1, 0)); }
+    else if (ev.key === "Enter" && items.length) { ev.preventDefault(); (items[active >= 0 ? active : 0]).click(); close(); }
+    else if (ev.key === "Escape") { close(); }
+  });
+  results.addEventListener("click", function () { close(); });
+  document.addEventListener("click", function (ev) { if (!ev.target.closest(".search")) close(); });
+
+  // click-to-zoom
+  var dlg = document.getElementById("zoom");
+  document.querySelectorAll(".zoomable").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var img = btn.querySelector("img");
+      var big = dlg.querySelector("img");
+      big.src = img.src; big.alt = img.alt;
+      if (dlg.showModal) dlg.showModal(); else window.open(img.src);
+    });
+  });
+  dlg.addEventListener("click", function (ev) { if (ev.target === dlg) dlg.close(); });
+
+  // mobile sidebar
+  var toggle = document.querySelector(".menu-toggle");
+  var sidebar = document.getElementById("sidebar");
+  toggle.addEventListener("click", function () {
+    var open = sidebar.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  sidebar.addEventListener("click", function (ev) {
+    if (ev.target.tagName === "A" && window.matchMedia("(max-width: 900px)").matches) {
+      sidebar.classList.remove("open"); toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // highlight the current section in the sidebar
+  if ("IntersectionObserver" in window) {
+    var links = {};
+    sidebar.querySelectorAll("a[href^='#']").forEach(function (a) { links[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting && links[en.target.id]) {
+          Object.keys(links).forEach(function (k) { links[k].removeAttribute("aria-current"); });
+          links[en.target.id].setAttribute("aria-current", "true");
+        }
+      });
+    }, { rootMargin: "-20% 0px -70% 0px" });
+    document.querySelectorAll("article[id], section[id]").forEach(function (el) { obs.observe(el); });
+  }
+})();
+
+</script>
+</body>
+</html>

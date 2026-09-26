@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="GuideGen">
+<title>ClientDesk CRM User Manual</title>
+<style>
+:root { --primary: #5B2C6F; --accent: #00A896; --accent-fg: #000000; }
+/* GuideGen manual. --primary / --accent are injected from the brand config. */
+:root {
+  --bg: #ffffff; --fg: #1d2330; --muted: #5b6475; --line: #e3e7ee; --soft: #f5f7fa;
+  --link: var(--primary); --sidebar-w: 280px; --topbar-h: 56px;
+  --font: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #14171d; --fg: #e6e9ef; --muted: #a3acbb; --line: #2b313c; --soft: #1c2028; --link: #8fb8ff; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--topbar-h) + 12px); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; font: 16px/1.6 var(--font); color: var(--fg); background: var(--bg); }
+a { color: var(--link); }
+a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -999px; top: 8px; background: var(--bg); padding: 8px 12px; z-index: 100; }
+.skip:focus { left: 8px; }
+
+.topbar { position: sticky; top: 0; z-index: 20; height: var(--topbar-h); display: flex; align-items: center; gap: 16px;
+  padding: 0 20px; background: var(--bg); border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--fg); text-decoration: none; white-space: nowrap; }
+.brand-logo { height: 28px; width: auto; }
+.menu-toggle { display: none; background: none; border: 0; color: var(--fg); padding: 6px; cursor: pointer; }
+.search { position: relative; margin-left: auto; width: min(420px, 50vw); }
+.search input { width: 100%; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; font: inherit; background: var(--soft); color: var(--fg); }
+#results { position: absolute; top: 42px; left: 0; right: 0; margin: 0; padding: 6px; list-style: none; background: var(--bg);
+  border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); max-height: 60vh; overflow: auto; }
+#results li a { display: block; padding: 8px 10px; border-radius: 6px; text-decoration: none; color: var(--fg); }
+#results li a small { display: block; color: var(--muted); }
+#results li[aria-selected="true"] a, #results li a:hover { background: var(--soft); }
+
+.shell { display: flex; }
+.sidebar { position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); width: var(--sidebar-w); flex: none;
+  overflow: auto; padding: 20px 12px 40px 20px; border-right: 1px solid var(--line); font-size: 14.5px; }
+.sidebar ul { list-style: none; margin: 0; padding: 0; }
+.sidebar > ul > li { margin-bottom: 14px; }
+.sidebar > ul > li > a { font-weight: 600; color: var(--fg); }
+.sidebar ul ul { margin-top: 6px; padding-left: 10px; border-left: 2px solid var(--line); }
+.sidebar ul ul a { display: block; padding: 3px 8px; color: var(--muted); text-decoration: none; border-radius: 4px; }
+.sidebar a[aria-current="true"] { color: var(--link); background: var(--soft); }
+
+main { flex: 1; min-width: 0; max-width: 980px; padding: 32px 48px 80px; }
+h1, h2, h3, h4 { color: var(--primary); line-height: 1.25; }
+@media (prefers-color-scheme: dark) { h1, h2, h3, h4 { color: var(--fg); } }
+h2 { font-size: 1.9rem; margin-top: 56px; padding-top: 8px; border-top: 1px solid var(--line); }
+h3 { font-size: 1.35rem; margin-top: 36px; }
+h4 { font-size: 1.15rem; margin-top: 28px; }
+.cover h1 { font-size: 2.4rem; margin: 8px 0; }
+.cover-logo { height: 72px; width: auto; }
+.meta { color: var(--muted); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin: 28px 0; }
+.card { display: block; padding: 16px; border: 1px solid var(--line); border-radius: 10px; text-decoration: none; color: var(--fg); background: var(--soft); }
+.card strong { display: block; color: var(--link); margin-bottom: 4px; }
+.card span { color: var(--muted); font-size: 14px; }
+.card:hover { border-color: var(--primary); }
+
+.task-list { columns: 2; padding-left: 20px; }
+.steps { list-style: none; padding: 0; margin: 16px 0; }
+.step { display: flex; gap: 14px; margin: 0 0 22px; }
+.badge { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: var(--accent-fg); font-weight: 700;
+  display: grid; place-items: center; font-size: 15px; margin-top: 2px; }
+.step-body { min-width: 0; flex: 1; }
+.step-text p { margin: 2px 0 10px; }
+.step-screen, .xref { font-size: 14px; color: var(--muted); }
+.kind { font-size: 12px; font-weight: 600; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; vertical-align: middle; }
+
+figure { margin: 8px 0 18px; }
+figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; }
+figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.zoomable { padding: 0; border: 0; background: none; cursor: zoom-in; display: block; max-width: 100%; }
+dialog#zoom { max-width: 96vw; max-height: 94vh; padding: 0; border: 0; border-radius: 10px; background: var(--bg); }
+dialog#zoom::backdrop { background: rgba(0,0,0,.7); }
+dialog#zoom img { display: block; max-width: 96vw; max-height: 90vh; }
+.zoom-close { position: absolute; right: 8px; top: 6px; font-size: 26px; background: var(--bg); color: var(--fg); border: 0; border-radius: 50%; width: 38px; height: 38px; cursor: pointer; }
+
+.table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th { text-align: left; background: var(--primary); color: #fff; font-weight: 600; }
+th, td { padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td p { margin: 0; }
+tr:last-child td { border-bottom: 0; }
+.page-footer { margin-top: 64px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 900px) {
+  .menu-toggle { display: block; }
+  .sidebar { position: fixed; left: 0; top: var(--topbar-h); z-index: 15; background: var(--bg); transform: translateX(-100%);
+    transition: transform .2s; box-shadow: 4px 0 20px rgba(0,0,0,.15); }
+  .sidebar.open { transform: none; }
+  main { padding: 20px 18px 60px; }
+  .task-list { columns: 1; }
+  .brand span { display: none; }
+  .search { width: auto; flex: 1; }
+}
+@media print {
+  .topbar, .sidebar, dialog { display: none !important; }
+  main { max-width: none; padding: 0; }
+}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button class="menu-toggle" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Show navigation">
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <a class="brand" href="#top">
+<img src="images/brand-logo.png" alt="" class="brand-logo">    <span>ClientDesk CRM</span>
+  </a>
+  <div class="search" role="search">
+    <label for="q" class="visually-hidden">Search the manual</label>
+    <input id="q" type="search" placeholder="Search the manual…" autocomplete="off" aria-controls="results" aria-expanded="false">
+    <ul id="results" role="listbox" aria-label="Search results" hidden></ul>
+  </div>
+</header>
+<div class="shell">
+<nav id="sidebar" class="sidebar" aria-label="Manual contents">
+  <ul>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#tasks">How-To Tasks</a>
+      <ul><li><a href="#task-sign-in">Sign in</a></li><li><a href="#task-add-customer">Add a customer</a></li><li><a href="#task-log-activity">Log a call or meeting</a></li><li><a href="#task-edit-customer">Update a customer&#39;s details</a></li><li><a href="#task-find-customer">Find a customer</a></li><li><a href="#task-check-pipeline">Check your sales pipeline</a></li><li><a href="#task-review-activities">Review recent activities</a></li><li><a href="#task-set-default-status">Change the default status for new customers</a></li><li><a href="#task-delete-customer">Delete a customer</a></li></ul>
+    </li>
+    <li><a href="#reference">Screen Reference</a>
+      <ul><li><a href="#screen-login-form">Sign in</a></li><li><a href="#screen-customers">Customers tab</a></li><li><a href="#screen-activities">Activities tab</a></li><li><a href="#screen-dashboard">Dashboard tab</a></li><li><a href="#screen-customer-form">New customer window</a></li><li><a href="#screen-activity-form">Log activity window</a></li><li><a href="#screen-options">Options window</a></li><li><a href="#screen-about">About window</a></li></ul>
+    </li>
+    <li><a href="#troubleshooting">Troubleshooting</a></li>
+  </ul>
+</nav><main id="main" tabindex="-1">
+  <section class="cover" id="top" aria-labelledby="cover-title">
+<img src="images/brand-logo.png" alt="ClientDesk CRM logo" class="cover-logo">    <h1 id="cover-title">ClientDesk CRM User Manual</h1>
+    <p class="meta">Version 1.8.2 · September 24, 2026 · Fabrikam Software</p>
+    <div class="cards">
+        <a class="card" href="#getting-started">
+          <strong>Getting Started</strong>
+          <span>Install, launch and first steps</span>
+        </a>
+        <a class="card" href="#tasks">
+          <strong>How-To Tasks</strong>
+          <span>9 step-by-step guides</span>
+        </a>
+        <a class="card" href="#reference">
+          <strong>Screen Reference</strong>
+          <span>8 screens explained</span>
+        </a>
+        <a class="card" href="#troubleshooting">
+          <strong>Troubleshooting</strong>
+          <span>8 messages and fixes</span>
+        </a>
+    </div>
+  </section>
+
+  <section id="getting-started" class="chapter" aria-labelledby="h-gs">
+    <h2 id="h-gs">Getting Started</h2>
+<p>ClientDesk keeps your customer contacts, calls, emails and meetings in one place, and shows the value of your sales pipeline at a glance.</p><h3>Before you begin</h3><ul><li>A Windows 10 or Windows 11 PC with ClientDesk installed.</li><li>Your ClientDesk user name and password.</li></ul><h3>Starting the application</h3><p>Open the <strong>Start</strong> menu and click <strong>ClientDesk</strong>. The <strong>Sign in to ClientDesk</strong> window appears.</p><h3>Signing in</h3><p>Type your <strong>User name</strong> and <strong>Password</strong>, then click <strong>Sign in</strong>.</p><h3>A quick tour</h3><p>The main window has three tabs. <strong>Customers</strong> lists your contacts, <strong>Activities</strong> shows your calls, emails and meetings, and <strong>Dashboard</strong> shows your pipeline. The <strong>File</strong>, <strong>Customers</strong> and <strong>Help</strong> menus are at the top.</p>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: The Customers tab screen">
+    <img src="images/customers.png" alt="Customers tab overview" width="1266" height="793" loading="lazy">
+  </button>
+<figcaption>The Customers tab screen</figcaption></figure>  </section>
+  <section id="tasks" class="chapter" aria-labelledby="h-tasks">
+    <h2 id="h-tasks">How-To Tasks</h2>
+    <ul class="task-list">
+<li><a href="#task-sign-in">Sign in</a></li><li><a href="#task-add-customer">Add a customer</a></li><li><a href="#task-log-activity">Log a call or meeting</a></li><li><a href="#task-edit-customer">Update a customer&#39;s details</a></li><li><a href="#task-find-customer">Find a customer</a></li><li><a href="#task-check-pipeline">Check your sales pipeline</a></li><li><a href="#task-review-activities">Review recent activities</a></li><li><a href="#task-set-default-status">Change the default status for new customers</a></li><li><a href="#task-delete-customer">Delete a customer</a></li>    </ul>
+<article class="task" id="task-sign-in" aria-labelledby="task-sign-in-h">
+  <h3 id="task-sign-in-h">Sign in</h3>
+<div class="goal"><p>Open ClientDesk with your user name and password.</p></div>  <ol class="steps">
+<li class="step" id="task-sign-in-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>User name</strong>, type your user name.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: In User name, type your user name.">
+    <img src="images/sign-in-s1.png" alt="Sign in, step 1: In User name, type your user name." width="382" height="262" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-login-form">Sign in</a></p>  </div>
+</li><li class="step" id="task-sign-in-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>In <strong>Password</strong>, type your password.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: In Password, type your password.">
+    <img src="images/sign-in-s2.png" alt="Sign in, step 2: In Password, type your password." width="382" height="262" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-login-form">Sign in</a></p>  </div>
+</li><li class="step" id="task-sign-in-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Sign in</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: Click Sign in.">
+    <img src="images/sign-in-s3.png" alt="Sign in, step 3: Click Sign in." width="382" height="262" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-login-form">Sign in</a>, <a href="#screen-customers">Customers tab</a>  </p>
+</article><article class="task" id="task-add-customer" aria-labelledby="task-add-customer-h">
+  <h3 id="task-add-customer-h">Add a customer</h3>
+<div class="goal"><p>Start tracking a new contact.</p></div>  <ol class="steps">
+<li class="step" id="task-add-customer-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>On the <strong>Customers</strong> tab, click <strong>New customer</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: On the Customers tab, click New customer.">
+    <img src="images/add-customer-s1.png" alt="Add a customer, step 1: On the Customers tab, click New customer." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li><li class="step" id="task-add-customer-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type the contact's <strong>Name</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Type the contact&#39;s Name.">
+    <img src="images/add-customer-s2.png" alt="Add a customer, step 2: Type the contact&#39;s Name." width="462" height="362" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customer-form">New customer window</a></p>  </div>
+</li><li class="step" id="task-add-customer-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type their <strong>Company</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: Type their Company.">
+    <img src="images/add-customer-s3.png" alt="Add a customer, step 3: Type their Company." width="462" height="362" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customer-form">New customer window</a></p>  </div>
+</li><li class="step" id="task-add-customer-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type their <strong>Email</strong> address.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Type their Email address.">
+    <img src="images/add-customer-s4.png" alt="Add a customer, step 4: Type their Email address." width="462" height="362" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customer-form">New customer window</a></p>  </div>
+</li><li class="step" id="task-add-customer-s5">
+  <span class="badge" aria-hidden="true">5</span>
+  <div class="step-body">
+    <div class="step-text"><p>Choose a <strong>Status</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 5: Choose a Status.">
+    <img src="images/add-customer-s5.png" alt="Add a customer, step 5: Choose a Status." width="462" height="362" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customer-form">New customer window</a></p>  </div>
+</li><li class="step" id="task-add-customer-s6">
+  <span class="badge" aria-hidden="true">6</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type the expected <strong>Annual value</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 6: Type the expected Annual value.">
+    <img src="images/add-customer-s6.png" alt="Add a customer, step 6: Type the expected Annual value." width="462" height="362" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customer-form">New customer window</a></p>  </div>
+</li><li class="step" id="task-add-customer-s7">
+  <span class="badge" aria-hidden="true">7</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Save</strong>. The customer appears in the list.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 7: Click Save. The customer appears in the list.">
+    <img src="images/add-customer-s7.png" alt="Add a customer, step 7: Click Save. The customer appears in the list." width="462" height="362" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-customers">Customers tab</a>, <a href="#screen-customer-form">New customer window</a>  </p>
+</article><article class="task" id="task-log-activity" aria-labelledby="task-log-activity-h">
+  <h3 id="task-log-activity-h">Log a call or meeting</h3>
+<div class="goal"><p>Keep a record of what you discussed with a customer.</p></div>  <ol class="steps">
+<li class="step" id="task-log-activity-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>On the <strong>Customers</strong> tab, click the customer.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: On the Customers tab, click the customer.">
+    <img src="images/log-activity-s1.png" alt="Log a call or meeting, step 1: On the Customers tab, click the customer." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li><li class="step" id="task-log-activity-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Log activity</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click Log activity.">
+    <img src="images/log-activity-s2.png" alt="Log a call or meeting, step 2: Click Log activity." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li><li class="step" id="task-log-activity-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>Choose the <strong>Type</strong> of activity.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: Choose the Type of activity.">
+    <img src="images/log-activity-s3.png" alt="Log a call or meeting, step 3: Choose the Type of activity." width="462" height="372" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-activity-form">Log activity window</a></p>  </div>
+</li><li class="step" id="task-log-activity-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Type what you discussed in <strong>Notes</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Type what you discussed in Notes.">
+    <img src="images/log-activity-s4.png" alt="Log a call or meeting, step 4: Type what you discussed in Notes." width="462" height="372" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-activity-form">Log activity window</a></p>  </div>
+</li><li class="step" id="task-log-activity-s5">
+  <span class="badge" aria-hidden="true">5</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Save activity</strong>. It appears on the <strong>Activities</strong> tab.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 5: Click Save activity. It appears on the Activities tab.">
+    <img src="images/log-activity-s5.png" alt="Log a call or meeting, step 5: Click Save activity. It appears on the Activities tab." width="462" height="372" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-activities">Activities tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-customers">Customers tab</a>, <a href="#screen-activity-form">Log activity window</a>, <a href="#screen-activities">Activities tab</a>  </p>
+</article><article class="task" id="task-edit-customer" aria-labelledby="task-edit-customer-h">
+  <h3 id="task-edit-customer-h">Update a customer&#39;s details</h3>
+<div class="goal"><p>Change a contact's status, phone number or other details.</p></div>  <ol class="steps">
+<li class="step" id="task-edit-customer-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>On the <strong>Customers</strong> tab, click the customer.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: On the Customers tab, click the customer.">
+    <img src="images/edit-customer-s1.png" alt="Update a customer&#39;s details, step 1: On the Customers tab, click the customer." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li><li class="step" id="task-edit-customer-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Edit</strong>, or double-click the row.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click Edit, or double-click the row.">
+    <img src="images/edit-customer-s2.png" alt="Update a customer&#39;s details, step 2: Click Edit, or double-click the row." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li><li class="step" id="task-edit-customer-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>Change the details, for example the <strong>Status</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: Change the details, for example the Status.">
+    <img src="images/edit-customer-s3.png" alt="Update a customer&#39;s details, step 3: Change the details, for example the Status." width="462" height="362" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customer-form">New customer window</a></p>  </div>
+</li><li class="step" id="task-edit-customer-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Save</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Click Save.">
+    <img src="images/edit-customer-s4.png" alt="Update a customer&#39;s details, step 4: Click Save." width="462" height="362" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-customers">Customers tab</a>, <a href="#screen-customer-form">New customer window</a>  </p>
+</article><article class="task" id="task-find-customer" aria-labelledby="task-find-customer-h">
+  <h3 id="task-find-customer-h">Find a customer</h3>
+<div class="goal"><p>Quickly find a contact by name or company.</p></div>  <ol class="steps">
+<li class="step" id="task-find-customer-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>On the <strong>Customers</strong> tab, type part of a name or company in <strong>Search</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: On the Customers tab, type part of a name or company in Search.">
+    <img src="images/find-customer-s1.png" alt="Find a customer, step 1: On the Customers tab, type part of a name or company in Search." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-customers">Customers tab</a>  </p>
+</article><article class="task" id="task-check-pipeline" aria-labelledby="task-check-pipeline-h">
+  <h3 id="task-check-pipeline-h">Check your sales pipeline</h3>
+<div class="goal"><p>See the value of your contacts by status.</p></div>  <ol class="steps">
+<li class="step" id="task-check-pipeline-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click the <strong>Dashboard</strong> tab. The chart shows the total annual value for each status.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: Click the Dashboard tab. The chart shows the total annual value for each status.">
+    <img src="images/check-pipeline-s1.png" alt="Check your sales pipeline, step 1: Click the Dashboard tab. The chart shows the total annual value for each status." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-dashboard">Dashboard tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-dashboard">Dashboard tab</a>  </p>
+</article><article class="task" id="task-review-activities" aria-labelledby="task-review-activities-h">
+  <h3 id="task-review-activities-h">Review recent activities</h3>
+<div class="goal"><p>See what has happened with your customers lately.</p></div>  <ol class="steps">
+<li class="step" id="task-review-activities-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click the <strong>Activities</strong> tab.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: Click the Activities tab.">
+    <img src="images/review-activities-s1.png" alt="Review recent activities, step 1: Click the Activities tab." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-activities">Activities tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-activities">Activities tab</a>  </p>
+</article><article class="task" id="task-set-default-status" aria-labelledby="task-set-default-status-h">
+  <h3 id="task-set-default-status-h">Change the default status for new customers</h3>
+<div class="goal"><p>Save time when most new contacts start at the same stage.</p></div>  <ol class="steps">
+<li class="step" id="task-set-default-status-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click the <strong>File</strong> menu.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: Click the File menu.">
+    <img src="images/set-default-status-s1.png" alt="Change the default status for new customers, step 1: Click the File menu." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li><li class="step" id="task-set-default-status-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Options...</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click Options....">
+    <img src="images/set-default-status-s2.png" alt="Change the default status for new customers, step 2: Click Options...." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li><li class="step" id="task-set-default-status-s3">
+  <span class="badge" aria-hidden="true">3</span>
+  <div class="step-body">
+    <div class="step-text"><p>Choose a <strong>Default status</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 3: Choose a Default status.">
+    <img src="images/set-default-status-s3.png" alt="Change the default status for new customers, step 3: Choose a Default status." width="442" height="262" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-options">Options window</a></p>  </div>
+</li><li class="step" id="task-set-default-status-s4">
+  <span class="badge" aria-hidden="true">4</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>OK</strong>.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 4: Click OK.">
+    <img src="images/set-default-status-s4.png" alt="Change the default status for new customers, step 4: Click OK." width="442" height="262" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-customers">Customers tab</a>, <a href="#screen-options">Options window</a>  </p>
+</article><article class="task" id="task-delete-customer" aria-labelledby="task-delete-customer-h">
+  <h3 id="task-delete-customer-h">Delete a customer</h3>
+<div class="goal"><p>Remove a contact you no longer need.</p></div>  <ol class="steps">
+<li class="step" id="task-delete-customer-s1">
+  <span class="badge" aria-hidden="true">1</span>
+  <div class="step-body">
+    <div class="step-text"><p>On the <strong>Customers</strong> tab, click the customer.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 1: On the Customers tab, click the customer.">
+    <img src="images/delete-customer-s1.png" alt="Delete a customer, step 1: On the Customers tab, click the customer." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li><li class="step" id="task-delete-customer-s2">
+  <span class="badge" aria-hidden="true">2</span>
+  <div class="step-body">
+    <div class="step-text"><p>Click <strong>Delete</strong>, then click <strong>Yes</strong>. Their logged activities are kept.</p></div>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Step 2: Click Delete, then click Yes. Their logged activities are kept.">
+    <img src="images/delete-customer-s2.png" alt="Delete a customer, step 2: Click Delete, then click Yes. Their logged activities are kept." width="1266" height="793" loading="lazy">
+  </button>
+</figure><p class="step-screen">Screen: <a href="#screen-customers">Customers tab</a></p>  </div>
+</li>  </ol>
+  <p class="xref"><strong>Screens used:</strong>
+<a href="#screen-customers">Customers tab</a>  </p>
+</article>  </section>
+  <section id="reference" class="chapter" aria-labelledby="h-ref">
+    <h2 id="h-ref">Screen Reference</h2>
+<article class="screen" id="screen-login-form" aria-labelledby="screen-login-form-h">
+  <h3 id="screen-login-form-h">Sign in</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Sign in">
+    <img src="images/login-form.png" alt="Sign in screen" width="382" height="262" loading="lazy">
+  </button>
+<figcaption>Sign in</figcaption></figure><p>Appears when you start ClientDesk.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Sign in fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>User name</strong></td><td>text box</td><td><p>Your ClientDesk user name.</p></td></tr><tr><td><strong>Password</strong></td><td>text box</td><td><p>Your password. It is hidden as you type.</p></td></tr><tr><td><strong>Sign in</strong></td><td>button</td><td><p>Opens the main window.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-sign-in">Sign in</a>  </p>
+</article><article class="screen" id="screen-customers" aria-labelledby="screen-customers-h">
+  <h3 id="screen-customers-h">Customers tab</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Customers tab">
+    <img src="images/customers.png" alt="Customers tab screen" width="1266" height="793" loading="lazy">
+  </button>
+<figcaption>Customers tab</figcaption></figure><p>Your list of contacts. The main window opens on this tab.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Customers tab fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Search</strong></td><td>text box</td><td><p>Type part of a name or company to filter the list.</p></td></tr><tr><td><strong>New customer</strong></td><td>button</td><td><p>Opens the <strong>New customer</strong> window.</p></td></tr><tr><td><strong>Edit</strong></td><td>button</td><td><p>Opens the selected customer. You can also double-click a row.</p></td></tr><tr><td><strong>Log activity</strong></td><td>button</td><td><p>Records a call, email or meeting for the selected customer.</p></td></tr><tr><td><strong>Delete</strong></td><td>button</td><td><p>Removes the selected customer after you confirm.</p></td></tr><tr><td><strong>Status</strong></td><td>column</td><td><p><strong>Lead</strong>, <strong>Prospect</strong>, <strong>Customer</strong> or <strong>Inactive</strong>.</p></td></tr><tr><td><strong>Annual value</strong></td><td>column</td><td><p>Expected yearly sales from this customer.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-sign-in">Sign in</a>, <a href="#task-add-customer">Add a customer</a>, <a href="#task-log-activity">Log a call or meeting</a>, <a href="#task-edit-customer">Update a customer&#39;s details</a>, <a href="#task-find-customer">Find a customer</a>, <a href="#task-set-default-status">Change the default status for new customers</a>, <a href="#task-delete-customer">Delete a customer</a>  </p>
+</article><article class="screen" id="screen-activities" aria-labelledby="screen-activities-h">
+  <h3 id="screen-activities-h">Activities tab</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Activities tab">
+    <img src="images/activities.png" alt="Activities tab screen" width="1266" height="793" loading="lazy">
+  </button>
+<figcaption>Activities tab</figcaption></figure><p>Every call, email, meeting and note you have logged, with the date and customer.</p>  <p class="xref"><strong>Used in:</strong>
+<a href="#task-log-activity">Log a call or meeting</a>, <a href="#task-review-activities">Review recent activities</a>  </p>
+</article><article class="screen" id="screen-dashboard" aria-labelledby="screen-dashboard-h">
+  <h3 id="screen-dashboard-h">Dashboard tab</h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Dashboard tab">
+    <img src="images/dashboard.png" alt="Dashboard tab screen" width="1266" height="793" loading="lazy">
+  </button>
+<figcaption>Dashboard tab</figcaption></figure><p>Shows how many contacts you have, how many are active, and a chart of pipeline value by status.</p>  <p class="xref"><strong>Used in:</strong>
+<a href="#task-check-pipeline">Check your sales pipeline</a>  </p>
+</article><article class="screen" id="screen-customer-form" aria-labelledby="screen-customer-form-h">
+  <h3 id="screen-customer-form-h">New customer window <span class="kind">dialog</span></h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: New customer window">
+    <img src="images/customer-form.png" alt="New customer window screen" width="462" height="362" loading="lazy">
+  </button>
+<figcaption>New customer window</figcaption></figure><p>Used to add a customer. The same window, titled <strong>Edit customer</strong>, opens when you edit one.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="New customer window fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Name</strong></td><td>text box</td><td><p>The contact's full name. Required.</p></td></tr><tr><td><strong>Company</strong></td><td>text box</td><td><p>Where they work.</p></td></tr><tr><td><strong>Email</strong></td><td>text box</td><td><p>Must be a valid address and not used by another customer.</p></td></tr><tr><td><strong>Phone</strong></td><td>text box</td><td><p>Optional.</p></td></tr><tr><td><strong>Status</strong></td><td>list</td><td><p>Where they are in your pipeline. The default is set in <strong>Options</strong>.</p></td></tr><tr><td><strong>Annual value</strong></td><td>text box</td><td><p>Expected yearly sales. 0 or more.</p></td></tr><tr><td><strong>Save</strong></td><td>button</td><td><p>Saves the customer. Problems are shown in red above the buttons.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-add-customer">Add a customer</a>, <a href="#task-edit-customer">Update a customer&#39;s details</a>  </p>
+</article><article class="screen" id="screen-activity-form" aria-labelledby="screen-activity-form-h">
+  <h3 id="screen-activity-form-h">Log activity window <span class="kind">dialog</span></h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Log activity window">
+    <img src="images/activity-form.png" alt="Log activity window screen" width="462" height="372" loading="lazy">
+  </button>
+<figcaption>Log activity window</figcaption></figure><p>Used to record a call, email, meeting or note.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Log activity window fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Customer</strong></td><td>list</td><td><p>Who the activity was with.</p></td></tr><tr><td><strong>Type</strong></td><td>list</td><td><p><strong>Call</strong>, <strong>Email</strong>, <strong>Meeting</strong> or <strong>Note</strong>.</p></td></tr><tr><td><strong>Date</strong></td><td>date picker</td><td><p>When it happened.</p></td></tr><tr><td><strong>Notes</strong></td><td>text box</td><td><p>What was discussed. Up to 500 characters.</p></td></tr><tr><td><strong>Save activity</strong></td><td>button</td><td><p>Adds the activity to the <strong>Activities</strong> tab.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-log-activity">Log a call or meeting</a>  </p>
+</article><article class="screen" id="screen-options" aria-labelledby="screen-options-h">
+  <h3 id="screen-options-h">Options window <span class="kind">dialog</span></h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: Options window">
+    <img src="images/options.png" alt="Options window screen" width="442" height="262" loading="lazy">
+  </button>
+<figcaption>Options window</figcaption></figure><p>Preferences for how ClientDesk works.</p>  <div class="table-wrap" tabindex="0" role="region" aria-label="Options window fields and buttons">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+<tr><td><strong>Default status</strong></td><td>list</td><td><p>Status pre-selected for new customers.</p></td></tr><tr><td><strong>Reply-to email</strong></td><td>text box</td><td><p>Address customers reply to.</p></td></tr><tr><td><strong>Show inactive customers</strong></td><td>check box</td><td><p>Include inactive customers in the list.</p></td></tr>      </tbody>
+    </table>
+  </div>
+  <p class="xref"><strong>Used in:</strong>
+<a href="#task-set-default-status">Change the default status for new customers</a>  </p>
+</article><article class="screen" id="screen-about" aria-labelledby="screen-about-h">
+  <h3 id="screen-about-h">About window <span class="kind">dialog</span></h3>
+<figure>
+  <button type="button" class="zoomable" aria-label="Enlarge: About window">
+    <img src="images/about.png" alt="About window screen" width="362" height="232" loading="lazy">
+  </button>
+<figcaption>About window</figcaption></figure><p>Shows the version number, useful when you contact support.</p></article>  </section>
+<section id="troubleshooting" class="chapter" aria-labelledby="h-trouble">
+  <h2 id="h-trouble">Troubleshooting</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Error messages and fixes">
+    <table class="trouble">
+      <thead><tr><th scope="col">Message</th><th scope="col">Why it happens</th><th scope="col">How to fix it</th></tr></thead>
+      <tbody>
+        <tr id="trouble-1"><td><q>The user name or password is incorrect.</q></td><td><p>The sign-in details do not match an account.</p></td><td><p>Check both and that <strong>Caps Lock</strong> is off.</p></td></tr>
+        <tr id="trouble-2"><td><q>Enter the customer&#39;s name.</q></td><td><p>The <strong>Name</strong> box is empty.</p></td><td><p>Type the contact's name.</p></td></tr>
+        <tr id="trouble-3"><td><q>Enter a valid email address.</q></td><td><p>The email address is incomplete.</p></td><td><p>Type a full address such as <strong>name@company.com</strong>.</p></td></tr>
+        <tr id="trouble-4"><td><q>A customer with this email address already exists.</q></td><td><p>Two customers cannot share an email address.</p></td><td><p>Search for the existing customer and edit them instead.</p></td></tr>
+        <tr id="trouble-5"><td><q>Annual value must be a number of 0 or more.</q></td><td><p>The value has letters or is negative.</p></td><td><p>Type a number such as <strong>15000</strong>, without currency symbols.</p></td></tr>
+        <tr id="trouble-6"><td><q>Select a customer first.</q></td><td><p>You clicked <strong>Edit</strong> or <strong>Delete</strong> without choosing a customer.</p></td><td><p>Click a customer in the list first.</p></td></tr>
+        <tr id="trouble-7"><td><q>Choose a customer for this activity.</q></td><td><p>No customer was chosen in <strong>Customer</strong>.</p></td><td><p>Choose who the activity was with.</p></td></tr>
+        <tr id="trouble-8"><td><q>Notes cannot be longer than 500 characters.</q></td><td><p>The notes are too long.</p></td><td><p>Shorten the notes or split them into two activities.</p></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>  <footer class="page-footer">ClientDesk CRM 1.8.2 · Generated September 24, 2026</footer>
+</main>
+</div>
+<dialog id="zoom" aria-label="Enlarged screenshot">
+  <form method="dialog"><button class="zoom-close" aria-label="Close">×</button></form>
+  <img alt="">
+</dialog>
+<script id="search-index" type="application/json">[{"t": "Getting Started", "u": "#getting-started", "s": "Getting Started", "x": "- A Windows 10 or Windows 11 PC with ClientDesk installed.\n- Your ClientDesk user name and password.\n Open the Start menu and click ClientDesk. The Sign in to ClientDesk window appears. Type your User name and Password, then click Sign in. The main window has three tabs. Customers lists your contacts, Activities shows your calls, emails and meetings, and Dashboard shows your pipeline. The File, Cu"}, {"t": "Sign in", "u": "#task-sign-in", "s": "How-To Tasks", "x": "Open ClientDesk with your user name and password. In User name, type your user name. In Password, type your password. Click Sign in."}, {"t": "Add a customer", "u": "#task-add-customer", "s": "How-To Tasks", "x": "Start tracking a new contact. On the Customers tab, click New customer. Type the contact's Name. Type their Company. Type their Email address. Choose a Status. Type the expected Annual value. Click Save. The customer appears in the list."}, {"t": "Log a call or meeting", "u": "#task-log-activity", "s": "How-To Tasks", "x": "Keep a record of what you discussed with a customer. On the Customers tab, click the customer. Click Log activity. Choose the Type of activity. Type what you discussed in Notes. Click Save activity. It appears on the Activities tab."}, {"t": "Update a customer's details", "u": "#task-edit-customer", "s": "How-To Tasks", "x": "Change a contact's status, phone number or other details. On the Customers tab, click the customer. Click Edit, or double-click the row. Change the details, for example the Status. Click Save."}, {"t": "Find a customer", "u": "#task-find-customer", "s": "How-To Tasks", "x": "Quickly find a contact by name or company. On the Customers tab, type part of a name or company in Search."}, {"t": "Check your sales pipeline", "u": "#task-check-pipeline", "s": "How-To Tasks", "x": "See the value of your contacts by status. Click the Dashboard tab. The chart shows the total annual value for each status."}, {"t": "Review recent activities", "u": "#task-review-activities", "s": "How-To Tasks", "x": "See what has happened with your customers lately. Click the Activities tab."}, {"t": "Change the default status for new customers", "u": "#task-set-default-status", "s": "How-To Tasks", "x": "Save time when most new contacts start at the same stage. Click the File menu. Click Options.... Choose a Default status. Click OK."}, {"t": "Delete a customer", "u": "#task-delete-customer", "s": "How-To Tasks", "x": "Remove a contact you no longer need. On the Customers tab, click the customer. Click Delete, then click Yes. Their logged activities are kept."}, {"t": "Sign in", "u": "#screen-login-form", "s": "Screen Reference", "x": "Appears when you start ClientDesk. User name Your ClientDesk user name. Password Your password. It is hidden as you type. Sign in Opens the main window."}, {"t": "Customers tab", "u": "#screen-customers", "s": "Screen Reference", "x": "Your list of contacts. The main window opens on this tab. Search Type part of a name or company to filter the list. New customer Opens the New customer window. Edit Opens the selected customer. You can also double-click a row. Log activity Records a call, email or meeting for the selected customer. Delete Removes the selected customer after you confirm. Status Lead, Prospect, Customer or Inactive. Annual value Expected yearly sales from this customer."}, {"t": "Activities tab", "u": "#screen-activities", "s": "Screen Reference", "x": "Every call, email, meeting and note you have logged, with the date and customer."}, {"t": "Dashboard tab", "u": "#screen-dashboard", "s": "Screen Reference", "x": "Shows how many contacts you have, how many are active, and a chart of pipeline value by status."}, {"t": "New customer window", "u": "#screen-customer-form", "s": "Screen Reference", "x": "Used to add a customer. The same window, titled Edit customer, opens when you edit one. Name The contact's full name. Required. Company Where they work. Email Must be a valid address and not used by another customer. Phone Optional. Status Where they are in your pipeline. The default is set in Options. Annual value Expected yearly sales. 0 or more. Save Saves the customer. Problems are shown in red above the buttons."}, {"t": "Log activity window", "u": "#screen-activity-form", "s": "Screen Reference", "x": "Used to record a call, email, meeting or note. Customer Who the activity was with. Type Call, Email, Meeting or Note. Date When it happened. Notes What was discussed. Up to 500 characters. Save activity Adds the activity to the Activities tab."}, {"t": "Options window", "u": "#screen-options", "s": "Screen Reference", "x": "Preferences for how ClientDesk works. Default status Status pre-selected for new customers. Reply-to email Address customers reply to. Show inactive customers Include inactive customers in the list."}, {"t": "About window", "u": "#screen-about", "s": "Screen Reference", "x": "Shows the version number, useful when you contact support."}, {"t": "The user name or password is incorrect.", "u": "#trouble-1", "s": "Troubleshooting", "x": "The sign-in details do not match an account. Check both and that Caps Lock is off."}, {"t": "Enter the customer's name.", "u": "#trouble-2", "s": "Troubleshooting", "x": "The Name box is empty. Type the contact's name."}, {"t": "Enter a valid email address.", "u": "#trouble-3", "s": "Troubleshooting", "x": "The email address is incomplete. Type a full address such as name@company.com."}, {"t": "A customer with this email address already exists.", "u": "#trouble-4", "s": "Troubleshooting", "x": "Two customers cannot share an email address. Search for the existing customer and edit them instead."}, {"t": "Annual value must be a number of 0 or more.", "u": "#trouble-5", "s": "Troubleshooting", "x": "The value has letters or is negative. Type a number such as 15000, without currency symbols."}, {"t": "Select a customer first.", "u": "#trouble-6", "s": "Troubleshooting", "x": "You clicked Edit or Delete without choosing a customer. Click a customer in the list first."}, {"t": "Choose a customer for this activity.", "u": "#trouble-7", "s": "Troubleshooting", "x": "No customer was chosen in Customer. Choose who the activity was with."}, {"t": "Notes cannot be longer than 500 characters.", "u": "#trouble-8", "s": "Troubleshooting", "x": "The notes are too long. Shorten the notes or split them into two activities."}]</script>
+<script>
+// GuideGen manual: client-side search over an embedded index, click-to-zoom, mobile sidebar, active section.
+(function () {
+  "use strict";
+  var index = JSON.parse(document.getElementById("search-index").textContent || "[]");
+  var q = document.getElementById("q");
+  var results = document.getElementById("results");
+  var active = -1;
+
+  function norm(s) { return (s || "").toLowerCase(); }
+  function score(entry, terms) {
+    var t = norm(entry.t), x = norm(entry.x), s = 0;
+    for (var i = 0; i < terms.length; i++) {
+      var term = terms[i];
+      if (t.indexOf(term) >= 0) s += 10; else if (x.indexOf(term) >= 0) s += 2; else return 0;
+    }
+    return s;
+  }
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function close() { results.hidden = true; q.setAttribute("aria-expanded", "false"); active = -1; }
+  function select(i) {
+    var items = results.querySelectorAll("li");
+    items.forEach(function (li, j) { li.setAttribute("aria-selected", j === i ? "true" : "false"); });
+    active = i;
+  }
+  function search() {
+    var terms = norm(q.value).split(/\s+/).filter(Boolean);
+    if (!terms.length) { close(); return; }
+    var hits = index.map(function (e) { return { e: e, s: score(e, terms) }; })
+      .filter(function (h) { return h.s > 0; }).sort(function (a, b) { return b.s - a.s; }).slice(0, 12);
+    results.innerHTML = hits.length ? hits.map(function (h, i) {
+      return '<li role="option" id="r' + i + '" aria-selected="false"><a href="' + h.e.u + '">' + esc(h.e.t) + "<small>" + esc(h.e.s) + "</small></a></li>";
+    }).join("") : '<li role="option" aria-disabled="true"><a>No results</a></li>';
+    results.hidden = false;
+    q.setAttribute("aria-expanded", "true");
+    active = -1;
+  }
+  q.addEventListener("input", search);
+  q.addEventListener("keydown", function (ev) {
+    var items = results.querySelectorAll("li a[href]");
+    if (ev.key === "ArrowDown" && items.length) { ev.preventDefault(); select(Math.min(active + 1, items.length - 1)); }
+    else if (ev.key === "ArrowUp" && items.length) { ev.preventDefault(); select(Math.max(active - 1, 0)); }
+    else if (ev.key === "Enter" && items.length) { ev.preventDefault(); (items[active >= 0 ? active : 0]).click(); close(); }
+    else if (ev.key === "Escape") { close(); }
+  });
+  results.addEventListener("click", function () { close(); });
+  document.addEventListener("click", function (ev) { if (!ev.target.closest(".search")) close(); });
+
+  // click-to-zoom
+  var dlg = document.getElementById("zoom");
+  document.querySelectorAll(".zoomable").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var img = btn.querySelector("img");
+      var big = dlg.querySelector("img");
+      big.src = img.src; big.alt = img.alt;
+      if (dlg.showModal) dlg.showModal(); else window.open(img.src);
+    });
+  });
+  dlg.addEventListener("click", function (ev) { if (ev.target === dlg) dlg.close(); });
+
+  // mobile sidebar
+  var toggle = document.querySelector(".menu-toggle");
+  var sidebar = document.getElementById("sidebar");
+  toggle.addEventListener("click", function () {
+    var open = sidebar.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  sidebar.addEventListener("click", function (ev) {
+    if (ev.target.tagName === "A" && window.matchMedia("(max-width: 900px)").matches) {
+      sidebar.classList.remove("open"); toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // highlight the current section in the sidebar
+  if ("IntersectionObserver" in window) {
+    var links = {};
+    sidebar.querySelectorAll("a[href^='#']").forEach(function (a) { links[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting && links[en.target.id]) {
+          Object.keys(links).forEach(function (k) { links[k].removeAttribute("aria-current"); });
+          links[en.target.id].setAttribute("aria-current", "true");
+        }
+      });
+    }, { rootMargin: "-20% 0px -70% 0px" });
+    document.querySelectorAll("article[id], section[id]").forEach(function (el) { obs.observe(el); });
+  }
+})();
+
+</script>
+</body>
+</html>

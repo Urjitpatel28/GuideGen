@@ -1,0 +1,8 @@
+<li class="step" id="{{ st.anchor }}">
+  <span class="badge" aria-hidden="true">{{ st.n }}</span>
+  <div class="step-body">
+    <div class="step-text">{{ st.text|md }}</div>
+    {% if st.figure %}{% with figure = st.figure, hide_caption = true %}{% include "figure.html.j2" %}{% endwith %}{% endif %}
+    {% if st.screen_anchor %}<p class="step-screen">Screen: <a href="#{{ st.screen_anchor }}">{{ st.screen_title }}</a></p>{% endif %}
+  </div>
+</li>

@@ -1,0 +1,40 @@
+<Window x:Class="Inventory.Views.ItemDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Title}" Width="460" SizeToContent="Height" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False" AutomationProperties.AutomationId="ItemDialog">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="B2V"/>
+    </Window.Resources>
+    <StackPanel Margin="20">
+        <Label Content="_SKU" Target="{Binding ElementName=SkuBox}" Padding="0"/>
+        <TextBox x:Name="SkuBox" Text="{Binding Sku, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.AutomationId="SkuBox" AutomationProperties.Name="SKU"/>
+        <TextBlock Text="{Binding SkuError}" Style="{StaticResource FieldError}" AutomationProperties.AutomationId="SkuError"/>
+        <Label Content="_Name" Target="{Binding ElementName=NameBox}" Padding="0"/>
+        <TextBox x:Name="NameBox" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.AutomationId="NameBox" AutomationProperties.Name="Name"/>
+        <TextBlock Text="{Binding NameError}" Style="{StaticResource FieldError}" AutomationProperties.AutomationId="NameError"/>
+        <Label Content="_Category" Target="{Binding ElementName=CategoryBox}" Padding="0"/>
+        <ComboBox x:Name="CategoryBox" ItemsSource="{Binding Categories}" SelectedItem="{Binding Category}" AutomationProperties.AutomationId="CategoryBox" AutomationProperties.Name="Category"/>
+        <Grid>
+            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions>
+            <StackPanel>
+                <Label Content="_Quantity" Target="{Binding ElementName=QuantityBox}" Padding="0"/>
+                <TextBox x:Name="QuantityBox" Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.AutomationId="QuantityBox" AutomationProperties.Name="Quantity"/>
+                <TextBlock Text="{Binding QuantityError}" Style="{StaticResource FieldError}" TextWrapping="Wrap" AutomationProperties.AutomationId="QuantityError"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <Label Content="Unit _price" Target="{Binding ElementName=PriceBox}" Padding="0"/>
+                <TextBox x:Name="PriceBox" Text="{Binding UnitPrice, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.AutomationId="PriceBox" AutomationProperties.Name="Unit price"/>
+                <TextBlock Text="{Binding PriceError}" Style="{StaticResource FieldError}" TextWrapping="Wrap" AutomationProperties.AutomationId="PriceError"/>
+            </StackPanel>
+        </Grid>
+        <Label Content="S_upplier" Target="{Binding ElementName=SupplierBox}" Padding="0"/>
+        <ComboBox x:Name="SupplierBox" ItemsSource="{Binding Suppliers}" SelectedItem="{Binding Supplier}" AutomationProperties.AutomationId="SupplierBox" AutomationProperties.Name="Supplier"/>
+        <Label Content="_Location" Target="{Binding ElementName=LocationBox}" Padding="0"/>
+        <TextBox x:Name="LocationBox" Text="{Binding Location, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.AutomationId="LocationBox" AutomationProperties.Name="Location"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
+            <Button Content="Save" IsDefault="True" Style="{StaticResource PrimaryButton}" Click="Save_Click" AutomationProperties.AutomationId="SaveItemButton"/>
+            <Button Content="Cancel" IsCancel="True" Margin="0" AutomationProperties.AutomationId="CancelItemButton"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

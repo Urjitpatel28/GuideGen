@@ -1,0 +1,549 @@
+# GuideGen manual source. Edit freely: set `override:` to replace generated text, `exclude: true`
+# to drop a screen/task/entry, or `locked: [title]` to keep fields you edited. GuideGen never
+# changes override/exclude/locked. Re-run `/guidegen --update` to refresh.
+version: 1
+meta:
+  title: Stockroom Inventory User Manual
+  audience: end users
+  intro: Stockroom Inventory keeps track of what is on your shelves - items, quantities, prices and suppliers. This manual walks you through everyday jobs and explains every window.
+  generatedAt: 2026-09-24 16:03:18+00:00
+chapters:
+  - id: getting-started
+  - id: tasks
+  - id: reference
+  - id: troubleshooting
+gettingStarted:
+  requirements: "- A Windows 10 or Windows 11 PC with Stockroom Inventory installed.\n- The user name and password your administrator gave you.\n"
+  launch: Open the **Start** menu and click **Stockroom Inventory**. The **Sign in** window appears.
+  signIn: Type your **User name** and **Password**, then click **Sign in**.
+  tour: The main window has three tabs. **Items** lists everything in stock, **Suppliers** lists who you buy from and **Reports** sums up your stock. Use the **File**, **Items** and **Help** menus at the top for everything else.
+  tourScreen: items
+screens:
+  - id: login-window
+    title: Sign in
+    kind: window
+    beforeLogin: true
+    source: [src/Inventory/Views/LoginWindow.xaml, src/Inventory/Views/LoginWindow.xaml.cs]
+    navigate: []
+    elements:
+      - name: User name
+        type: text box
+        description: Your Stockroom Inventory user name.
+      - name: Password
+        type: text box
+        description: Your password. It is hidden as you type.
+      - name: Sign in
+        type: button
+        description: Opens the main window.
+      - name: Cancel
+        type: button
+        description: Closes Stockroom Inventory.
+    text:
+      summary: Appears when you start Stockroom Inventory.
+    status: captured
+    image: screens/login-window.png
+    sourceHash: sha256:cfe978a1c7823006138a6a8935faeb713b4334d6b30e62d510f2ddb0566c6fa5
+  - id: items
+    title: Items tab
+    kind: tab
+    source: [src/Inventory/Views/MainWindow.xaml, src/Inventory/ViewModels/MainViewModel.cs]
+    navigate: []
+    elements:
+      - name: Search
+        type: text box
+        description: Type part of a name or SKU to filter the list.
+      - name: New item
+        type: button
+        description: Opens the **New item** window.
+      - name: Edit
+        type: button
+        description: Opens the selected item for editing.
+      - name: Receive stock
+        type: button
+        description: Adds a delivery to the selected item's quantity.
+      - name: Delete
+        type: button
+        description: Removes the selected item after you confirm.
+      - name: Items
+        type: table
+        description: Every item with its SKU, category, quantity, price, supplier and shelf location.
+    text:
+      summary: The main window opens on this tab. It lists everything you keep in stock.
+    status: captured
+    image: screens/items.png
+    sourceHash: sha256:84db7694280a894afa2db4b540e6cf8a753c4eb79a32f83375896cfaa8f3322b
+  - id: suppliers
+    title: Suppliers tab
+    kind: tab
+    source: [src/Inventory/Views/MainWindow.xaml]
+    navigate:
+      - {action: click, target: {by: automation_id, value: SuppliersTab}}
+    elements:
+      - name: Supplier
+        type: column
+        description: The company you buy from.
+      - name: Contact email
+        type: column
+        description: Where to send orders.
+      - name: Lead time (days)
+        type: column
+        description: How long deliveries usually take.
+    text:
+      summary: Lists your suppliers and how to reach them.
+    status: captured
+    image: screens/suppliers.png
+    sourceHash: sha256:7742d4d979214b5a30c50d0ae079be8868a98d8817c91d1ea0c3fdf14560a697
+  - id: reports
+    title: Reports tab
+    kind: tab
+    source: [src/Inventory/Views/MainWindow.xaml, src/Inventory/ViewModels/MainViewModel.cs]
+    navigate:
+      - {action: click, target: {by: automation_id, value: ReportsTab}}
+    elements:
+      - name: Items
+        type: figure
+        description: How many different items you stock.
+      - name: Units in stock
+        type: figure
+        description: The total count of everything on your shelves.
+      - name: Stock value
+        type: figure
+        description: Quantity times unit price for all items.
+      - name: Low stock
+        type: list
+        description: Items at or below the low-stock threshold set in **Settings**.
+    text:
+      summary: A summary of your stock and a list of items that need reordering.
+    status: captured
+    image: screens/reports.png
+    sourceHash: sha256:84db7694280a894afa2db4b540e6cf8a753c4eb79a32f83375896cfaa8f3322b
+  - id: new-item
+    title: New item window
+    kind: dialog
+    source: [src/Inventory/Views/ItemDialog.xaml, src/Inventory/ViewModels/ItemEditViewModel.cs]
+    navigate:
+      - {action: click, target: {by: automation_id, value: NewItemButton}}
+    elements:
+      - name: SKU
+        type: text box
+        description: Your stock code, for example HW-1003. Must be unique.
+      - name: Name
+        type: text box
+        description: What the item is called.
+      - name: Category
+        type: list
+        description: Pick a category. Add new ones under **Items > Categories**.
+      - name: Quantity
+        type: text box
+        description: How many you have. Cannot be negative.
+      - name: Unit price
+        type: text box
+        description: Price of one unit. Must be greater than 0.
+      - name: Supplier
+        type: list
+        description: Who you buy it from.
+      - name: Location
+        type: text box
+        description: Shelf or bin, for example A-03.
+      - name: Save
+        type: button
+        description: Saves the item. If something is wrong, a red message appears under the field.
+    text:
+      summary: Used to add a new item. The same window, titled **Edit item**, opens when you edit an item.
+    status: captured
+    image: screens/new-item.png
+    sourceHash: sha256:d04f860674f6b7b975b75ef6b2ef64dbc46cefccd83a143bea78c47781ad46c9
+  - id: receive-stock
+    title: Receive stock window
+    kind: dialog
+    source: [src/Inventory/Views/ReceiveStockDialog.xaml]
+    navigate:
+      - {action: click, target: {by: name, value: HW-1002 Wood screws 4x40 (box)}}
+      - {action: click, target: {by: automation_id, value: ReceiveStockButton}}
+    elements:
+      - name: Quantity received
+        type: text box
+        description: How many arrived in the delivery.
+      - name: Add to stock
+        type: button
+        description: Adds the quantity to the item.
+    text:
+      summary: Used when a delivery arrives. Shows the item and how many you have now.
+    status: captured
+    image: screens/receive-stock.png
+    sourceHash: sha256:bf28856f475081f389ebce317462f365fa5fd17b37e5bd844610927bc9a44bdb
+  - id: categories
+    title: Categories window
+    kind: dialog
+    source: [src/Inventory/Views/CategoriesDialog.xaml]
+    navigate:
+      - {action: click, target: {by: automation_id, value: ItemsMenu}}
+      - {action: click, target: {by: automation_id, value: CategoriesMenuItem}}
+    elements:
+      - name: Categories
+        type: list
+        description: The categories you can choose for items.
+      - name: New category
+        type: text box
+        description: Name of a category to add.
+      - name: Add
+        type: button
+        description: Adds the category to the list.
+    text:
+      summary: Manage the categories used to group items.
+    status: captured
+    image: screens/categories.png
+    sourceHash: sha256:cc7e893b403388546ee57ad052e90dae14f579218f6e9a432ea76350ec02930f
+  - id: settings
+    title: Settings window
+    kind: dialog
+    source: [src/Inventory/Views/SettingsDialog.xaml, src/Inventory/ViewModels/MainViewModel.cs]
+    navigate:
+      - {action: click, target: {by: automation_id, value: FileMenu}}
+      - {action: click, target: {by: automation_id, value: SettingsMenuItem}}
+    elements:
+      - name: Low-stock threshold
+        type: text box
+        description: Items at or below this quantity appear under **Low stock**. From 0 to 1000.
+      - name: Default category for new items
+        type: list
+        description: Pre-selected in the **New item** window.
+      - name: Send stock reports to
+        type: text box
+        description: Email address for stock reports.
+      - name: Ask before deleting items
+        type: check box
+        description: Asks you to confirm every delete.
+    text:
+      summary: Preferences that apply to the whole application.
+    status: captured
+    image: screens/settings.png
+    sourceHash: sha256:c16123ab2e34ead8d39b1207d3868b2907819f5a3a8a8c05094ed1476bfe50d0
+  - id: about
+    title: About window
+    kind: dialog
+    source: [src/Inventory/Views/AboutDialog.xaml]
+    navigate:
+      - {action: click, target: {by: automation_id, value: HelpMenu}}
+      - {action: click, target: {by: automation_id, value: AboutMenuItem}}
+    text:
+      summary: Shows the version number, useful when you contact support.
+    status: captured
+    image: screens/about.png
+    sourceHash: sha256:a011391c987d0f89f8d5f6c95ec2f94c7bb2328de8fa3163b14f70dc23de33fd
+tasks:
+  - id: sign-in
+    title: Sign in
+    goal: Open Stockroom Inventory with your user name and password.
+    rank: 1
+    beforeLogin: true
+    evidence:
+      - {type: ui-test, ref: tests/Inventory.UiTests/InventoryTests.cs}
+    steps:
+      - id: s1
+        screen: login-window
+        action: {action: type, target: {by: automation_id, value: UserNameBox}, value: '${GUIDEGEN_USER}'}
+        text: In **User name**, type your user name.
+        status: captured
+        image: screens/sign-in/s1.png
+      - id: s2
+        screen: login-window
+        action: {action: type, target: {by: automation_id, value: PasswordBox}, value: '${GUIDEGEN_PASSWORD}'}
+        text: In **Password**, type your password.
+        status: captured
+        image: screens/sign-in/s2.png
+      - id: s3
+        screen: items
+        action: {action: click, target: {by: automation_id, value: SignInButton}}
+        text: Click **Sign in**. The main window opens.
+        status: captured
+        image: screens/sign-in/s3.png
+    status: captured
+  - id: add-item
+    title: Add a new item
+    goal: Start tracking something new in the stockroom.
+    rank: 2
+    evidence:
+      - {type: ui-test, ref: tests/Inventory.UiTests/InventoryTests.cs}
+    steps:
+      - id: s1
+        screen: items
+        action: {action: click, target: {by: automation_id, value: NewItemButton}}
+        text: On the **Items** tab, click **New item**.
+        status: captured
+        image: screens/add-item/s1.png
+      - id: s2
+        screen: new-item
+        action: {action: type, target: {by: automation_id, value: SkuBox}, value: HW-1003}
+        text: Type a unique **SKU**.
+        status: captured
+        image: screens/add-item/s2.png
+      - id: s3
+        screen: new-item
+        action: {action: type, target: {by: automation_id, value: NameBox}, value: Wall plugs 6mm (box)}
+        text: Type the item **Name**.
+        status: captured
+        image: screens/add-item/s3.png
+      - id: s4
+        screen: new-item
+        action: {action: type, target: {by: automation_id, value: QuantityBox}, value: '40'}
+        text: Type the **Quantity** you have.
+        status: captured
+        image: screens/add-item/s4.png
+      - id: s5
+        screen: new-item
+        action: {action: type, target: {by: automation_id, value: PriceBox}, value: '4.50'}
+        text: Type the **Unit price**.
+        status: captured
+        image: screens/add-item/s5.png
+      - id: s6
+        screen: new-item
+        action: {action: type, target: {by: automation_id, value: LocationBox}, value: A-03}
+        text: Type the shelf **Location**.
+        status: captured
+        image: screens/add-item/s6.png
+      - id: s7
+        screen: items
+        action: {action: click, target: {by: automation_id, value: SaveItemButton}}
+        text: Click **Save**. The item appears in the list.
+        status: captured
+        image: screens/add-item/s7.png
+    status: captured
+  - id: receive-delivery
+    title: Record a delivery
+    goal: Add newly delivered stock to an item's quantity.
+    rank: 3
+    evidence:
+      - {type: ui-test, ref: tests/Inventory.UiTests/InventoryTests.cs}
+    steps:
+      - id: s1
+        screen: items
+        action: {action: click, target: {by: name, value: HW-1002 Wood screws 4x40 (box)}}
+        text: On the **Items** tab, click the item that was delivered.
+        status: captured
+        image: screens/receive-delivery/s1.png
+      - id: s2
+        screen: items
+        action: {action: click, target: {by: automation_id, value: ReceiveStockButton}}
+        text: Click **Receive stock**.
+        status: captured
+        image: screens/receive-delivery/s2.png
+      - id: s3
+        screen: receive-stock
+        action: {action: type, target: {by: automation_id, value: ReceivedBox}, value: '24'}
+        text: In **Quantity received**, type how many arrived.
+        status: captured
+        image: screens/receive-delivery/s3.png
+      - id: s4
+        screen: items
+        action: {action: click, target: {by: automation_id, value: AddToStockButton}}
+        text: Click **Add to stock**. The new quantity shows in the list.
+        status: captured
+        image: screens/receive-delivery/s4.png
+    status: captured
+  - id: edit-item
+    title: Change an item's details
+    goal: Correct a price, name or location.
+    rank: 4
+    evidence:
+      - {type: code, ref: src/Inventory/ViewModels/MainViewModel.cs EditItemCommand}
+    steps:
+      - id: s1
+        screen: items
+        action: {action: click, target: {by: name, value: EL-2002 Junction box IP65}}
+        text: Click the item in the list.
+        status: captured
+        image: screens/edit-item/s1.png
+      - id: s2
+        screen: items
+        action: {action: click, target: {by: automation_id, value: EditItemButton}}
+        text: Click **Edit**.
+        status: captured
+        image: screens/edit-item/s2.png
+      - id: s3
+        screen: new-item
+        action: {action: type, target: {by: automation_id, value: PriceBox}, value: '15.25'}
+        text: Change the details, for example the **Unit price**.
+        status: captured
+        image: screens/edit-item/s3.png
+      - id: s4
+        screen: items
+        action: {action: click, target: {by: automation_id, value: SaveItemButton}}
+        text: Click **Save**.
+        status: captured
+        image: screens/edit-item/s4.png
+    status: captured
+  - id: find-item
+    title: Find an item
+    goal: Quickly find an item by name or SKU.
+    rank: 5
+    evidence:
+      - {type: ui-test, ref: tests/Inventory.UiTests/InventoryTests.cs}
+    steps:
+      - id: s1
+        screen: items
+        action: {action: type, target: {by: automation_id, value: SearchBox}, value: cable}
+        text: On the **Items** tab, type part of the name or SKU in **Search**. The list shows only matching items.
+        status: captured
+        image: screens/find-item/s1.png
+    status: captured
+  - id: check-low-stock
+    title: See what needs reordering
+    goal: Find items that are running low.
+    rank: 6
+    evidence:
+      - {type: code, ref: src/Inventory/ViewModels/MainViewModel.cs LowStock}
+    steps:
+      - id: s1
+        screen: reports
+        action: {action: click, target: {by: automation_id, value: ReportsTab}}
+        text: Click the **Reports** tab. Items that need reordering are listed under **Low stock**.
+        status: captured
+        image: screens/check-low-stock/s1.png
+    status: captured
+  - id: change-threshold
+    title: Change the low-stock level
+    goal: Decide at what quantity an item counts as low.
+    rank: 7
+    evidence:
+      - {type: form-dependency, ref: Low stock list depends on Settings threshold}
+    steps:
+      - id: s1
+        screen: items
+        action: {action: click, target: {by: automation_id, value: FileMenu}}
+        text: Click the **File** menu.
+        status: captured
+        image: screens/change-threshold/s1.png
+      - id: s2
+        screen: items
+        action: {action: click, target: {by: automation_id, value: SettingsMenuItem}}
+        text: Click **Settings...**.
+        status: captured
+        image: screens/change-threshold/s2.png
+      - id: s3
+        screen: settings
+        action: {action: type, target: {by: automation_id, value: ThresholdBox}, value: '20'}
+        text: In **Low-stock threshold**, type the new level.
+        status: captured
+        image: screens/change-threshold/s3.png
+      - id: s4
+        screen: items
+        action: {action: click, target: {by: automation_id, value: SaveSettingsButton}}
+        text: Click **OK**.
+        status: captured
+        image: screens/change-threshold/s4.png
+    status: captured
+  - id: add-category
+    title: Add a category
+    goal: Create a new category to group items.
+    rank: 8
+    evidence:
+      - {type: form-dependency, ref: Item category list comes from Categories}
+    steps:
+      - id: s1
+        screen: items
+        action: {action: click, target: {by: automation_id, value: ItemsMenu}}
+        text: Click the **Items** menu.
+        status: captured
+        image: screens/add-category/s1.png
+      - id: s2
+        screen: items
+        action: {action: click, target: {by: automation_id, value: CategoriesMenuItem}}
+        text: Click **Categories...**.
+        status: captured
+        image: screens/add-category/s2.png
+      - id: s3
+        screen: categories
+        action: {action: type, target: {by: automation_id, value: NewCategoryBox}, value: Paint}
+        text: In **New category**, type the name.
+        status: captured
+        image: screens/add-category/s3.png
+      - id: s4
+        screen: categories
+        action: {action: click, target: {by: automation_id, value: AddCategoryButton}}
+        text: Click **Add**. The category appears in the list.
+        status: captured
+        image: screens/add-category/s4.png
+      - id: s5
+        screen: items
+        action: {action: click, target: {by: automation_id, value: CloseCategoriesButton}}
+        text: Click **Close**.
+        status: captured
+        image: screens/add-category/s5.png
+    status: captured
+  - id: view-suppliers
+    title: Look up a supplier
+    goal: Find a supplier's contact details and delivery time.
+    rank: 9
+    evidence:
+      - {type: code, ref: src/Inventory/Views/MainWindow.xaml SuppliersTab}
+    steps:
+      - id: s1
+        screen: suppliers
+        action: {action: click, target: {by: automation_id, value: SuppliersTab}}
+        text: Click the **Suppliers** tab.
+        status: captured
+        image: screens/view-suppliers/s1.png
+    status: captured
+  - id: delete-item
+    title: Delete an item
+    goal: Remove an item you no longer stock.
+    rank: 10
+    evidence:
+      - {type: code, ref: src/Inventory/ViewModels/MainViewModel.cs DeleteSelected}
+    steps:
+      - id: s1
+        screen: items
+        action: {action: click, target: {by: name, value: SF-4001 Safety glasses}}
+        text: Click the item in the list.
+        status: captured
+        image: screens/delete-item/s1.png
+      - id: s2
+        screen: items
+        action: {action: click, target: {by: automation_id, value: DeleteItemButton}}
+        text: Click **Delete**, then click **Yes** to confirm. This cannot be undone.
+        status: refused
+        image: screens/delete-item/s2.png
+        note: "'Delete' looks destructive (matches 'delete'). Refused by the engine; add it to safety.allowDestructive in guidegen.config.json if it is safe on this local app."
+    status: captured
+troubleshooting:
+  - message: Invalid user name or password.
+    source: src/Inventory/ViewModels/Validation.cs
+    cause: The user name or password is wrong.
+    fix: Check both and that **Caps Lock** is off. Ask your administrator to reset your password if needed.
+  - message: SKU is required.
+    source: src/Inventory/ViewModels/Validation.cs
+    cause: The **SKU** box is empty.
+    fix: Type a stock code, for example **HW-1003**.
+  - message: Another item already uses this SKU.
+    source: src/Inventory/ViewModels/Validation.cs
+    cause: SKUs must be unique.
+    fix: Use a different SKU, or edit the existing item instead.
+  - message: Name is required.
+    source: src/Inventory/ViewModels/Validation.cs
+    cause: The name box is empty.
+    fix: Type a name.
+  - message: Quantity cannot be negative.
+    source: src/Inventory/ViewModels/Validation.cs
+    cause: The quantity is below zero.
+    fix: Type **0** or more.
+  - message: Quantity must be a whole number.
+    source: src/Inventory/ViewModels/Validation.cs
+    cause: The quantity has letters or decimals.
+    fix: Type a whole number such as **12**.
+  - message: Unit price must be greater than 0.
+    source: src/Inventory/ViewModels/Validation.cs
+    cause: The price is empty or zero.
+    fix: Type a price such as **4.50**.
+  - message: Select an item in the list first.
+    source: src/Inventory/ViewModels/Validation.cs
+    cause: You clicked **Edit**, **Receive stock** or **Delete** without choosing an item.
+    fix: Click an item in the list first.
+  - message: That category already exists.
+    source: src/Inventory/ViewModels/Validation.cs
+    cause: A category with the same name is already in the list.
+    fix: Choose a different name.
+  - message: Low-stock threshold must be between 0 and 1000.
+    source: src/Inventory/ViewModels/Validation.cs
+    cause: The number is outside the allowed range.
+    fix: Type a whole number from **0** to **1000**.

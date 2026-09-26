@@ -1,0 +1,13 @@
+<article class="task" id="{{ t.anchor }}" aria-labelledby="{{ t.anchor }}-h">
+  {% set thl = "h4" if grouped else "h3" %}
+  <{{ thl }} id="{{ t.anchor }}-h">{{ t.title }}</{{ thl }}>
+  {% if t.goal %}<div class="goal">{{ t.goal|md }}</div>{% endif %}
+  <ol class="steps">
+    {% for st in t.steps %}{% include "step.html.j2" %}{% endfor %}
+  </ol>
+  {% if t.screens_used %}
+  <p class="xref"><strong>Screens used:</strong>
+    {% for sa, stitle in t.screens_used %}<a href="#{{ sa }}">{{ stitle }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+  </p>
+  {% endif %}
+</article>

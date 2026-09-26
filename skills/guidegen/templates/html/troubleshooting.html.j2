@@ -1,0 +1,13 @@
+<section id="troubleshooting" class="chapter" aria-labelledby="h-trouble">
+  <h2 id="h-trouble">{% for cid, ctitle in vm.chapters %}{% if cid == "troubleshooting" %}{{ ctitle }}{% endif %}{% endfor %}</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Error messages and fixes">
+    <table class="trouble">
+      <thead><tr><th scope="col">Message</th><th scope="col">Why it happens</th><th scope="col">How to fix it</th></tr></thead>
+      <tbody>
+      {% for e in vm.troubleshooting %}
+        <tr id="trouble-{{ loop.index }}"><td><q>{{ e.message }}</q></td><td>{{ e.cause|md }}</td><td>{{ e.fix|md }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>

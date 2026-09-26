@@ -1,0 +1,69 @@
+{
+  "$schema": "https://raw.githubusercontent.com/guidegen/guidegen/main/skills/guidegen/schema/config.schema.json",
+  "app": {
+    "kind": "wpf",
+    "workingDir": ".",
+    "build": "dotnet build \"src/Inventory/Inventory.csproj\" -c Debug",
+    "executable": "src/Inventory/bin/Debug/net9.0-windows/Inventory.exe",
+    "readyWhen": {
+      "timeoutSec": 60
+    }
+  },
+  "auth": {
+    "required": true,
+    "usernameEnv": "GUIDEGEN_USER",
+    "passwordEnv": "GUIDEGEN_PASSWORD",
+    "loginSteps": [
+      {
+        "action": "type",
+        "target": {
+          "by": "automation_id",
+          "value": "UserNameBox"
+        },
+        "value": "${GUIDEGEN_USER}"
+      },
+      {
+        "action": "type",
+        "target": {
+          "by": "automation_id",
+          "value": "PasswordBox"
+        },
+        "value": "${GUIDEGEN_PASSWORD}"
+      },
+      {
+        "action": "click",
+        "target": {
+          "by": "automation_id",
+          "value": "SignInButton"
+        }
+      }
+    ]
+  },
+  "seed": {
+    "command": null,
+    "enabled": false
+  },
+  "safety": {
+    "allowRemoteBackends": false,
+    "allowDestructive": [],
+    "redactPatterns": [
+      "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+    ],
+    "redactSelectors": []
+  },
+  "budget": {
+    "maxScreens": 60,
+    "maxTasks": 15
+  },
+  "brand": {
+    "logo": "src/Inventory/Assets/logo.png",
+    "productName": "Stockroom Inventory",
+    "companyName": "Acme Ltd",
+    "version": "2.3.0",
+    "primaryColor": "#2E5E4E",
+    "accentColor": "#E07A1F"
+  },
+  "graphify": {
+    "use": "auto"
+  }
+}

@@ -1,0 +1,6 @@
+node_modules/
+.next/
+data/db.json
+test-results/
+playwright-report/
+.guidegen-e2e/

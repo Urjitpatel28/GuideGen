@@ -1,0 +1,21 @@
+<Window x:Class="Inventory.Views.SettingsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Settings" Width="420" SizeToContent="Height" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False" AutomationProperties.AutomationId="SettingsDialog">
+    <StackPanel Margin="20">
+        <Label Content="_Low-stock threshold" Target="{Binding ElementName=ThresholdBox}" Padding="0"/>
+        <TextBox x:Name="ThresholdBox" Text="{Binding Threshold, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.AutomationId="ThresholdBox" AutomationProperties.Name="Low-stock threshold"/>
+        <TextBlock Text="{Binding Error}" Style="{StaticResource FieldError}" TextWrapping="Wrap" AutomationProperties.AutomationId="SettingsError"/>
+        <Label Content="_Default category for new items" Target="{Binding ElementName=DefaultCategoryBox}" Padding="0"/>
+        <ComboBox x:Name="DefaultCategoryBox" SelectedItem="{Binding DefaultCategory}" AutomationProperties.AutomationId="DefaultCategoryBox" AutomationProperties.Name="Default category"
+                  ItemsSource="{Binding Source={x:Static Application.Current}, Path=MainWindow.DataContext.Store.Categories}"/>
+        <Label Content="_Send stock reports to" Target="{Binding ElementName=ReportEmailBox}" Padding="0"/>
+        <TextBox x:Name="ReportEmailBox" Text="{Binding ReportEmail}" AutomationProperties.AutomationId="ReportEmailBox" AutomationProperties.Name="Report email"/>
+        <CheckBox Content="_Ask before deleting items" IsChecked="{Binding ConfirmDeletes}" Margin="0,4,0,14" AutomationProperties.AutomationId="ConfirmDeletesCheckBox"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" IsDefault="True" Style="{StaticResource PrimaryButton}" Click="Ok_Click" AutomationProperties.AutomationId="SaveSettingsButton"/>
+            <Button Content="Cancel" IsCancel="True" Margin="0" AutomationProperties.AutomationId="CancelSettingsButton"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

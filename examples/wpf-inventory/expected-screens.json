@@ -1,0 +1,16 @@
+{
+  "comment": "Hand-written list of every user-facing window, tab and dialog in the code. GuideGen's inventory must cover 100% of these.",
+  "screens": [
+    { "id": "login-window", "source": "src/Inventory/Views/LoginWindow.xaml" },
+    { "id": "items", "source": "src/Inventory/Views/MainWindow.xaml#ItemsTab" },
+    { "id": "suppliers", "source": "src/Inventory/Views/MainWindow.xaml#SuppliersTab" },
+    { "id": "reports", "source": "src/Inventory/Views/MainWindow.xaml#ReportsTab" },
+    { "id": "new-item", "source": "src/Inventory/Views/ItemDialog.xaml" },
+    { "id": "receive-stock", "source": "src/Inventory/Views/ReceiveStockDialog.xaml" },
+    { "id": "categories", "source": "src/Inventory/Views/CategoriesDialog.xaml" },
+    { "id": "settings", "source": "src/Inventory/Views/SettingsDialog.xaml" },
+    { "id": "about", "source": "src/Inventory/Views/AboutDialog.xaml" }
+  ],
+  "minTasks": 8,
+  "minTroubleshooting": 5
+}

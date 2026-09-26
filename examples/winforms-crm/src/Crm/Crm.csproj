@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>ClientDesk</AssemblyName>
+    <RootNamespace>Crm</RootNamespace>
+    <Product>ClientDesk CRM</Product>
+    <Company>Fabrikam Software</Company>
+    <Version>1.8.2</Version>
+    <ApplicationIcon>Assets\crm.ico</ApplicationIcon>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Assets\logo.png" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Assets\crm.ico" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

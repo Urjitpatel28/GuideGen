@@ -1,0 +1,31 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+node_modules/
+bin/
+obj/
+.vs/
+.idea/
+# local runs against the examples (their own guidegen-out/.gitignore keeps config + manual)
+examples/*/guidegen-out/
+examples/*/.guidegen-e2e/
+
+# Office lock files
+~$*
+
+# secrets and logs
+.env
+.env.*
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# a GuideGen run against this repo itself
+/guidegen-out/

@@ -1,0 +1,467 @@
+# GuideGen manual source. Edit freely: set `override:` to replace generated text, `exclude: true`
+# to drop a screen/task/entry, or `locked: [title]` to keep fields you edited. GuideGen never
+# changes override/exclude/locked. Re-run `/guidegen --update` to refresh.
+version: 1
+meta:
+  title: ClientDesk CRM User Manual
+  audience: end users
+  intro: ClientDesk keeps your customer contacts, calls, emails and meetings in one place, and shows the value of your sales pipeline at a glance.
+  generatedAt: 2026-09-24 16:12:44+00:00
+chapters:
+  - id: getting-started
+  - id: tasks
+  - id: reference
+  - id: troubleshooting
+gettingStarted:
+  requirements: "- A Windows 10 or Windows 11 PC with ClientDesk installed.\n- Your ClientDesk user name and password.\n"
+  launch: Open the **Start** menu and click **ClientDesk**. The **Sign in to ClientDesk** window appears.
+  signIn: Type your **User name** and **Password**, then click **Sign in**.
+  tour: The main window has three tabs. **Customers** lists your contacts, **Activities** shows your calls, emails and meetings, and **Dashboard** shows your pipeline. The **File**, **Customers** and **Help** menus are at the top.
+  tourScreen: customers
+screens:
+  - id: login-form
+    title: Sign in
+    kind: window
+    beforeLogin: true
+    source: [src/Crm/LoginForm.cs]
+    navigate: []
+    elements:
+      - name: User name
+        type: text box
+        description: Your ClientDesk user name.
+      - name: Password
+        type: text box
+        description: Your password. It is hidden as you type.
+      - name: Sign in
+        type: button
+        description: Opens the main window.
+    text:
+      summary: Appears when you start ClientDesk.
+    status: captured
+    image: screens/login-form.png
+    sourceHash: sha256:33f870164fc954a0ac2ef0ba087fe55c1db86a8b4310405ed658f296378a78c9
+  - id: customers
+    title: Customers tab
+    kind: tab
+    source: [src/Crm/MainForm.cs, src/Crm/Data.cs]
+    navigate: []
+    elements:
+      - name: Search
+        type: text box
+        description: Type part of a name or company to filter the list.
+      - name: New customer
+        type: button
+        description: Opens the **New customer** window.
+      - name: Edit
+        type: button
+        description: Opens the selected customer. You can also double-click a row.
+      - name: Log activity
+        type: button
+        description: Records a call, email or meeting for the selected customer.
+      - name: Delete
+        type: button
+        description: Removes the selected customer after you confirm.
+      - name: Status
+        type: column
+        description: '**Lead**, **Prospect**, **Customer** or **Inactive**.'
+      - name: Annual value
+        type: column
+        description: Expected yearly sales from this customer.
+    text:
+      summary: Your list of contacts. The main window opens on this tab.
+    status: captured
+    image: screens/customers.png
+    sourceHash: sha256:856bdbfd24b451294f515ac996e277752eed67e8538ec376f057a31bb81e521a
+  - id: activities
+    title: Activities tab
+    kind: tab
+    source: [src/Crm/MainForm.cs]
+    navigate:
+      - {action: click, target: {by: automation_id, value: ActivitiesTab}}
+    text:
+      summary: Every call, email, meeting and note you have logged, with the date and customer.
+    status: captured
+    image: screens/activities.png
+    sourceHash: sha256:e8f3371b6b083d371ad0ea53a4f4d15f7a8bc39572aaecb730fc450f84a55548
+  - id: dashboard
+    title: Dashboard tab
+    kind: tab
+    source: [src/Crm/MainForm.cs, src/Crm/SalesChart.cs]
+    navigate:
+      - {action: click, target: {by: automation_id, value: DashboardTab}}
+    text:
+      summary: Shows how many contacts you have, how many are active, and a chart of pipeline value by status.
+    noUia: true
+    status: captured
+    image: screens/dashboard.png
+    sourceHash: sha256:974fd790dc06b51457d76e4c4309535b698a7c3322887988f33dfa5602186d10
+  - id: customer-form
+    title: New customer window
+    kind: dialog
+    source: [src/Crm/CustomerForm.cs]
+    navigate:
+      - {action: click, target: {by: automation_id, value: NewCustomerButton}}
+    elements:
+      - name: Name
+        type: text box
+        description: The contact's full name. Required.
+      - name: Company
+        type: text box
+        description: Where they work.
+      - name: Email
+        type: text box
+        description: Must be a valid address and not used by another customer.
+      - name: Phone
+        type: text box
+        description: Optional.
+      - name: Status
+        type: list
+        description: Where they are in your pipeline. The default is set in **Options**.
+      - name: Annual value
+        type: text box
+        description: Expected yearly sales. 0 or more.
+      - name: Save
+        type: button
+        description: Saves the customer. Problems are shown in red above the buttons.
+    text:
+      summary: Used to add a customer. The same window, titled **Edit customer**, opens when you edit one.
+    status: captured
+    image: screens/customer-form.png
+    sourceHash: sha256:cb9f2a3dd19f5f8cf3cc4570ef79f6515c9945e7c27931d0f97dfda5950a4073
+  - id: activity-form
+    title: Log activity window
+    kind: dialog
+    source: [src/Crm/ActivityForm.cs]
+    navigate:
+      - {action: click, target: {by: automation_id, value: LogActivityButton}}
+    elements:
+      - name: Customer
+        type: list
+        description: Who the activity was with.
+      - name: Type
+        type: list
+        description: '**Call**, **Email**, **Meeting** or **Note**.'
+      - name: Date
+        type: date picker
+        description: When it happened.
+      - name: Notes
+        type: text box
+        description: What was discussed. Up to 500 characters.
+      - name: Save activity
+        type: button
+        description: Adds the activity to the **Activities** tab.
+    text:
+      summary: Used to record a call, email, meeting or note.
+    status: captured
+    image: screens/activity-form.png
+    sourceHash: sha256:59b8d0a7ec7173bf6b6717c2f2d674175876371b82373885f17ecd67132ab0f2
+  - id: options
+    title: Options window
+    kind: dialog
+    source: [src/Crm/OptionsForm.cs]
+    navigate:
+      - {action: click, target: {by: name, value: File}}
+      - {action: click, target: {by: name, value: Options...}}
+    elements:
+      - name: Default status
+        type: list
+        description: Status pre-selected for new customers.
+      - name: Reply-to email
+        type: text box
+        description: Address customers reply to.
+      - name: Show inactive customers
+        type: check box
+        description: Include inactive customers in the list.
+    text:
+      summary: Preferences for how ClientDesk works.
+    status: captured
+    image: screens/options.png
+    sourceHash: sha256:4e9965c8e3c7baba8b1d5d5dde8cb9268e65c1a4c28f0f4bce44d9fcd29a063c
+  - id: about
+    title: About window
+    kind: dialog
+    source: [src/Crm/AboutForm.cs]
+    navigate:
+      - {action: click, target: {by: name, value: Help}}
+      - {action: click, target: {by: name, value: About ClientDesk}}
+    text:
+      summary: Shows the version number, useful when you contact support.
+    status: captured
+    image: screens/about.png
+    sourceHash: sha256:66fb6e4661d0f460103b52e5698e2bce27e802ad7b354d9b6f3234ef5a65544e
+tasks:
+  - id: sign-in
+    title: Sign in
+    goal: Open ClientDesk with your user name and password.
+    rank: 1
+    beforeLogin: true
+    evidence:
+      - {type: code, ref: src/Crm/Program.cs shows LoginForm first}
+    steps:
+      - id: s1
+        screen: login-form
+        action: {action: type, target: {by: automation_id, value: UserNameTextBox}, value: '${GUIDEGEN_USER}'}
+        text: In **User name**, type your user name.
+        status: captured
+        image: screens/sign-in/s1.png
+      - id: s2
+        screen: login-form
+        action: {action: type, target: {by: automation_id, value: PasswordTextBox}, value: '${GUIDEGEN_PASSWORD}'}
+        text: In **Password**, type your password.
+        status: captured
+        image: screens/sign-in/s2.png
+      - id: s3
+        screen: customers
+        action: {action: click, target: {by: automation_id, value: SignInButton}}
+        text: Click **Sign in**.
+        status: captured
+        image: screens/sign-in/s3.png
+    status: captured
+  - id: add-customer
+    title: Add a customer
+    goal: Start tracking a new contact.
+    rank: 2
+    evidence:
+      - {type: form-dependency, ref: Activities require a customer}
+    steps:
+      - id: s1
+        screen: customers
+        action: {action: click, target: {by: automation_id, value: NewCustomerButton}}
+        text: On the **Customers** tab, click **New customer**.
+        status: captured
+        image: screens/add-customer/s1.png
+      - id: s2
+        screen: customer-form
+        action: {action: type, target: {by: automation_id, value: NameTextBox}, value: Jordan Lee}
+        text: Type the contact's **Name**.
+        status: captured
+        image: screens/add-customer/s2.png
+      - id: s3
+        screen: customer-form
+        action: {action: type, target: {by: automation_id, value: CompanyTextBox}, value: Proseware Inc}
+        text: Type their **Company**.
+        status: captured
+        image: screens/add-customer/s3.png
+      - id: s4
+        screen: customer-form
+        action: {action: type, target: {by: automation_id, value: EmailTextBox}, value: jordan@proseware.example}
+        text: Type their **Email** address.
+        status: captured
+        image: screens/add-customer/s4.png
+      - id: s5
+        screen: customer-form
+        action: {action: select, target: {by: automation_id, value: StatusComboBox}, value: Prospect}
+        text: Choose a **Status**.
+        status: captured
+        image: screens/add-customer/s5.png
+      - id: s6
+        screen: customer-form
+        action: {action: type, target: {by: automation_id, value: AnnualValueTextBox}, value: '15000'}
+        text: Type the expected **Annual value**.
+        status: captured
+        image: screens/add-customer/s6.png
+      - id: s7
+        screen: customers
+        action: {action: click, target: {by: automation_id, value: SaveCustomerButton}}
+        text: Click **Save**. The customer appears in the list.
+        status: captured
+        image: screens/add-customer/s7.png
+    status: captured
+  - id: log-activity
+    title: Log a call or meeting
+    goal: Keep a record of what you discussed with a customer.
+    rank: 3
+    evidence:
+      - {type: code, ref: src/Crm/ActivityForm.cs}
+    steps:
+      - id: s1
+        screen: customers
+        action: {action: click, target: {by: name, value: 'Name Row 2, Not sorted.'}}
+        text: On the **Customers** tab, click the customer.
+        status: captured
+        image: screens/log-activity/s1.png
+      - id: s2
+        screen: customers
+        action: {action: click, target: {by: automation_id, value: LogActivityButton}}
+        text: Click **Log activity**.
+        status: captured
+        image: screens/log-activity/s2.png
+      - id: s3
+        screen: activity-form
+        action: {action: select, target: {by: automation_id, value: ActivityTypeComboBox}, value: Meeting}
+        text: Choose the **Type** of activity.
+        status: captured
+        image: screens/log-activity/s3.png
+      - id: s4
+        screen: activity-form
+        action: {action: type, target: {by: automation_id, value: ActivityNotesTextBox}, value: Demo of the premium plan. Follow up next week.}
+        text: Type what you discussed in **Notes**.
+        status: captured
+        image: screens/log-activity/s4.png
+      - id: s5
+        screen: activities
+        action: {action: click, target: {by: automation_id, value: SaveActivityButton}}
+        text: Click **Save activity**. It appears on the **Activities** tab.
+        status: captured
+        image: screens/log-activity/s5.png
+    status: captured
+  - id: edit-customer
+    title: Update a customer's details
+    goal: Change a contact's status, phone number or other details.
+    rank: 4
+    evidence:
+      - {type: code, ref: src/Crm/MainForm.cs EditCustomer}
+    steps:
+      - id: s1
+        screen: customers
+        action: {action: click, target: {by: name, value: 'Name Row 3, Not sorted.'}}
+        text: On the **Customers** tab, click the customer.
+        status: captured
+        image: screens/edit-customer/s1.png
+      - id: s2
+        screen: customers
+        action: {action: click, target: {by: automation_id, value: EditCustomerButton}}
+        text: Click **Edit**, or double-click the row.
+        status: captured
+        image: screens/edit-customer/s2.png
+      - id: s3
+        screen: customer-form
+        action: {action: select, target: {by: automation_id, value: StatusComboBox}, value: Prospect}
+        text: Change the details, for example the **Status**.
+        status: captured
+        image: screens/edit-customer/s3.png
+      - id: s4
+        screen: customers
+        action: {action: click, target: {by: automation_id, value: SaveCustomerButton}}
+        text: Click **Save**.
+        status: captured
+        image: screens/edit-customer/s4.png
+    status: captured
+  - id: find-customer
+    title: Find a customer
+    goal: Quickly find a contact by name or company.
+    rank: 5
+    evidence:
+      - {type: code, ref: src/Crm/MainForm.cs ApplyFilter}
+    steps:
+      - id: s1
+        screen: customers
+        action: {action: type, target: {by: automation_id, value: SearchTextBox}, value: contoso}
+        text: On the **Customers** tab, type part of a name or company in **Search**.
+        status: captured
+        image: screens/find-customer/s1.png
+    status: captured
+  - id: check-pipeline
+    title: Check your sales pipeline
+    goal: See the value of your contacts by status.
+    rank: 6
+    evidence:
+      - {type: code, ref: src/Crm/SalesChart.cs}
+    steps:
+      - id: s1
+        screen: dashboard
+        action: {action: click, target: {by: automation_id, value: DashboardTab}}
+        text: Click the **Dashboard** tab. The chart shows the total annual value for each status.
+        status: captured
+        image: screens/check-pipeline/s1.png
+    status: captured
+  - id: review-activities
+    title: Review recent activities
+    goal: See what has happened with your customers lately.
+    rank: 7
+    evidence:
+      - {type: code, ref: src/Crm/MainForm.cs ActivitiesTab}
+    steps:
+      - id: s1
+        screen: activities
+        action: {action: click, target: {by: automation_id, value: ActivitiesTab}}
+        text: Click the **Activities** tab.
+        status: captured
+        image: screens/review-activities/s1.png
+    status: captured
+  - id: set-default-status
+    title: Change the default status for new customers
+    goal: Save time when most new contacts start at the same stage.
+    rank: 8
+    evidence:
+      - {type: form-dependency, ref: CustomerForm uses Options.DefaultStatus}
+    steps:
+      - id: s1
+        screen: customers
+        action: {action: click, target: {by: name, value: File}}
+        text: Click the **File** menu.
+        status: captured
+        image: screens/set-default-status/s1.png
+      - id: s2
+        screen: customers
+        action: {action: click, target: {by: name, value: Options...}}
+        text: Click **Options...**.
+        status: captured
+        image: screens/set-default-status/s2.png
+      - id: s3
+        screen: options
+        action: {action: select, target: {by: automation_id, value: DefaultStatusComboBox}, value: Prospect}
+        text: Choose a **Default status**.
+        status: captured
+        image: screens/set-default-status/s3.png
+      - id: s4
+        screen: customers
+        action: {action: click, target: {by: automation_id, value: SaveOptionsButton}}
+        text: Click **OK**.
+        status: captured
+        image: screens/set-default-status/s4.png
+    status: captured
+  - id: delete-customer
+    title: Delete a customer
+    goal: Remove a contact you no longer need.
+    rank: 9
+    evidence:
+      - {type: code, ref: src/Crm/MainForm.cs DeleteCustomer}
+    steps:
+      - id: s1
+        screen: customers
+        action: {action: click, target: {by: name, value: 'Name Row 5, Not sorted.'}}
+        text: On the **Customers** tab, click the customer.
+        status: captured
+        image: screens/delete-customer/s1.png
+      - id: s2
+        screen: customers
+        action: {action: click, target: {by: automation_id, value: DeleteCustomerButton}}
+        text: Click **Delete**, then click **Yes**. Their logged activities are kept.
+        status: refused
+        image: screens/delete-customer/s2.png
+        note: "'Delete' looks destructive (matches 'delete'). Refused by the engine; add it to safety.allowDestructive in guidegen.config.json if it is safe on this local app."
+    status: captured
+troubleshooting:
+  - message: The user name or password is incorrect.
+    source: src/Crm/Data.cs
+    cause: The sign-in details do not match an account.
+    fix: Check both and that **Caps Lock** is off.
+  - message: Enter the customer's name.
+    source: src/Crm/Data.cs
+    cause: The **Name** box is empty.
+    fix: Type the contact's name.
+  - message: Enter a valid email address.
+    source: src/Crm/Data.cs
+    cause: The email address is incomplete.
+    fix: Type a full address such as **name@company.com**.
+  - message: A customer with this email address already exists.
+    source: src/Crm/Data.cs
+    cause: Two customers cannot share an email address.
+    fix: Search for the existing customer and edit them instead.
+  - message: Annual value must be a number of 0 or more.
+    source: src/Crm/Data.cs
+    cause: The value has letters or is negative.
+    fix: Type a number such as **15000**, without currency symbols.
+  - message: Select a customer first.
+    source: src/Crm/Data.cs
+    cause: You clicked **Edit** or **Delete** without choosing a customer.
+    fix: Click a customer in the list first.
+  - message: Choose a customer for this activity.
+    source: src/Crm/Data.cs
+    cause: No customer was chosen in **Customer**.
+    fix: Choose who the activity was with.
+  - message: Notes cannot be longer than 500 characters.
+    source: src/Crm/Data.cs
+    cause: The notes are too long.
+    fix: Shorten the notes or split them into two activities.

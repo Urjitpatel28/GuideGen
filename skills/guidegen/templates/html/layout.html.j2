@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="GuideGen">
+<title>{{ vm.title }}</title>
+<style>
+:root { --primary: {{ vm.primary }}; --accent: {{ vm.accent }}; --accent-fg: {{ vm.accent_fg }}; }
+{{ css }}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button class="menu-toggle" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Show navigation">
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <a class="brand" href="#top">
+    {% if logo_src %}<img src="{{ logo_src }}" alt="" class="brand-logo">{% endif %}
+    <span>{{ vm.product }}</span>
+  </a>
+  <div class="search" role="search">
+    <label for="q" class="visually-hidden">Search the manual</label>
+    <input id="q" type="search" role="combobox" placeholder="Search the manual…" autocomplete="off" aria-autocomplete="list" aria-controls="results" aria-expanded="false">
+    <ul id="results" role="listbox" aria-label="Search results" hidden></ul>
+  </div>
+</header>
+<div class="shell">
+{% include "sidebar.html.j2" %}
+<main id="main" tabindex="-1">
+  <section class="cover" id="top" aria-labelledby="cover-title">
+    {% if logo_src %}<img src="{{ logo_src }}" alt="{{ vm.product }} logo" class="cover-logo">{% endif %}
+    <h1 id="cover-title">{{ vm.title }}</h1>
+    <p class="meta">{% if vm.version %}Version {{ vm.version }} · {% endif %}{{ vm.date }}{% if vm.company %} · {{ vm.company }}{% endif %}</p>
+    {% if vm.audience %}<p class="meta audience">For {{ vm.audience }}</p>{% endif %}
+    <div class="cards">
+      {% for cid, ctitle in vm.chapters %}
+        {% if vm.has_chapter(cid) %}
+        <a class="card" href="#{{ chapter_anchor(cid) }}">
+          <strong>{{ ctitle }}</strong>
+          <span>{% if cid == "getting-started" %}Install, launch and first steps{% elif cid == "tasks" %}{{ vm.tasks|length }} step-by-step guides{% elif cid == "reference" %}{{ vm.screens|length }} screens explained{% elif cid == "troubleshooting" %}{{ vm.troubleshooting|length }} messages and fixes{% else %}{{ vm.custom[cid]|plain|truncate(60) }}{% endif %}</span>
+        </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+
+  {% for cid, ctitle in vm.chapters %}
+  {% if cid == "getting-started" and vm.has_chapter(cid) %}
+  <section id="getting-started" class="chapter" aria-labelledby="h-gs">
+    <h2 id="h-gs">{{ ctitle }}</h2>
+    {% set gs = vm.getting_started %}
+    {% if vm.intro %}{{ vm.intro|md }}{% endif %}
+    {% if gs.override %}
+      {{ gs.override|md }}
+    {% else %}
+      {% if gs.requirements %}<h3>Before you begin</h3>{{ gs.requirements|md }}{% endif %}
+      {% if gs.launch %}<h3>Starting the application</h3>{{ gs.launch|md }}{% endif %}
+      {% if gs.sign_in %}<h3>Signing in</h3>{{ gs.sign_in|md }}{% endif %}
+      {% if gs.tour or gs.tour_figure %}<h3>A quick tour</h3>{{ gs.tour|md }}
+        {% if gs.tour_figure %}{% with figure = gs.tour_figure %}{% include "figure.html.j2" %}{% endwith %}{% endif %}
+      {% endif %}
+    {% endif %}
+  </section>
+  {% elif cid == "tasks" and vm.tasks %}
+  <section id="tasks" class="chapter" aria-labelledby="h-tasks">
+    <h2 id="h-tasks">{{ ctitle }}</h2>
+    <ul class="task-list">
+      {% for t in vm.tasks %}<li><a href="#{{ t.anchor }}">{{ t.title }}</a></li>{% endfor %}
+    </ul>
+    {% set grouped = vm.tasks_grouped %}
+    {% for group, tasks in vm.task_groups() %}
+      {% if grouped %}<h3 class="group">{{ group or "Other tasks" }}</h3>{% endif %}
+      {% for t in tasks %}{% include "task.html.j2" %}{% endfor %}
+    {% endfor %}
+  </section>
+  {% elif cid == "reference" and vm.screens %}
+  <section id="reference" class="chapter" aria-labelledby="h-ref">
+    <h2 id="h-ref">{{ ctitle }}</h2>
+    {% set grouped = vm.screens_grouped %}
+    {% for group, screens in vm.screen_groups() %}
+      {% if grouped %}<h3 class="group">{{ group or "Other screens" }}</h3>{% endif %}
+      {% for s in screens %}{% include "screen.html.j2" %}{% endfor %}
+    {% endfor %}
+  </section>
+  {% elif cid == "troubleshooting" and vm.troubleshooting %}
+  {% include "troubleshooting.html.j2" %}
+  {% elif vm.custom.get(cid) %}
+  <section id="{{ chapter_anchor(cid) }}" class="chapter" aria-labelledby="h-{{ chapter_anchor(cid) }}">
+    <h2 id="h-{{ chapter_anchor(cid) }}">{{ ctitle }}</h2>
+    {{ vm.custom[cid]|md }}
+  </section>
+  {% endif %}
+  {% endfor %}
+  <footer class="page-footer">{{ vm.product }}{% if vm.version %} {{ vm.version }}{% endif %} · Generated {{ vm.date }}</footer>
+</main>
+</div>
+<dialog id="zoom" aria-label="Enlarged screenshot">
+  <form method="dialog"><button class="zoom-close" aria-label="Close">×</button></form>
+  <img alt="">
+</dialog>
+<script id="search-index" type="application/json">{{ index }}</script>
+<script>
+{{ js }}
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "comment": "Hand-written list of every user-facing form, tab and dialog in the code. GuideGen's inventory must cover 100% of these.",
+  "screens": [
+    { "id": "login-form", "source": "src/Crm/LoginForm.cs" },
+    { "id": "customers", "source": "src/Crm/MainForm.cs#CustomersTab" },
+    { "id": "activities", "source": "src/Crm/MainForm.cs#ActivitiesTab" },
+    { "id": "dashboard", "source": "src/Crm/MainForm.cs#DashboardTab" },
+    { "id": "customer-form", "source": "src/Crm/CustomerForm.cs" },
+    { "id": "activity-form", "source": "src/Crm/ActivityForm.cs" },
+    { "id": "options", "source": "src/Crm/OptionsForm.cs" },
+    { "id": "about", "source": "src/Crm/AboutForm.cs" }
+  ],
+  "minTasks": 8,
+  "minTroubleshooting": 5
+}

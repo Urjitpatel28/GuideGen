@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GuideGen - user manuals from your code</title>
+<meta name="description" content="Type /guidegen in your coding agent and get a branded Word + HTML user manual for your web or Windows desktop app.">
+<style>
+  :root { --ink: #1d2330; --muted: #5b6475; --line: #e3e7ee; --soft: #f5f7fa; --brand: #1f4e79; --accent: #e4572e; }
+  @media (prefers-color-scheme: dark) { :root { --ink: #e6e9ef; --muted: #a3acbb; --line: #2b313c; --soft: #1c2028; --brand: #8fb8ff; } body { background: #14171d; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 17px/1.6 "Segoe UI", -apple-system, Roboto, sans-serif; color: var(--ink); }
+  main { max-width: 980px; margin: 0 auto; padding: 56px 20px 80px; }
+  h1 { font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.1; margin: 0 0 16px; }
+  h1 span { color: var(--accent); }
+  h2 { margin-top: 56px; }
+  .lead { font-size: 1.2rem; color: var(--muted); max-width: 720px; }
+  pre { background: var(--soft); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; overflow-x: auto; font-size: 15px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { border: 1px solid var(--line); border-radius: 12px; padding: 18px; background: var(--soft); }
+  .card h3 { margin: 0 0 6px; }
+  .card p { margin: 0 0 10px; color: var(--muted); font-size: 15px; }
+  a { color: var(--brand); }
+  ul.check { padding-left: 20px; }
+  footer { margin-top: 64px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Your app's user manual,<br><span>written by your coding agent.</span></h1>
+  <p class="lead">Type <code>/guidegen</code> in Claude Code, Codex, Cursor or opencode. GuideGen reads your code, runs your app,
+    explores every screen, captures redacted, annotated screenshots and writes a branded manual in Word and HTML.</p>
+<pre>/plugin marketplace add guidegen/guidegen
+/plugin install guidegen@guidegen
+/guidegen</pre>
+
+  <h2>Sample manuals</h2>
+  <p>Generated from the example apps in the repository, with no hand-written config.</p>
+  <div class="grid">
+    <div class="card"><h3>Acme Shop</h3><p>Next.js web app · 11 screens · 10 tasks</p>
+      <a href="samples/nextjs-shop/index.html">HTML manual</a> · <a href="samples/nextjs-shop/manual.docx">Word</a> · <a href="samples/nextjs-shop/run-report.md">Run report</a></div>
+    <div class="card"><h3>Stockroom Inventory</h3><p>WPF desktop app · 9 screens · 10 tasks</p>
+      <a href="samples/wpf-inventory/index.html">HTML manual</a> · <a href="samples/wpf-inventory/manual.docx">Word</a> · <a href="samples/wpf-inventory/run-report.md">Run report</a></div>
+    <div class="card"><h3>ClientDesk CRM</h3><p>WinForms desktop app · 8 screens · 9 tasks</p>
+      <a href="samples/winforms-crm/index.html">HTML manual</a> · <a href="samples/winforms-crm/manual.docx">Word</a> · <a href="samples/winforms-crm/run-report.md">Run report</a></div>
+  </div>
+
+  <h2>What you get</h2>
+  <ul class="check">
+    <li><strong>Getting Started</strong>, <strong>How-To Tasks</strong> (8-15, ranked by evidence from your E2E tests and forms), a <strong>Screen Reference</strong> for every reachable screen, and <strong>Troubleshooting</strong> built from your validation messages.</li>
+    <li>Your logo, product name and brand colors, detected automatically.</li>
+    <li>Secrets blurred before anything touches disk, destructive buttons refused, localhost backends only.</li>
+    <li><code>/guidegen --update</code> keeps your edits and re-captures only the screens whose code changed.</li>
+  </ul>
+  <footer>MIT licensed · <a href="https://github.com/guidegen/guidegen">GitHub</a></footer>
+</main>
+</body>
+</html>

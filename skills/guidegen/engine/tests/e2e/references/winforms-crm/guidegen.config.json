@@ -1,0 +1,69 @@
+{
+  "$schema": "https://raw.githubusercontent.com/guidegen/guidegen/main/skills/guidegen/schema/config.schema.json",
+  "app": {
+    "kind": "winforms",
+    "workingDir": ".",
+    "build": "dotnet build \"src/Crm/Crm.csproj\" -c Debug",
+    "executable": "src/Crm/bin/Debug/net9.0-windows/ClientDesk.exe",
+    "readyWhen": {
+      "timeoutSec": 60
+    }
+  },
+  "auth": {
+    "required": true,
+    "usernameEnv": "GUIDEGEN_USER",
+    "passwordEnv": "GUIDEGEN_PASSWORD",
+    "loginSteps": [
+      {
+        "action": "type",
+        "target": {
+          "by": "automation_id",
+          "value": "UserNameTextBox"
+        },
+        "value": "${GUIDEGEN_USER}"
+      },
+      {
+        "action": "type",
+        "target": {
+          "by": "automation_id",
+          "value": "PasswordTextBox"
+        },
+        "value": "${GUIDEGEN_PASSWORD}"
+      },
+      {
+        "action": "click",
+        "target": {
+          "by": "automation_id",
+          "value": "SignInButton"
+        }
+      }
+    ]
+  },
+  "seed": {
+    "command": null,
+    "enabled": false
+  },
+  "safety": {
+    "allowRemoteBackends": false,
+    "allowDestructive": [],
+    "redactPatterns": [
+      "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+    ],
+    "redactSelectors": []
+  },
+  "budget": {
+    "maxScreens": 60,
+    "maxTasks": 15
+  },
+  "brand": {
+    "logo": "src/Crm/Assets/logo.png",
+    "productName": "ClientDesk CRM",
+    "companyName": "Fabrikam Software",
+    "version": "1.8.2",
+    "primaryColor": "#5B2C6F",
+    "accentColor": "#00A896"
+  },
+  "graphify": {
+    "use": "auto"
+  }
+}

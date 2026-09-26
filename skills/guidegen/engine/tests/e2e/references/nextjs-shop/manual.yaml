@@ -1,0 +1,632 @@
+# GuideGen manual source. Edit freely: set `override:` to replace generated text, `exclude: true`
+# to drop a screen/task/entry, or `locked: [title]` to keep fields you edited. GuideGen never
+# changes override/exclude/locked. Re-run `/guidegen --update` to refresh.
+version: 1
+meta:
+  title: Acme Shop User Manual
+  audience: end users
+  intro: Acme Shop is where you manage your products, customers and orders. This manual shows you how to do everyday jobs step by step, and explains every screen.
+  generatedAt: 2026-09-24 15:41:56+00:00
+chapters:
+  - id: getting-started
+  - id: tasks
+  - id: reference
+  - id: troubleshooting
+gettingStarted:
+  requirements: "- A computer with an up-to-date web browser (Microsoft Edge, Google Chrome, Firefox or Safari).\n- The Acme Shop web address and the email and password your administrator gave you.\n"
+  launch: Open your web browser and go to the Acme Shop address. The **Sign in to Acme Shop** page appears.
+  signIn: Type your **Email** and **Password**, then click **Sign in**. If you see *Invalid email or password*, check both and try again.
+  tour: "After you sign in you see the **Dashboard**. The menu on the left takes you to **Products**, **Orders**, **Customers** and **Settings**. Click **Sign out** at the bottom of the menu when you are finished.\n"
+  tourScreen: dashboard
+screens:
+  - id: login
+    title: Sign in
+    kind: page
+    source: [app/login/page.js, lib/auth.js]
+    navigate:
+      - {action: goto, value: /login}
+    elements:
+      - name: Email
+        type: text box
+        description: The email address of your Acme Shop account.
+      - name: Password
+        type: text box
+        description: Your password. It is hidden as you type.
+      - name: Sign in
+        type: button
+        description: Signs you in and opens the **Dashboard**.
+    text:
+      summary: The first page you see. Enter your email and password to get into Acme Shop.
+    status: captured
+    image: screens/login.png
+    sourceHash: sha256:924621955c55492183c48ea6d4d38bdf047bfeb399d0d120de1ea03c83feed29
+  - id: dashboard
+    title: Dashboard
+    source: [app/page.js]
+    navigate:
+      - {action: goto, value: /}
+    elements:
+      - name: Open orders
+        type: summary tile
+        description: How many orders have not been shipped yet.
+      - name: Total sales
+        type: summary tile
+        description: The value of all orders.
+      - name: Customers
+        type: summary tile
+        description: How many customers you have.
+      - name: Low-stock products
+        type: summary tile
+        description: Products at or below the low-stock level set in **Settings**. Shown in red when there are any.
+      - name: New order
+        type: button
+        description: Opens the **New order** page.
+      - name: Recent orders
+        type: table
+        description: The five newest orders. Click an order number to open it.
+    text:
+      summary: Your home page. It sums up how the shop is doing and lists the most recent orders.
+    status: captured
+    image: screens/dashboard.png
+    sourceHash: sha256:47db111a01dfca98cf8617d8e00b00abcd577c89f9238a826a76bfd889829156
+  - id: products
+    title: Products
+    source: [app/products/page.js]
+    navigate:
+      - {action: goto, value: /products}
+    elements:
+      - name: New product
+        type: button
+        description: Opens the **New product** page.
+      - name: Name
+        type: link
+        description: Opens the product's page.
+      - name: Stock
+        type: column
+        description: How many you have. Shown in red when stock is low.
+    text:
+      summary: Lists everything you sell, with its stock code (SKU), category, price and stock on hand.
+    status: captured
+    image: screens/products.png
+    sourceHash: sha256:b21a61b929afa264faa722ffddea38109fc9ba1605e9e9a558644831286d222d
+  - id: new-product
+    title: New product
+    source: [app/products/new/page.js, app/api/products/route.js, lib/validate.js]
+    navigate:
+      - {action: goto, value: /products/new}
+    elements:
+      - name: Name
+        type: text box
+        description: The product name customers see. Required.
+      - name: SKU
+        type: text box
+        description: Your own stock code, for example COF-002. Required.
+      - name: Category
+        type: list
+        description: Coffee, Kitchen, Equipment or Other.
+      - name: Price
+        type: text box
+        description: Price per item. Must be greater than 0.
+      - name: Stock
+        type: text box
+        description: How many you have now. Cannot be negative.
+      - name: Save product
+        type: button
+        description: Saves the product and opens its page.
+      - name: Cancel
+        type: button
+        description: Goes back to **Products** without saving.
+    text:
+      summary: Use this page to add a product to your catalogue.
+    status: captured
+    image: screens/new-product.png
+    sourceHash: sha256:ed6c8ac4cf6e00a1047b75abbe0fd502b706dd168372a3ff1c927ca52dea33ab
+  - id: product-detail
+    title: Product details
+    source: ['app/products/[id]/page.js', 'app/products/[id]/StockForm.js']
+    navigate:
+      - {action: goto, value: /products/p1}
+    elements:
+      - name: Adjust stock
+        type: text box
+        description: Type the new stock count.
+      - name: Update stock
+        type: button
+        description: Saves the new stock count.
+      - name: Delete product
+        type: button
+        description: Removes the product after you confirm. This cannot be undone.
+    text:
+      summary: Shows one product's price and stock. You can correct the stock count or delete the product here.
+    status: captured
+    image: screens/product-detail.png
+    sourceHash: sha256:c928bba76bc67254bc0a38f4292ef295672b2ae22e0fe35b729c90fa0034bf30
+  - id: orders
+    title: Orders
+    source: [app/orders/page.js]
+    navigate:
+      - {action: goto, value: /orders}
+    elements:
+      - name: New order
+        type: button
+        description: Opens the **New order** page.
+      - name: Order
+        type: link
+        description: Opens the order.
+      - name: Status
+        type: column
+        description: '**Open** until you mark the order as shipped, then **Shipped**.'
+    text:
+      summary: Lists all orders, newest first, with the customer, date, number of items, total and status.
+    status: captured
+    image: screens/orders.png
+    sourceHash: sha256:9dac1297d9c113b9a63710ecbe21f33055cd62b6532dc50da331705c703ff47c
+  - id: new-order
+    title: New order
+    source: [app/orders/new/page.js, app/orders/new/NewOrderForm.js, app/api/orders/route.js, lib/validate.js]
+    navigate:
+      - {action: goto, value: /orders/new}
+    elements:
+      - name: Customer
+        type: list
+        description: Who the order is for. The customer must already exist - add new customers on the **Customers** page first.
+      - name: Product
+        type: list
+        description: What they are buying. The list shows how many are in stock.
+      - name: Quantity
+        type: text box
+        description: How many. Must be greater than 0 and not more than the stock.
+      - name: Note
+        type: text box
+        description: Optional note shown on the order.
+      - name: Create order
+        type: button
+        description: Saves the order and takes the items out of stock.
+    text:
+      summary: Use this page to record a new order for an existing customer.
+    status: captured
+    image: screens/new-order.png
+    sourceHash: sha256:d137fe5f692677abe3b2a400bae34bab5cc4fe2140de531f8dfcbe5e2fd71fb3
+  - id: order-detail
+    title: Order details
+    source: ['app/orders/[id]/page.js', 'app/api/orders/[id]/route.js']
+    navigate:
+      - {action: goto, value: /orders/o1002}
+    elements:
+      - name: Mark as shipped
+        type: button
+        description: Changes the status to **Shipped**. Only shown for open orders.
+      - name: Send invoice
+        type: button
+        description: Emails an invoice to the customer's invoice email address.
+    text:
+      summary: Shows the items, quantities and total of one order, and who it was for.
+    status: captured
+    image: screens/order-detail.png
+    sourceHash: sha256:4ace7ee80bc3507643bf3d733870032722d9c538423f998115641eda38af9918
+  - id: customers
+    title: Customers
+    source: [app/customers/page.js]
+    navigate:
+      - {action: goto, value: /customers}
+    elements:
+      - name: New customer
+        type: button
+        description: Opens the **New customer** page.
+      - name: Orders
+        type: column
+        description: How many orders the customer has placed.
+    text:
+      summary: Lists the people and businesses you sell to, with their contact details.
+    status: captured
+    image: screens/customers.png
+    sourceHash: sha256:18c3a610b988e734565389ab1e5c31ce584cd11e49fe50dc6c201ed8de31fb49
+  - id: new-customer
+    title: New customer
+    source: [app/customers/new/page.js, app/api/customers/route.js, lib/validate.js]
+    navigate:
+      - {action: goto, value: /customers/new}
+    elements:
+      - name: Name
+        type: text box
+        description: Person or business name. Required.
+      - name: Email
+        type: text box
+        description: Where invoices are sent. Must be a valid email address.
+      - name: Phone
+        type: text box
+        description: Optional.
+      - name: City
+        type: text box
+        description: Optional.
+      - name: Save customer
+        type: button
+        description: Saves the customer and returns to **Customers**.
+    text:
+      summary: Use this page to add a customer. You need a customer before you can create an order for them.
+    status: captured
+    image: screens/new-customer.png
+    sourceHash: sha256:423c2e76c7083fe59e5e689925d355b9f0abf0d1ba285475dc1ef99ec3dee735
+  - id: settings
+    title: Settings
+    source: [app/settings/page.js, app/settings/SettingsForm.js, app/api/settings/route.js]
+    navigate:
+      - {action: goto, value: /settings}
+    elements:
+      - name: Store name
+        type: text box
+        description: Shown on the **Dashboard**.
+      - name: Currency
+        type: list
+        description: Currency used for all prices and totals.
+      - name: Low-stock threshold
+        type: text box
+        description: Products at or below this level are highlighted. Between 0 and 1000.
+      - name: Notify me about new orders
+        type: check box
+        description: Turn email notifications for new orders on or off.
+      - name: Save settings
+        type: button
+        description: Saves your changes.
+    text:
+      summary: Store-wide preferences that affect every user.
+    status: captured
+    image: screens/settings.png
+    sourceHash: sha256:f8eecfa456b04a6ec29bcaa026bb4772f001f95772db4fb254d0712ee850a739
+tasks:
+  - id: sign-in
+    title: Sign in to Acme Shop
+    goal: Get into Acme Shop with your email and password.
+    rank: 1
+    evidence:
+      - {type: e2e-test, ref: tests/e2e/helpers.ts}
+    steps:
+      - id: s1
+        screen: login
+        action: {action: goto, value: /login}
+        text: Open Acme Shop in your web browser. The **Sign in to Acme Shop** page appears.
+        status: captured
+        image: screens/sign-in/s1.png
+      - id: s2
+        screen: login
+        action: {action: type, target: {by: label, value: Email}, value: '${GUIDEGEN_USER}'}
+        text: In **Email**, type your email address.
+        status: captured
+        image: screens/sign-in/s2.png
+      - id: s3
+        screen: login
+        action: {action: type, target: {by: label, value: Password}, value: '${GUIDEGEN_PASSWORD}'}
+        text: In **Password**, type your password.
+        status: captured
+        image: screens/sign-in/s3.png
+      - id: s4
+        screen: dashboard
+        action: {action: click, target: {by: role, value: button, name: Sign in}}
+        text: Click **Sign in**. The **Dashboard** opens.
+        status: captured
+        image: screens/sign-in/s4.png
+    status: captured
+  - id: create-order
+    title: Create an order
+    goal: Record an order for a customer and take the items out of stock.
+    rank: 2
+    evidence:
+      - {type: e2e-test, ref: tests/e2e/orders.spec.ts}
+      - {type: form-dependency, ref: An order needs an existing customer and product}
+    steps:
+      - id: s1
+        screen: dashboard
+        action: {action: click, target: {by: testid, value: nav-orders}}
+        text: In the menu, click **Orders**.
+        status: captured
+        image: screens/create-order/s1.png
+      - id: s2
+        screen: orders
+        action: {action: click, target: {by: testid, value: new-order}}
+        text: Click **New order**.
+        status: captured
+        image: screens/create-order/s2.png
+      - id: s3
+        screen: new-order
+        action: {action: select, target: {by: label, value: Customer}, value: c2}
+        text: In **Customer**, choose who the order is for.
+        status: captured
+        image: screens/create-order/s3.png
+      - id: s4
+        screen: new-order
+        action: {action: select, target: {by: label, value: Product}, value: p1}
+        text: In **Product**, choose what they are buying.
+        status: captured
+        image: screens/create-order/s4.png
+      - id: s5
+        screen: new-order
+        action: {action: type, target: {by: label, value: Quantity}, value: '2'}
+        text: In **Quantity**, type how many.
+        status: captured
+        image: screens/create-order/s5.png
+      - id: s6
+        screen: order-detail
+        action: {action: click, target: {by: role, value: button, name: Create order}}
+        text: Click **Create order**. The new order opens with the status **Open**.
+        status: captured
+        image: screens/create-order/s6.png
+    status: captured
+  - id: add-customer
+    title: Add a customer
+    goal: Add a person or business so you can create orders for them.
+    rank: 3
+    evidence:
+      - {type: e2e-test, ref: tests/e2e/customers-settings.spec.ts}
+      - {type: form-dependency, ref: Orders require a customer}
+    steps:
+      - id: s1
+        screen: dashboard
+        action: {action: click, target: {by: testid, value: nav-customers}}
+        text: In the menu, click **Customers**.
+        status: captured
+        image: screens/add-customer/s1.png
+      - id: s2
+        screen: customers
+        action: {action: click, target: {by: testid, value: new-customer}}
+        text: Click **New customer**.
+        status: captured
+        image: screens/add-customer/s2.png
+      - id: s3
+        screen: new-customer
+        action: {action: type, target: {by: label, value: Name}, value: Tailspin Toys}
+        text: In **Name**, type the customer's name.
+        status: captured
+        image: screens/add-customer/s3.png
+      - id: s4
+        screen: new-customer
+        action: {action: type, target: {by: label, value: Email}, value: buyer@tailspin.example}
+        text: In **Email**, type the address where invoices should go.
+        status: captured
+        image: screens/add-customer/s4.png
+      - id: s5
+        screen: customers
+        action: {action: click, target: {by: role, value: button, name: Save customer}}
+        text: Click **Save customer**. The customer now appears in the **Customers** list.
+        status: captured
+        image: screens/add-customer/s5.png
+    status: captured
+  - id: add-product
+    title: Add a product
+    goal: Add a new product to your catalogue.
+    rank: 4
+    evidence:
+      - {type: e2e-test, ref: tests/e2e/catalog.spec.ts}
+    steps:
+      - id: s1
+        screen: dashboard
+        action: {action: click, target: {by: testid, value: nav-products}}
+        text: In the menu, click **Products**.
+        status: captured
+        image: screens/add-product/s1.png
+      - id: s2
+        screen: products
+        action: {action: click, target: {by: testid, value: new-product}}
+        text: Click **New product**.
+        status: captured
+        image: screens/add-product/s2.png
+      - id: s3
+        screen: new-product
+        action: {action: type, target: {by: label, value: Name}, value: Cold Brew Bottle}
+        text: Type the product **Name**.
+        status: captured
+        image: screens/add-product/s3.png
+      - id: s4
+        screen: new-product
+        action: {action: type, target: {by: label, value: SKU}, value: BTL-300}
+        text: Type your stock code in **SKU**.
+        status: captured
+        image: screens/add-product/s4.png
+      - id: s5
+        screen: new-product
+        action: {action: select, target: {by: label, value: Category}, value: Kitchen}
+        text: Choose a **Category**.
+        status: captured
+        image: screens/add-product/s5.png
+      - id: s6
+        screen: new-product
+        action: {action: type, target: {by: label, value: Price}, value: '18'}
+        text: Type the **Price**.
+        status: captured
+        image: screens/add-product/s6.png
+      - id: s7
+        screen: new-product
+        action: {action: type, target: {by: label, value: Stock}, value: '25'}
+        text: Type how many you have in **Stock**.
+        status: captured
+        image: screens/add-product/s7.png
+      - id: s8
+        screen: product-detail
+        action: {action: click, target: {by: role, value: button, name: Save product}}
+        text: Click **Save product**. The product's page opens.
+        status: captured
+        image: screens/add-product/s8.png
+    status: captured
+  - id: adjust-stock
+    title: Correct the stock count
+    goal: Update how many of a product you have, for example after a stock take.
+    rank: 5
+    evidence:
+      - {type: e2e-test, ref: tests/e2e/catalog.spec.ts}
+    steps:
+      - id: s1
+        screen: dashboard
+        action: {action: click, target: {by: testid, value: nav-products}}
+        text: In the menu, click **Products**.
+        status: captured
+        image: screens/adjust-stock/s1.png
+      - id: s2
+        screen: products
+        action: {action: click, target: {by: role, value: link, name: Ceramic Mug}}
+        text: Click the product's name.
+        status: captured
+        image: screens/adjust-stock/s2.png
+      - id: s3
+        screen: product-detail
+        action: {action: type, target: {by: label, value: Adjust stock}, value: '30'}
+        text: In **Adjust stock**, type the new count.
+        status: captured
+        image: screens/adjust-stock/s3.png
+      - id: s4
+        screen: product-detail
+        action: {action: click, target: {by: role, value: button, name: Update stock}}
+        text: Click **Update stock**.
+        status: captured
+        image: screens/adjust-stock/s4.png
+    status: captured
+  - id: ship-order
+    title: Mark an order as shipped
+    goal: Record that an order has left the building.
+    rank: 6
+    evidence:
+      - {type: e2e-test, ref: tests/e2e/orders.spec.ts}
+    steps:
+      - id: s1
+        screen: dashboard
+        action: {action: click, target: {by: testid, value: nav-orders}}
+        text: In the menu, click **Orders**.
+        status: captured
+        image: screens/ship-order/s1.png
+      - id: s2
+        screen: orders
+        action: {action: click, target: {by: role, value: link, name: O1003}}
+        text: Click the order number.
+        status: captured
+        image: screens/ship-order/s2.png
+      - id: s3
+        screen: order-detail
+        action: {action: click, target: {by: testid, value: mark-shipped}}
+        text: Click **Mark as shipped**. The status changes to **Shipped**.
+        status: captured
+        image: screens/ship-order/s3.png
+    status: captured
+  - id: send-invoice
+    title: Send an invoice
+    goal: Email an invoice for an order to the customer.
+    rank: 7
+    evidence:
+      - {type: code, ref: 'app/orders/[id]/page.js Send invoice button'}
+    steps:
+      - id: s1
+        screen: dashboard
+        action: {action: click, target: {by: testid, value: nav-orders}}
+        text: In the menu, click **Orders**.
+        status: captured
+        image: screens/send-invoice/s1.png
+      - id: s2
+        screen: orders
+        action: {action: click, target: {by: role, value: link, name: O1002}}
+        text: Click the order number.
+        status: captured
+        image: screens/send-invoice/s2.png
+      - id: s3
+        screen: order-detail
+        action: {action: click, target: {by: role, value: button, name: Send invoice}}
+        text: Check the invoice email address, then click **Send invoice**. The invoice is emailed to the customer.
+        status: refused
+        image: screens/send-invoice/s3.png
+        note: "'Send invoice' looks destructive (matches 'send'). Refused by the engine; add it to safety.allowDestructive in guidegen.config.json if it is safe on this local app."
+    status: captured
+  - id: change-settings
+    title: Change store settings
+    goal: Change your store name, currency or low-stock level.
+    rank: 8
+    evidence:
+      - {type: e2e-test, ref: tests/e2e/customers-settings.spec.ts}
+    steps:
+      - id: s1
+        screen: dashboard
+        action: {action: click, target: {by: testid, value: nav-settings}}
+        text: In the menu, click **Settings**.
+        status: captured
+        image: screens/change-settings/s1.png
+      - id: s2
+        screen: settings
+        action: {action: type, target: {by: label, value: Low-stock threshold}, value: '10'}
+        text: Change **Low-stock threshold** to the level you want warnings at.
+        status: captured
+        image: screens/change-settings/s2.png
+      - id: s3
+        screen: settings
+        action: {action: select, target: {by: label, value: Currency}, value: EUR}
+        text: Choose a **Currency** if you need to.
+        status: captured
+        image: screens/change-settings/s3.png
+      - id: s4
+        screen: settings
+        action: {action: click, target: {by: role, value: button, name: Save settings}}
+        text: Click **Save settings**. *Settings saved.* appears.
+        status: captured
+        image: screens/change-settings/s4.png
+    status: captured
+  - id: check-low-stock
+    title: Find products that are running low
+    goal: See which products need restocking.
+    rank: 9
+    evidence:
+      - {type: code, ref: app/page.js low-stock tile}
+    steps:
+      - id: s1
+        screen: dashboard
+        action: {action: click, target: {by: testid, value: nav-dashboard}}
+        text: In the menu, click **Dashboard** and look at **Low-stock products**.
+        status: captured
+        image: screens/check-low-stock/s1.png
+      - id: s2
+        screen: products
+        action: {action: click, target: {by: testid, value: nav-products}}
+        text: Click **Products**. Stock counts shown in red are at or below your low-stock level.
+        status: captured
+        image: screens/check-low-stock/s2.png
+    status: captured
+  - id: sign-out
+    title: Sign out
+    goal: Leave Acme Shop safely, for example on a shared computer.
+    rank: 10
+    evidence:
+      - {type: e2e-test, ref: tests/e2e/customers-settings.spec.ts}
+    steps:
+      - id: s1
+        screen: dashboard
+        action: {action: click, target: {by: testid, value: sign-out}}
+        text: At the bottom of the menu, click **Sign out**. The sign-in page appears.
+        status: captured
+        image: screens/sign-out/s1.png
+    status: captured
+troubleshooting:
+  - message: Invalid email or password
+    source: lib/validate.js
+    cause: The email or password does not match your account.
+    fix: Check for typing mistakes and that **Caps Lock** is off, then try again. Ask your administrator if you have forgotten your password.
+  - message: Price must be greater than 0
+    source: lib/validate.js
+    cause: The **Price** box is empty, 0 or not a number.
+    fix: Type a price such as **9.99**.
+  - message: Stock cannot be negative
+    source: lib/validate.js
+    cause: The stock count is below zero or not a number.
+    fix: Type **0** or a positive whole number.
+  - message: Select a customer
+    source: lib/validate.js
+    cause: No customer was chosen in **Customer**.
+    fix: Choose a customer. If they are not in the list, add them on the **Customers** page first.
+  - message: Quantity must be greater than 0
+    source: lib/validate.js
+    cause: The **Quantity** is 0, empty or not a number.
+    fix: Type **1** or more.
+  - message: Not enough stock for this quantity
+    source: lib/validate.js
+    cause: You asked for more items than are in stock.
+    fix: Lower the quantity, or correct the stock count on the product's page first.
+  - message: Email is not valid
+    source: lib/validate.js
+    cause: The email address is missing a part such as @ or the domain.
+    fix: Type a full address, for example **name@company.com**.
+  - message: Low-stock threshold must be between 0 and 1000
+    source: lib/validate.js
+    cause: The number is outside the allowed range.
+    fix: Type a whole number from **0** to **1000**.

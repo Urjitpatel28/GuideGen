@@ -1,0 +1,21 @@
+<nav id="sidebar" class="sidebar" aria-label="Manual contents">
+  <ul>
+  {% for cid, ctitle in vm.chapters %}
+    {% if cid == "getting-started" and vm.has_chapter(cid) %}
+    <li><a href="#getting-started">{{ ctitle }}</a></li>
+    {% elif cid == "tasks" and vm.tasks %}
+    <li><a href="#tasks">{{ ctitle }}</a>
+      <ul>{% for t in vm.tasks %}<li><a href="#{{ t.anchor }}">{{ t.title }}</a></li>{% endfor %}</ul>
+    </li>
+    {% elif cid == "reference" and vm.screens %}
+    <li><a href="#reference">{{ ctitle }}</a>
+      <ul>{% for s in vm.screens %}<li><a href="#{{ s.anchor }}">{{ s.title }}</a></li>{% endfor %}</ul>
+    </li>
+    {% elif cid == "troubleshooting" and vm.troubleshooting %}
+    <li><a href="#troubleshooting">{{ ctitle }}</a></li>
+    {% elif vm.custom.get(cid) %}
+    <li><a href="#{{ chapter_anchor(cid) }}">{{ ctitle }}</a></li>
+    {% endif %}
+  {% endfor %}
+  </ul>
+</nav>

@@ -1,0 +1,88 @@
+<Window x:Class="Inventory.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Stockroom Inventory" Width="1280" Height="800" WindowStartupLocation="CenterScreen"
+        Icon="/Assets/app.ico" AutomationProperties.AutomationId="MainWindow">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" AutomationProperties.AutomationId="MainMenu">
+            <MenuItem Header="_File" AutomationProperties.AutomationId="FileMenu">
+                <MenuItem Header="_Settings..." Command="{Binding SettingsCommand}" AutomationProperties.AutomationId="SettingsMenuItem"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Command="{Binding ExitCommand}" AutomationProperties.AutomationId="ExitMenuItem"/>
+            </MenuItem>
+            <MenuItem Header="_Items" AutomationProperties.AutomationId="ItemsMenu">
+                <MenuItem Header="_New item..." Command="{Binding NewItemCommand}" InputGestureText="Ctrl+N" AutomationProperties.AutomationId="NewItemMenuItem"/>
+                <MenuItem Header="_Receive stock..." Command="{Binding ReceiveStockCommand}" AutomationProperties.AutomationId="ReceiveStockMenuItem"/>
+                <MenuItem Header="_Categories..." Command="{Binding CategoriesCommand}" AutomationProperties.AutomationId="CategoriesMenuItem"/>
+            </MenuItem>
+            <MenuItem Header="_Help" AutomationProperties.AutomationId="HelpMenu">
+                <MenuItem Header="_About Stockroom Inventory" Command="{Binding AboutCommand}" AutomationProperties.AutomationId="AboutMenuItem"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom" AutomationProperties.AutomationId="StatusBar">
+            <StatusBarItem Content="{Binding Status}" AutomationProperties.AutomationId="StatusText"/>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock Text="{Binding SignedInAs, StringFormat=Signed in as {0}}"/>
+            </StatusBarItem>
+        </StatusBar>
+        <TabControl Margin="10" AutomationProperties.AutomationId="MainTabs">
+            <TabItem Header="Items" AutomationProperties.AutomationId="ItemsTab">
+                <DockPanel Margin="10">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="_Search" Target="{Binding ElementName=SearchBox}" VerticalAlignment="Center"/>
+                        <TextBox x:Name="SearchBox" Width="260" Margin="0,0,16,0" VerticalContentAlignment="Center"
+                                 Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"
+                                 AutomationProperties.AutomationId="SearchBox" AutomationProperties.Name="Search"/>
+                        <Button Content="New item" Style="{StaticResource PrimaryButton}" Command="{Binding NewItemCommand}" AutomationProperties.AutomationId="NewItemButton"/>
+                        <Button Content="Edit" Command="{Binding EditItemCommand}" AutomationProperties.AutomationId="EditItemButton"/>
+                        <Button Content="Receive stock" Command="{Binding ReceiveStockCommand}" AutomationProperties.AutomationId="ReceiveStockButton"/>
+                        <Button Content="Delete" Command="{Binding DeleteItemCommand}" AutomationProperties.AutomationId="DeleteItemButton"/>
+                    </StackPanel>
+                    <DataGrid ItemsSource="{Binding ItemsView}" SelectedItem="{Binding Selected}" AutoGenerateColumns="False"
+                              IsReadOnly="True" SelectionMode="Single" HeadersVisibility="Column" GridLinesVisibility="Horizontal"
+                              AutomationProperties.AutomationId="ItemsGrid" AutomationProperties.Name="Items">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="SKU" Binding="{Binding Sku}" Width="100"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="120"/>
+                            <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="90"/>
+                            <DataGridTextColumn Header="Unit price" Binding="{Binding UnitPrice, StringFormat=C}" Width="100"/>
+                            <DataGridTextColumn Header="Supplier" Binding="{Binding Supplier}" Width="170"/>
+                            <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="90"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Suppliers" AutomationProperties.AutomationId="SuppliersTab">
+                <DataGrid Margin="10" ItemsSource="{Binding Store.Suppliers}" AutoGenerateColumns="False" IsReadOnly="True"
+                          HeadersVisibility="Column" AutomationProperties.AutomationId="SuppliersGrid" AutomationProperties.Name="Suppliers">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Supplier" Binding="{Binding Name}" Width="*"/>
+                        <DataGridTextColumn Header="Contact email" Binding="{Binding ContactEmail}" Width="260"/>
+                        <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" Width="120"/>
+                        <DataGridTextColumn Header="Lead time (days)" Binding="{Binding LeadTimeDays}" Width="130"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Reports" AutomationProperties.AutomationId="ReportsTab">
+                <StackPanel Margin="16">
+                    <TextBlock Text="Stock summary" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource BrandPrimaryBrush}" Margin="0,0,0,10"/>
+                    <UniformGrid Columns="3" Margin="0,0,0,18" MaxWidth="700" HorizontalAlignment="Left">
+                        <StackPanel Margin="0,0,24,0"><TextBlock Text="{Binding TotalItems}" FontSize="28"/><TextBlock Text="Items" Foreground="Gray"/></StackPanel>
+                        <StackPanel Margin="0,0,24,0"><TextBlock Text="{Binding TotalUnits}" FontSize="28"/><TextBlock Text="Units in stock" Foreground="Gray"/></StackPanel>
+                        <StackPanel><TextBlock Text="{Binding StockValue, StringFormat=C}" FontSize="28"/><TextBlock Text="Stock value" Foreground="Gray"/></StackPanel>
+                    </UniformGrid>
+                    <TextBlock Text="Low stock" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <ListBox ItemsSource="{Binding LowStock}" MaxWidth="700" HorizontalAlignment="Left" MinWidth="500"
+                             AutomationProperties.AutomationId="LowStockList" AutomationProperties.Name="Low stock">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock><Run Text="{Binding Sku}"/> - <Run Text="{Binding Name}"/>: <Run Text="{Binding Quantity}" Foreground="{StaticResource ErrorBrush}"/> left</TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

@@ -1,0 +1,13 @@
+<Window x:Class="Inventory.Views.AboutDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About Stockroom Inventory" Width="360" SizeToContent="Height" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False" AutomationProperties.AutomationId="AboutDialog">
+    <StackPanel Margin="24">
+        <Image Source="/Assets/logo.png" Width="64" Height="64" HorizontalAlignment="Left"/>
+        <TextBlock Text="Stockroom Inventory" FontSize="20" FontWeight="SemiBold" Margin="0,10,0,4"/>
+        <TextBlock Text="Version 2.3.0" Foreground="Gray"/>
+        <TextBlock Text="© Acme Ltd. Keeps track of what is on your shelves." TextWrapping="Wrap" Margin="0,10,0,16"/>
+        <Button Content="OK" IsDefault="True" IsCancel="True" HorizontalAlignment="Right" Margin="0" AutomationProperties.AutomationId="AboutOkButton"/>
+    </StackPanel>
+</Window>

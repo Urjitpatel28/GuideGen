@@ -1,0 +1,689 @@
+{
+  "$defs": {
+    "Action": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "goto",
+            "click",
+            "double_click",
+            "type",
+            "select",
+            "press",
+            "hover",
+            "wait",
+            "screenshot",
+            "close"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Target"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "redact": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Redact",
+          "type": "array"
+        },
+        "timeoutMs": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timeoutms"
+        }
+      },
+      "required": [
+        "action"
+      ],
+      "title": "Action",
+      "type": "object"
+    },
+    "AppConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "web",
+            "electron",
+            "wpf",
+            "winforms",
+            "winui"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "build": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Build"
+        },
+        "start": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Start"
+        },
+        "workingDir": {
+          "default": ".",
+          "title": "Workingdir",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "executable": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Executable"
+        },
+        "args": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Args",
+          "type": "array"
+        },
+        "readyWhen": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReadyWhen"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "window": {
+          "$ref": "#/$defs/Size",
+          "default": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        "viewport": {
+          "$ref": "#/$defs/Size",
+          "default": {
+            "width": 1440,
+            "height": 900
+          }
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "AppConfig",
+      "type": "object"
+    },
+    "AuthConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "usernameEnv": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Usernameenv"
+        },
+        "passwordEnv": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Passwordenv"
+        },
+        "loginSteps": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Loginsteps",
+          "type": "array"
+        }
+      },
+      "title": "AuthConfig",
+      "type": "object"
+    },
+    "BrandConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "productName": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Productname"
+        },
+        "companyName": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Companyname"
+        },
+        "logo": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Logo"
+        },
+        "primaryColor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Primarycolor"
+        },
+        "accentColor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Accentcolor"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "title": "BrandConfig",
+      "type": "object"
+    },
+    "BriefConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "asked": {
+          "default": false,
+          "title": "Asked",
+          "type": "boolean"
+        },
+        "sources": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/BriefSource"
+          },
+          "title": "Sources",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "title": "BriefConfig",
+      "type": "object"
+    },
+    "BriefSource": {
+      "additionalProperties": false,
+      "description": "Something the developer already has that should steer the manual. Only a location, never the content.",
+      "properties": {
+        "kind": {
+          "enum": [
+            "old-manual",
+            "reference-manual",
+            "outline",
+            "process"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "BriefSource",
+      "type": "object"
+    },
+    "BudgetConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "maxScreens": {
+          "default": 60,
+          "minimum": 0,
+          "title": "Maxscreens",
+          "type": "integer"
+        },
+        "maxTasks": {
+          "default": 15,
+          "minimum": 0,
+          "title": "Maxtasks",
+          "type": "integer"
+        }
+      },
+      "title": "BudgetConfig",
+      "type": "object"
+    },
+    "GraphifyConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "use": {
+          "anyOf": [
+            {
+              "const": "auto",
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "default": "auto",
+          "title": "Use"
+        }
+      },
+      "title": "GraphifyConfig",
+      "type": "object"
+    },
+    "ReadyWhen": {
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "windowTitle": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Windowtitle"
+        },
+        "timeoutSec": {
+          "default": 120,
+          "exclusiveMinimum": 0,
+          "title": "Timeoutsec",
+          "type": "integer"
+        }
+      },
+      "title": "ReadyWhen",
+      "type": "object"
+    },
+    "SafetyConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "allowRemoteBackends": {
+          "default": false,
+          "title": "Allowremotebackends",
+          "type": "boolean"
+        },
+        "allowDestructive": {
+          "default": [],
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/Target"
+              }
+            ]
+          },
+          "title": "Allowdestructive",
+          "type": "array"
+        },
+        "redactPatterns": {
+          "default": [
+            "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Redactpatterns",
+          "type": "array"
+        },
+        "redactSelectors": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Redactselectors",
+          "type": "array"
+        }
+      },
+      "title": "SafetyConfig",
+      "type": "object"
+    },
+    "SeedConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Command"
+        },
+        "enabled": {
+          "default": false,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "rerunBeforeTasks": {
+          "default": true,
+          "title": "Rerunbeforetasks",
+          "type": "boolean"
+        }
+      },
+      "title": "SeedConfig",
+      "type": "object"
+    },
+    "Size": {
+      "additionalProperties": false,
+      "properties": {
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "width",
+        "height"
+      ],
+      "title": "Size",
+      "type": "object"
+    },
+    "Target": {
+      "additionalProperties": false,
+      "properties": {
+        "by": {
+          "enum": [
+            "role",
+            "label",
+            "text",
+            "testid",
+            "css",
+            "automation_id",
+            "name",
+            "control_type",
+            "path"
+          ],
+          "title": "By",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        }
+      },
+      "required": [
+        "by",
+        "value"
+      ],
+      "title": "Target",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": "https://raw.githubusercontent.com/guidegen/guidegen/main/skills/guidegen/schema/config.schema.json",
+      "title": "$Schema"
+    },
+    "app": {
+      "$ref": "#/$defs/AppConfig"
+    },
+    "auth": {
+      "$ref": "#/$defs/AuthConfig",
+      "default": {
+        "required": false,
+        "usernameEnv": null,
+        "passwordEnv": null,
+        "loginSteps": []
+      }
+    },
+    "seed": {
+      "$ref": "#/$defs/SeedConfig",
+      "default": {
+        "command": null,
+        "enabled": false,
+        "rerunBeforeTasks": true
+      }
+    },
+    "safety": {
+      "$ref": "#/$defs/SafetyConfig",
+      "default": {
+        "allowRemoteBackends": false,
+        "allowDestructive": [],
+        "redactPatterns": [
+          "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        ],
+        "redactSelectors": []
+      }
+    },
+    "budget": {
+      "$ref": "#/$defs/BudgetConfig",
+      "default": {
+        "maxScreens": 60,
+        "maxTasks": 15
+      }
+    },
+    "brand": {
+      "$ref": "#/$defs/BrandConfig",
+      "default": {
+        "productName": null,
+        "companyName": null,
+        "logo": null,
+        "primaryColor": null,
+        "accentColor": null,
+        "version": null
+      }
+    },
+    "graphify": {
+      "$ref": "#/$defs/GraphifyConfig",
+      "default": {
+        "use": "auto"
+      }
+    },
+    "brief": {
+      "$ref": "#/$defs/BriefConfig",
+      "default": {
+        "asked": false,
+        "sources": [],
+        "notes": null
+      }
+    }
+  },
+  "required": [
+    "app"
+  ],
+  "title": "Config",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
