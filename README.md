@@ -155,3 +155,13 @@ uv run pytest -m e2e     # replays the examples end to end (desktop ones on Wind
 - Keep `SKILL.md` short. Details go in `references/`.
 
 MIT licensed. See [LICENSE](LICENSE).
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=urjitpatel28%2Fguidegen&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=urjitpatel28/guidegen&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=urjitpatel28/guidegen&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=urjitpatel28/guidegen&type=date&legend=top-left" />
+ </picture>
+</a>
