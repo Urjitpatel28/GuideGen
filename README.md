@@ -21,13 +21,13 @@ See sample manuals generated from the bundled examples in [`docs/samples/`](docs
 
 **Claude Code**
 ```
-/plugin marketplace add guidegen/guidegen
+/plugin marketplace add Urjitpatel28/guidegen
 /plugin install guidegen@guidegen
 ```
 
 **Any agent** (Cursor, Codex, opencode, ...), via [skills.sh](https://skills.sh):
 ```
-npx skills add https://github.com/guidegen/guidegen --skill guidegen
+npx skills add https://github.com/Urjitpatel28/guidegen --skill guidegen
 ```
 
 **Manual**: copy `skills/guidegen/` into your agent's skills folder (`~/.claude/skills/`, `.agents/skills/`,
