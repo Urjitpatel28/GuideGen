@@ -42,6 +42,17 @@ def gg(app: str, *args: str) -> dict:
         raise AssertionError(f"guidegen {' '.join(args)} failed ({r.returncode}):\n{r.stdout}\n{r.stderr[-2000:]}") from e
 
 
+def capture_errors(out: Path) -> str:
+    """Why screens failed, from capture-log.json, for assertion messages."""
+    try:
+        log = json.loads((out / "capture-log.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        return f"(no capture-log.json: {e})"
+    items = log.get("items", log) if isinstance(log, dict) else log
+    bad = [i for i in items if isinstance(i, dict) and i.get("kind") == "screen" and i.get("status") != "captured"]
+    return "\n".join(f"{i.get('id')}: {i.get('error')}" for i in bad) or "(no failed screens in capture-log.json)"
+
+
 def prepare(app: str) -> Path:
     if APPS[app]["desktop"] and sys.platform != "win32":
         pytest.skip("desktop examples need Windows")
@@ -61,7 +72,7 @@ def test_example_benchmark(app):
     try:
         assert gg(app, "app", "start")["ok"]
         cap = gg(app, "capture")
-        assert cap["ok"] and cap["screensFailed"] == 0
+        assert cap["ok"] and cap["screensFailed"] == 0, capture_errors(out)
         rendered = gg(app, "render")
         rep = gg(app, "report")
     finally:
@@ -101,7 +112,7 @@ def test_update_recaptures_only_changed(app):
     try:
         assert gg(app, "app", "start")["ok"]
         gg(app, "capture")
-        assert gg(app, "changed")["screens"] == []
+        assert gg(app, "changed")["screens"] == [], capture_errors(out)
         comment = b"\n<!-- touched by test -->\n" if src.endswith(".xaml") else b"\n// touched by test\n"
         path.write_bytes(original + comment)
         ch = gg(app, "changed")

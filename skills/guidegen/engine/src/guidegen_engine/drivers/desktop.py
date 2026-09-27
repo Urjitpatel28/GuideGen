@@ -302,7 +302,7 @@ class DesktopDriver(Driver):
             else:
                 el = self._find(a.target, timeout)
                 if a.action == "click":
-                    el.click_input()
+                    self._click(el)
                 elif a.action == "double_click":
                     el.double_click_input()
                 elif a.action == "type":
@@ -330,6 +330,26 @@ class DesktopDriver(Driver):
             raise DriverError(f"{a.action} failed: {str(e).splitlines()[0][:300] if str(e) else type(e).__name__}") from e
         time.sleep(0.6)
         return {"ok": True, "view": self.current_view_id()}
+
+    def _click(self, el) -> None:
+        """Mouse click, with the app in the foreground. A WPF menu header (File, Help...) is opened through UIA
+        ExpandCollapse instead: a mouse click on a background window can close the popup as soon as it opens
+        (seen on CI runners). Leaf items stay mouse clicks, because a synchronous UIA Invoke that opens a modal
+        dialog would block until the dialog closes."""
+        ei = el.element_info
+        if ei.control_type == "MenuItem" and ei.framework_id == "WPF":
+            try:
+                if el.get_expand_state() == 0:  # ExpandCollapseState_Collapsed; leaf items have no pattern and raise
+                    el.expand()
+                    return
+            except Exception:
+                pass
+        if not self._popups():  # focusing the window would close an open menu or dropdown
+            try:
+                self._top().set_focus()
+            except Exception:
+                pass
+        el.click_input()
 
     # ---------- inspection ----------
     def _walk(self, ei, depth: int, max_depth: int, out: list, count: list[int]) -> None:

@@ -46,7 +46,10 @@ def test_annotations():
     img = Image.new("RGB", (300, 200), "white")
     r = Rect(50, 50, 80, 30)
     out = annotate.badge(annotate.highlight(img, r), 3, r)
-    assert out.getpixel((46, 50)) != (255, 255, 255)
+    # sample pixels the digit can never cover, so the check does not depend on which font the OS provides:
+    # badge fill 9px left of its centre (46, 46), and the highlight's left edge below the badge
+    assert out.getpixel((37, 46)) == annotate.hex_to_rgb(annotate.DEFAULT_ACCENT)
+    assert out.getpixel((47, 70)) != (255, 255, 255)
     red, n = annotate.redact(Image.new("RGB", (100, 100), "white"), [Rect(10, 10, 20, 20), Rect(0, 0, 0, 0)])
     assert n == 1
     assert annotate.crop_around(img, r, 20).size == (120, 70)

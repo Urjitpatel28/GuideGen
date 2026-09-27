@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "GuideGen Architecture",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "People, agent and target app"
+        },
+        "frontend": {
+          "label": "Skill instructions"
+        },
+        "backend": {
+          "label": "Engine processes"
+        },
+        "database": {
+          "label": "Files in the repo"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "developer",
+      "type": "external",
+      "label": "Developer",
+      "sublabel": "types /guidegen",
+      "pos": [
+        30,
+        300
+      ],
+      "size": [
+        140,
+        64
+      ]
+    },
+    {
+      "id": "agent",
+      "type": "external",
+      "label": "Coding agent",
+      "sublabel": "Claude Code / Codex / Cursor",
+      "pos": [
+        240,
+        300
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "tag": "understands"
+    },
+    {
+      "id": "skill",
+      "type": "frontend",
+      "label": "SKILL.md",
+      "sublabel": "+ references/",
+      "pos": [
+        240,
+        110
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "repo",
+      "type": "database",
+      "label": "Target repo",
+      "sublabel": "app source code",
+      "pos": [
+        30,
+        110
+      ],
+      "size": [
+        140,
+        64
+      ]
+    },
+    {
+      "id": "engine",
+      "type": "backend",
+      "label": "GuideGen engine",
+      "sublabel": "uv run guidegen",
+      "pos": [
+        510,
+        300
+      ],
+      "size": [
+        160,
+        64
+      ],
+      "tag": "mechanics"
+    },
+    {
+      "id": "daemon",
+      "type": "backend",
+      "label": "Session daemon",
+      "sublabel": "127.0.0.1",
+      "pos": [
+        740,
+        300
+      ],
+      "size": [
+        140,
+        64
+      ]
+    },
+    {
+      "id": "playwright",
+      "type": "backend",
+      "label": "Playwright driver",
+      "sublabel": "web + Electron (CDP)",
+      "pos": [
+        950,
+        170
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "uia",
+      "type": "backend",
+      "label": "pywinauto UIA",
+      "sublabel": "WPF / WinForms / WinUI",
+      "pos": [
+        950,
+        430
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "app",
+      "type": "external",
+      "label": "Running app",
+      "sublabel": "started by engine",
+      "pos": [
+        1190,
+        300
+      ],
+      "size": [
+        140,
+        64
+      ]
+    },
+    {
+      "id": "manual",
+      "type": "database",
+      "label": "manual.yaml",
+      "sublabel": "+ guidegen.config.json",
+      "pos": [
+        240,
+        520
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "tag": "source of truth"
+    },
+    {
+      "id": "screens",
+      "type": "database",
+      "label": "screens/",
+      "sublabel": "redacted, annotated PNGs",
+      "pos": [
+        510,
+        520
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "outputs",
+      "type": "database",
+      "label": "manual.docx",
+      "sublabel": "+ manual-html/ + run-report",
+      "pos": [
+        740,
+        520
+      ],
+      "size": [
+        170,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Engine (Python 3.11+, uv)",
+      "wraps": [
+        "engine",
+        "daemon",
+        "playwright",
+        "uia"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "guidegen-out/",
+      "wraps": [
+        "manual",
+        "screens",
+        "outputs"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "invoke",
+      "from": "developer",
+      "to": "agent",
+      "label": "/guidegen",
+      "variant": "emphasis"
+    },
+    {
+      "id": "follow-skill",
+      "from": "agent",
+      "to": "skill",
+      "label": "follows",
+      "labelDy": -40
+    },
+    {
+      "id": "read-code",
+      "from": "agent",
+      "to": "repo",
+      "label": "reads code",
+      "fromSide": "top",
+      "toSide": "right"
+    },
+    {
+      "id": "run-cli",
+      "from": "agent",
+      "to": "engine",
+      "label": "CLI, JSON out",
+      "variant": "emphasis"
+    },
+    {
+      "id": "session",
+      "from": "engine",
+      "to": "daemon",
+      "label": "session",
+      "variant": "emphasis"
+    },
+    {
+      "id": "drive-web",
+      "from": "daemon",
+      "to": "playwright"
+    },
+    {
+      "id": "drive-desktop",
+      "from": "daemon",
+      "to": "uia"
+    },
+    {
+      "id": "web-ui",
+      "from": "playwright",
+      "to": "app",
+      "label": "browser / CDP"
+    },
+    {
+      "id": "desktop-ui",
+      "from": "uia",
+      "to": "app",
+      "label": "UI Automation"
+    },
+    {
+      "id": "write-manual",
+      "from": "agent",
+      "to": "manual",
+      "label": "writes text",
+      "labelAt": [
+        325,
+        442
+      ]
+    },
+    {
+      "id": "capture",
+      "from": "engine",
+      "to": "screens",
+      "label": "replay + capture",
+      "labelAt": [
+        590,
+        442
+      ]
+    },
+    {
+      "id": "render",
+      "from": "screens",
+      "to": "outputs",
+      "label": "render"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Agent understands",
+      "items": [
+        "Detects the stack and inventories screens from code",
+        "Explores the live app and plans ranked tasks",
+        "Writes all manual text into manual.yaml"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Engine does mechanics",
+      "items": [
+        "Starts the app and drives it through a local daemon",
+        "Replays recorded steps for reproducible captures",
+        "Renders Word and a searchable HTML site"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Safety",
+      "items": [
+        "Secrets stay in env vars, never in files",
+        "Screenshots are blurred for secrets and emails",
+        "Destructive actions are guarded; remote backends blocked"
+      ]
+    }
+  ]
+}

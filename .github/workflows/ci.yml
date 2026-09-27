@@ -97,3 +97,10 @@ jobs:
           uv run pytest -m e2e -q -k "wpf or winforms"
       - name: Example's own FlaUI tests (the evidence GuideGen reads)
         run: dotnet test examples/wpf-inventory/WpfInventory.sln
+      - name: Upload captures and capture logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-e2e-output
+          path: examples/*/.guidegen-e2e/
+          if-no-files-found: ignore
