@@ -29,3 +29,6 @@ Thumbs.db
 
 # a GuideGen run against this repo itself
 /guidegen-out/
+
+# /brag launch-video working folder (final assets live in docs/media/)
+/brag-output/

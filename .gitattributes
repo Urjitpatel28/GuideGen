@@ -9,6 +9,7 @@
 *.jpg binary
 *.jpeg binary
 *.gif binary
+*.mp4 binary
 *.pdf binary
 *.woff binary
 *.woff2 binary
